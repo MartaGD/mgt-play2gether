@@ -2,6 +2,7 @@
   display: block;
 }
 
+/* Layout */
 .home-wrap {
   max-width: 1100px;
   margin: 0 auto;
@@ -11,49 +12,59 @@
   gap: 1rem;
 }
 
+/* Cards */
 .intro-card,
 .info-card {
   border-radius: 22px;
   padding: 1.25rem;
-  border: 1px solid #d3dce8;
-  box-shadow: 0 8px 28px rgb(25 42 65 / 12%);
+  border: 1px solid #3a878233; /* base color, low opacity */
+  box-shadow: 0 8px 28px rgba(20, 30, 29, 0.15); /* text color softened */
 }
 
+/* Intro card (dark gradient + base color accents) */
 .intro-card {
   background:
-    radial-gradient(circle at 85% 15%, #d1f5ff 0%, transparent 40%),
-    linear-gradient(135deg, #0f2136 0%, #15354f 55%, #22577a 100%);
+    radial-gradient(circle at 85% 15%, #3a878233 0%, transparent 40%),
+    linear-gradient(135deg, #141e1d 0%, #3a3f87 55%, #3a8782 100%);
   color: #f7fbff;
 }
 
+/* Info card (light background + text color) */
 .info-card {
-  background: #fffefb;
-  color: #1f2a35;
+  background: #fdfdfc;
+  color: #141e1d;
 }
 
+/* Eyebrow (accent color) */
 .eyebrow {
   margin: 0;
-  color: #ffd166;
+  color: #873a3f;
   font-size: 0.8rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   font-weight: 700;
 }
 
+/* Headings */
 h1 {
   margin: 0.35rem 0 0;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
+  color: #141e1d;
 }
 
 h2 {
   margin: 0;
   font-size: 1.2rem;
+  color: #141e1d;
 }
 
+/* Text */
 p {
   line-height: 1.45;
+  color: #141e1d;
 }
 
+/* CTA row */
 .cta-row {
   margin-top: 0.9rem;
   display: flex;
@@ -61,6 +72,7 @@ p {
   gap: 0.6rem;
 }
 
+/* Buttons */
 .cta-main,
 .cta-ghost {
   text-decoration: none;
@@ -69,24 +81,29 @@ p {
   font-weight: 700;
 }
 
+/* Main CTA (base + complement gradient) */
 .cta-main {
-  background: linear-gradient(135deg, #ffd166, #ff9f1c);
-  color: #17283a;
-}
-
-.cta-ghost {
-  border: 1px solid rgb(247 251 255 / 45%);
+  background: linear-gradient(135deg, #3a8782, #873a3f);
   color: #f7fbff;
-  background: rgb(247 251 255 / 9%);
 }
 
+/* Ghost CTA (detail color) */
+.cta-ghost {
+  border: 1px solid #3a3f8744;
+  color: #3a3f87;
+  background: #3a3f8711;
+}
+
+/* Lists */
 ul {
   margin: 0.7rem 0 0;
   padding-left: 1rem;
   display: grid;
   gap: 0.35rem;
+  color: #141e1d;
 }
 
+/* Responsive */
 @media (max-width: 840px) {
   .home-wrap {
     grid-template-columns: 1fr;
