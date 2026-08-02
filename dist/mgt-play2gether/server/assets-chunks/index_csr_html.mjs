@@ -6,9 +6,9 @@ export default `<!doctype html>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-<style>body{margin:0;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif}</style><link rel="stylesheet" href="styles-3J7BQTOV.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-3J7BQTOV.css"></noscript></head>
+<style>body{margin:0;font-family:var(--font-main);font-size:var(--font-size-base);color:var(--color-text)}:root{--color-text:#141e1d;--color-base:#3a8782;--color-accent:#873a3f;--color-detail:#3a3f87;--color-white:#ffffff;--color-black:#000000;--color-soft-bg:#f4f9f8;--color-soft-border:#3a878244;--color-success:#3a8782;--color-warning:#873a3f;--color-info:#3a3f87;--gradient-brand:linear-gradient(135deg, #3a8782, #873a3f);--gradient-soft:linear-gradient(160deg, #f4f9f8 0%, #eef7f7 55%, #f7f9ff 100%);--gradient-dark:linear-gradient(160deg, #141e1d 0%, #3a3f87 55%, #3a8782 100%);--shadow-soft:0 8px 28px rgba(20, 30, 29, .12);--shadow-strong:0 12px 38px rgba(20, 30, 29, .28);--radius-card:20px;--radius-pill:999px;--font-main:"Inter", system-ui, sans-serif;--font-size-base:16px;--font-size-lg:1.25rem;--font-size-xl:2rem}</style><link rel="stylesheet" href="styles-H27WDWI4.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-H27WDWI4.css"></noscript></head>
 <body ngcm="">
   <app-root></app-root>
-<script src="polyfills-5CFQRCPP.js" type="module"></script><script src="main-PQMJMK4S.js" type="module"></script></body>
+<script src="polyfills-5CFQRCPP.js" type="module"></script><script src="main-UQUYXYD3.js" type="module"></script></body>
 </html>
 `;

@@ -4,7 +4,7 @@ const http = require('node:http');
 const { join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v7';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v8';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -102,8 +102,20 @@ function runBuildIfNeeded() {
 const serverEntry = runBuildIfNeeded();
 
 const port = Number(process.env.PORT || 4000);
-const internalPort = Number(process.env.INTERNAL_SSR_PORT || 4100);
-let childReady = false;
+const internalPort = Number(process.env.INTERNAL_SSR_PORT || port + 1);
+const defaultAllowedHosts = [
+  'mgt-play2gether.com',
+  'www.mgt-play2gether.com',
+  'localhost',
+  '127.0.0.1',
+];
+
+const defaultTrustedProxyHeaders = [
+  'x-forwarded-host',
+  'x-forwarded-proto',
+  'x-forwarded-port',
+  'x-forwarded-for',
+];
 
 let requestHandler = (_req, res) => {
   res.statusCode = 200;
@@ -135,6 +147,10 @@ const child = spawn(process.execPath, [serverEntry], {
   env: {
     ...process.env,
     PORT: String(internalPort),
+    NG_ALLOWED_HOSTS:
+      process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
+    NG_TRUST_PROXY_HEADERS:
+      process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
   },
 });
 
@@ -152,58 +168,7 @@ child.on('exit', (code, signal) => {
   process.exit(code ?? 1);
 });
 
-function markChildReady() {
-  if (childReady) {
-    return;
-  }
-
-  childReady = true;
-  console.log('[bootstrap] SSR child is ready to serve requests.');
-}
-
-function probeChildReadiness() {
-  if (childReady) {
-    return;
-  }
-
-  const probeReq = http.request(
-    {
-      host: '127.0.0.1',
-      port: internalPort,
-      method: 'GET',
-      path: '/api/rooms/AAAAAA',
-      timeout: 500,
-    },
-    (probeRes) => {
-      probeRes.resume();
-      markChildReady();
-    },
-  );
-
-  probeReq.on('timeout', () => {
-    probeReq.destroy();
-  });
-
-  probeReq.on('error', () => {
-    // Child is still warming up; keep waiting.
-  });
-
-  probeReq.end();
-}
-
-const probeInterval = setInterval(probeChildReadiness, 250);
-probeInterval.unref();
-probeChildReadiness();
-
 requestHandler = (req, res) => {
-  if (!childReady) {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
-    return;
-  }
-
   const proxyReq = http.request(
     {
       host: '127.0.0.1',
