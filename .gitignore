@@ -2,6 +2,12 @@
 
 # Compiled output
 /dist
+!/dist/
+!/dist/mgt-play2gether/
+!/dist/mgt-play2gether/browser/
+!/dist/mgt-play2gether/browser/**
+!/dist/mgt-play2gether/server/
+!/dist/mgt-play2gether/server/**
 /tmp
 /out-tsc
 /bazel-out
