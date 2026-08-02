@@ -1,9 +1,9 @@
-const { existsSync } = require('node:fs');
+const { existsSync, readdirSync } = require('node:fs');
 const { createServer, request: httpRequest } = require('node:http');
 const { dirname, join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v10';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v11';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -47,6 +47,20 @@ function resolveServerEntry() {
   return { entry: null, candidates };
 }
 
+function hasBrowserStylesForEntry(entryPath) {
+  const browserFolder = join(dirname(entryPath), '..', 'browser');
+  if (!existsSync(browserFolder)) {
+    return false;
+  }
+
+  try {
+    const files = readdirSync(browserFolder);
+    return files.some((name) => name.startsWith('styles-') && name.endsWith('.css'));
+  } catch {
+    return false;
+  }
+}
+
 function runBuildIfNeeded() {
   console.log(`[bootstrap] version = ${BOOTSTRAP_VERSION}`);
 
@@ -54,6 +68,11 @@ function runBuildIfNeeded() {
   let entry = typeof resolved === 'string' ? resolved : resolved.entry;
   const checkedCandidates = typeof resolved === 'string' ? [] : resolved.candidates;
   const projectRoot = resolveProjectRoot();
+
+  if (entry && !hasBrowserStylesForEntry(entry)) {
+    console.log('[bootstrap] Dist entry found but browser styles are missing. Rebuilding...');
+    entry = null;
+  }
 
   if (!entry) {
     console.log(`[bootstrap] process.cwd() = ${process.cwd()}`);
@@ -141,13 +160,29 @@ const childEnv = {
 
 let childReady = false;
 
-let requestHandler = (_req, res) => {
+function isHtmlNavigationRequest(req) {
+  const accept = req.headers?.accept;
+  return typeof accept === 'string' && accept.includes('text/html');
+}
+
+function sendWarmupHtml(res) {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.end(
     '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
   );
+}
+
+function sendWarmupAssetResponse(res) {
+  res.statusCode = 503;
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.end('Service warming up. Retry this asset request in a moment.');
+}
+
+let requestHandler = (_req, res) => {
+  sendWarmupHtml(res);
 };
 
 const server = createServer((req, res) => {
@@ -190,12 +225,11 @@ child.on('exit', (code, signal) => {
 
 requestHandler = (req, res) => {
   if (!childReady) {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.end(
-      '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
-    );
+    if (isHtmlNavigationRequest(req)) {
+      sendWarmupHtml(res);
+    } else {
+      sendWarmupAssetResponse(res);
+    }
     return;
   }
 
@@ -217,13 +251,16 @@ requestHandler = (req, res) => {
   proxyReq.on('error', (error) => {
     console.error('[bootstrap] Proxy request failed.', error);
     if (!res.headersSent) {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+      if (isHtmlNavigationRequest(req)) {
+        sendWarmupHtml(res);
+        return;
+      }
+
+      sendWarmupAssetResponse(res);
+      return;
     }
-    res.end(
-      '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
-    );
+
+    res.end();
   });
 
   req.pipe(proxyReq);
