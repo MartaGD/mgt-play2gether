@@ -7,59 +7,21 @@ import {
 import express from 'express';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import type {
+  IdentityRole,
+  Player,
+  RoleCard,
+  RolePools,
+  Room,
+  Team,
+  TreacheryDataCard,
+  TreacheryDataFile,
+} from './app/features/treachery/treachery.models';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-
-type IdentityRole = 'LEADER' | 'GUARDIAN' | 'ASSASSIN' | 'TRAITOR';
-
-type Team = 'LEADER_TEAM' | 'ASSASSINS_TEAM' | 'TRAITOR_TEAM';
-
-interface RoleCard {
-  role: IdentityRole;
-  team: Team;
-  title: string;
-  objective: string;
-  hint: string;
-}
-
-interface Player {
-  code: string;
-  name: string;
-  joinedAt: number;
-  roleCard?: RoleCard;
-}
-
-interface Room {
-  code: string;
-  createdAt: number;
-  status: 'LOBBY' | 'STARTED';
-  hostPlayerCode: string;
-  players: Player[];
-}
-
-interface TreacheryDataCard {
-  name?: string;
-  text?: string;
-  color?: string;
-  type?: string;
-  types?: {
-    subtype?: string;
-  };
-}
-
-interface TreacheryDataFile {
-  cards?: TreacheryDataCard[];
-}
-
-interface RolePools {
-  leader: Omit<RoleCard, 'role' | 'team'>[];
-  guardian: Omit<RoleCard, 'role' | 'team'>[];
-  assassin: Omit<RoleCard, 'role' | 'team'>[];
-  traitor: Omit<RoleCard, 'role' | 'team'>[];
-}
 
 const rooms = new Map<string, Room>();
 
@@ -68,6 +30,7 @@ const FALLBACK_LEADER_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     title: 'Leader of the Alliance',
     objective: 'Stay alive and coordinate with Guardians to defeat enemies.',
     hint: 'You are the key target. Build defenses and identify threats early.',
+    rulings: 'The Leader is the primary target for Assassins and Traitors. Guardians must protect the Leader at all costs.',  
   },
 ];
 
@@ -76,6 +39,7 @@ const FALLBACK_GUARDIAN_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     title: 'Guardian of the Realm',
     objective: 'Protect the Leader and help eliminate Assassins and Traitors.',
     hint: 'Track aggressive players and preserve resources for key turns.',
+    rulings: 'Guardians must protect the Leader and coordinate with other players to eliminate threats.',
   },
 ];
 
@@ -84,6 +48,7 @@ const FALLBACK_ASSASSIN_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     title: 'Silent Assassin',
     objective: 'Eliminate all Leader players while at least one Assassin survives.',
     hint: 'Pressure the Leader team and disguise your alignment when possible.',
+    rulings: 'Assassins must work together to eliminate the Leader and Guardians while avoiding detection.',
   },
 ];
 
@@ -92,16 +57,19 @@ const FALLBACK_TRAITOR_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     title: 'Shadow Schemer',
     objective: 'Outlast every other player, including other Traitors.',
     hint: 'Your role is solo. Keep allies temporary and opportunistic.',
+    rulings: 'Traitors must manipulate other players and avoid being eliminated while pursuing their own agenda.',
   },
   {
     title: 'False Ally',
     objective: 'Create chaos and survive until all opponents are gone.',
     hint: 'Offer good advice early, then mislead at key moments.',
+    rulings: 'Traitors must sow discord and avoid being the focus of elimination while pursuing their own victory conditions.',
   },
   {
     title: 'Arcane Betrayer',
     objective: 'Break alliances and finish the game as the last standing side.',
     hint: 'Use confident calls and blame variance for bad outcomes.',
+    rulings: 'Traitors must sow discord and avoid being the focus of elimination while pursuing their own victory conditions.',
   },
 ];
 
@@ -138,15 +106,6 @@ function createPlayerCode(room: Room): string {
   return code;
 }
 
-function normalizeName(name: unknown, fallback: string): string {
-  if (typeof name !== 'string') {
-    return fallback;
-  }
-
-  const cleaned = name.trim().slice(0, 40);
-  return cleaned.length > 0 ? cleaned : fallback;
-}
-
 function asText(value: unknown, fallback: string): string {
   if (typeof value !== 'string') {
     return fallback;
@@ -177,6 +136,7 @@ function toRoleTemplate(card: TreacheryDataCard): Omit<RoleCard, 'role' | 'team'
     title,
     objective,
     hint: `${typeText} | ${colorText}`,
+    rulings: `Rulings for ${title}: ${objective}`,
   };
 }
 
@@ -243,6 +203,7 @@ function makeCardFromRole(role: IdentityRole): RoleCard {
       title: template.title,
       objective: template.objective,
       hint: template.hint,
+      rulings: template.rulings,
     };
   }
 
@@ -254,6 +215,7 @@ function makeCardFromRole(role: IdentityRole): RoleCard {
       title: template.title,
       objective: template.objective,
       hint: template.hint,
+      rulings: template.rulings,
     };
   }
 
@@ -265,6 +227,7 @@ function makeCardFromRole(role: IdentityRole): RoleCard {
       title: template.title,
       objective: template.objective,
       hint: template.hint,
+      rulings: template.rulings,
     };
   }
 
@@ -275,6 +238,7 @@ function makeCardFromRole(role: IdentityRole): RoleCard {
     title: template.title,
     objective: template.objective,
     hint: template.hint,
+    rulings: template.rulings
   };
 }
 
@@ -379,7 +343,6 @@ function serializeRoom(room: Room) {
     hostPlayerCode: room.hostPlayerCode,
     players: room.players.map((player) => ({
       code: player.code,
-      name: player.name,
       joinedAt: player.joinedAt,
     })),
   };
@@ -399,7 +362,6 @@ app.post('/api/rooms', (req, res) => {
 
   const player: Player = {
     code: createPlayerCode(room),
-    name: normalizeName(req.body?.playerName, 'Host'),
     joinedAt: Date.now(),
   };
 
@@ -431,7 +393,6 @@ app.post('/api/rooms/:roomCode/join', (req, res) => {
 
   const player: Player = {
     code: createPlayerCode(room),
-    name: normalizeName(req.body?.playerName, `Player ${room.players.length + 1}`),
     joinedAt: Date.now(),
   };
 
@@ -440,30 +401,6 @@ app.post('/api/rooms/:roomCode/join', (req, res) => {
   res.status(201).json({
     room: serializeRoom(room),
     playerCode: player.code,
-  });
-});
-
-app.patch('/api/rooms/:roomCode/players/:playerCode', (req, res) => {
-  const room = getRoomOrFail(req.params['roomCode'], res);
-  if (!room) {
-    return;
-  }
-
-  const playerCode = req.params['playerCode'];
-  const player = room.players.find((entry) => entry.code === playerCode);
-
-  if (!player) {
-    res.status(404).json({ error: 'Player not found in room.' });
-    return;
-  }
-
-  const updatedName = normalizeName(req.body?.playerName, player.name);
-  player.name = updatedName;
-
-  res.json({
-    room: serializeRoom(room),
-    playerCode: player.code,
-    playerName: player.name,
   });
 });
 
@@ -550,7 +487,6 @@ app.get('/api/rooms/:roomCode/role', (req, res) => {
   res.json({
     roomCode: room.code,
     playerCode: player.code,
-    playerName: player.name,
     card: player.roleCard,
   });
 });

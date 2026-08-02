@@ -6,12 +6,12 @@
 >
   <article class="card-frame">
     <header class="card-header">
-        <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" width="18px" height="18px"/>
+        <img [src]="cardImageUrl" alt="Role card artwork" class="card-icon" width="18px" height="18px"/>
         {{ roleCard.title }}</header>
     <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" />
     <div class="card-body">
       <p><strong>Identity:</strong> {{ roleCard.role }}</p>
-      <p class="card-text">{{ roleCard.objective }}</p>
+      <p class="card-text" [innerHTML]="roleCard.objective | objectiveText"></p>
     </div>
     <footer class="card-footer">
       <p><strong>Team:</strong> {{ roleCard.team }}</p>
@@ -20,9 +20,17 @@
   </article>
 
   <div class="action-row">
-    <button type="button" [disabled]="busy" class="muted" (click)="refreshRoomClick.emit()">Refresh room</button>
-    <button type="button" [disabled]="busy" class="muted" (click)="backToLobbyClick.emit()">Back to lobby</button>
+    <button type="button" [disabled]="busy" class="muted" (click)="refreshRoomClick.emit()">Refresh Room</button>
+    <button type="button" [disabled]="busy" class="muted" (click)="leaveRoomClick.emit()">Leave Room</button>
   </div>
 
   <p class="status">{{ message }}</p>
+
 </section>
+<section>
+  <article class="ruling-frame">
+    <p class="ruling-header">Rulings</p>
+      <p class="ruling-text" [innerHTML]="roleCard.rulings | objectiveText"></p>
+  </article>
+</section>
+

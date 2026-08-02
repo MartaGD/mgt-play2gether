@@ -1,5 +1,5 @@
 <main class="page">
-  @if (!store.room()) {
+  @if (!store.room() && !debugRoleCard()) {
     <app-treachery-home
       [appTitle]="store.appTitle"
       [busy]="store.busy()"
@@ -9,7 +9,7 @@
     />
   }
 
-  @if (store.room() && !store.roleCard()) {
+  @if (store.room() && !visibleRoleCard()) {
     <app-treachery-room
       [room]="store.room()!"
       [activePlayerCode]="store.activePlayerCode()"
@@ -24,14 +24,14 @@
     />
   }
 
-  @if (store.roleCard()) {
+  @if (visibleRoleCard()) {
     <app-treachery-role-card
-      [roleCard]="store.roleCard()!"
-      [cardImageUrl]="store.cardImageUrl()"
+      [roleCard]="visibleRoleCard()!"
+      [cardImageUrl]="visibleCardImageUrl()"
       [busy]="store.busy()"
       [message]="store.message()"
       (refreshRoomClick)="store.refreshRoom()"
-      (backToLobbyClick)="store.leaveRoom()"
+      (leaveRoomClick)="store.leaveRoom()"
     />
   }
-</main>
+</main> 

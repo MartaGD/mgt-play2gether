@@ -1,8 +1,16 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { RoleCardDto, RoleSummaryDto, RoomDto, RoomPlayerDto } from './treachery.models';
 
+interface ExpiringStorageEntry {
+  value: string;
+  expiresAt: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class TreacheryRoomStore {
+  private static readonly storageTtlMs = 24 * 60 * 60 * 1000;
+  private static readonly debugRoleCardTitleParam = 'roleCard.title';
+
   readonly appTitle = 'MTG Treachery Room';
   readonly roomCodeInput = signal('');
   readonly activeRoomCode = signal('');
@@ -14,6 +22,7 @@ export class TreacheryRoomStore {
   readonly message = signal('Create a room or join one with a room code.');
 
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
+  private readonly debugRoleCardTitle = this.readDebugRoleCardTitle();
 
   readonly isHost = computed(
     () =>
@@ -52,10 +61,14 @@ export class TreacheryRoomStore {
   });
 
   constructor() {
+    if (this.debugRoleCardTitle) {
+      this.message.set('Debug role card preview active from query param roleCard.title.');
+      return;
+    }
+
     if (this.canUseStorage()) {
-      const storage = globalThis.localStorage;
-      const savedRoomCode = storage.getItem('mtg.roomCode') ?? '';
-      const savedPlayerCode = storage.getItem('mtg.playerCode') ?? '';
+      const savedRoomCode = this.getStoredValue('mtg.roomCode');
+      const savedPlayerCode = this.getStoredValue('mtg.playerCode');
 
       if (savedRoomCode.length > 0) {
         this.activeRoomCode.set(savedRoomCode);
@@ -271,7 +284,9 @@ export class TreacheryRoomStore {
       await action();
     } catch (error) {
       const text = error instanceof Error ? error.message : 'Unexpected error';
+      this.roomCodeInput.set('');
       this.message.set(text);
+      alert(`Error: ${text}`);
     } finally {
       this.busy.set(false);
     }
@@ -292,18 +307,16 @@ export class TreacheryRoomStore {
       return;
     }
 
-    const storage = globalThis.localStorage;
-
     if (this.activeRoomCode()) {
-      storage.setItem('mtg.roomCode', this.activeRoomCode());
+      this.setStoredValue('mtg.roomCode', this.activeRoomCode());
     } else {
-      storage.removeItem('mtg.roomCode');
+      this.removeStoredValue('mtg.roomCode');
     }
 
     if (this.activePlayerCode()) {
-      storage.setItem('mtg.playerCode', this.activePlayerCode());
+      this.setStoredValue('mtg.playerCode', this.activePlayerCode());
     } else {
-      storage.removeItem('mtg.playerCode');
+      this.removeStoredValue('mtg.playerCode');
     }
   }
 
@@ -343,7 +356,59 @@ export class TreacheryRoomStore {
     }
   }
 
+  private getStoredValue(key: string): string {
+    const storage = globalThis.localStorage;
+    const raw = storage.getItem(key);
+
+    if (!raw) {
+      return '';
+    }
+
+    try {
+      const entry = JSON.parse(raw) as ExpiringStorageEntry;
+
+      if (typeof entry.value !== 'string' || typeof entry.expiresAt !== 'number') {
+        this.removeStoredValue(key);
+        return '';
+      }
+
+      if (Date.now() > entry.expiresAt) {
+        this.removeStoredValue(key);
+        return '';
+      }
+
+      return entry.value;
+    } catch {
+      this.removeStoredValue(key);
+      return '';
+    }
+  }
+
+  private setStoredValue(key: string, value: string): void {
+    const storage = globalThis.localStorage;
+    const entry: ExpiringStorageEntry = {
+      value,
+      expiresAt: Date.now() + TreacheryRoomStore.storageTtlMs,
+    };
+
+    storage.setItem(key, JSON.stringify(entry));
+  }
+
+  private removeStoredValue(key: string): void {
+    globalThis.localStorage.removeItem(key);
+  }
+
   private canUseStorage(): boolean {
     return typeof globalThis.localStorage !== 'undefined';
+  }
+
+  private readDebugRoleCardTitle(): string {
+    if (typeof globalThis.location === 'undefined') {
+      return '';
+    }
+
+    return new URLSearchParams(globalThis.location.search).get(
+      TreacheryRoomStore.debugRoleCardTitleParam,
+    )?.trim() ?? '';
   }
 }
