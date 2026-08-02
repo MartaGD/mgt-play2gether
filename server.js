@@ -136,6 +136,8 @@ const internalPort = Number(
 );
 
 const defaultAllowedHosts = [
+    'mtg-play2gether.com',
+  'www.mtg-play2gether.com',    
   'mgt-play2gether.com',
   'www.mgt-play2gether.com',
   'azure-mole-943332.hostingersite.com',
