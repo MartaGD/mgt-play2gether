@@ -64,10 +64,32 @@ function runBuildIfNeeded() {
 
 const serverEntry = runBuildIfNeeded();
 
+const defaultAllowedHosts = [
+  'mgt-play2gether.com',
+  'www.mgt-play2gether.com',
+  'localhost',
+  '127.0.0.1',
+];
+
+const defaultTrustedProxyHeaders = [
+  'x-forwarded-host',
+  'x-forwarded-proto',
+  'x-forwarded-port',
+  'x-forwarded-for',
+];
+
+const childEnv = {
+  ...process.env,
+  NG_ALLOWED_HOSTS:
+    process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
+  NG_TRUST_PROXY_HEADERS:
+    process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
+};
+
 const child = spawn(process.execPath, [serverEntry], {
   stdio: 'inherit',
   cwd: process.cwd(),
-  env: process.env,
+  env: childEnv,
 });
 
 process.on('SIGINT', () => child.kill('SIGINT'));
