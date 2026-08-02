@@ -1,6 +1,6 @@
 const { existsSync } = require('node:fs');
 const { createServer, request: httpRequest } = require('node:http');
-const { join } = require('node:path');
+const { dirname, join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
 const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v9';
@@ -100,6 +100,15 @@ function runBuildIfNeeded() {
 
 const serverEntry = runBuildIfNeeded();
 
+function resolveChildCwd(entryPath) {
+  const browserFolderCandidate = join(dirname(entryPath), '..', 'browser');
+  if (existsSync(browserFolderCandidate)) {
+    return browserFolderCandidate;
+  }
+
+  return process.cwd();
+}
+
 const publicPort = Number(process.env.PORT || 4000);
 const internalPort = Number(process.env.INTERNAL_SSR_PORT || publicPort + 1);
 
@@ -124,6 +133,8 @@ const childEnv = {
   NG_TRUST_PROXY_HEADERS:
     process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
 };
+
+let childReady = false;
 
 let requestHandler = (_req, res) => {
   res.statusCode = 200;
@@ -153,7 +164,7 @@ server.listen(publicPort, () => {
 
 const child = spawn(process.execPath, [serverEntry], {
   stdio: 'inherit',
-  cwd: process.cwd(),
+  cwd: resolveChildCwd(serverEntry),
   env: childEnv,
 });
 
@@ -167,11 +178,22 @@ child.on('error', (error) => {
 });
 
 child.on('exit', (code, signal) => {
+  childReady = false;
   console.error(`[bootstrap] SSR child exited (code=${code ?? 'null'}, signal=${signal ?? 'null'}).`);
   process.exit(code ?? 1);
 });
 
 requestHandler = (req, res) => {
+  if (!childReady) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.end(
+      '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
+    );
+    return;
+  }
+
   const proxyReq = httpRequest(
     {
       host: '127.0.0.1',
@@ -181,6 +203,7 @@ requestHandler = (req, res) => {
       headers: req.headers,
     },
     (proxyRes) => {
+      childReady = true;
       res.writeHead(proxyRes.statusCode ?? 502, proxyRes.headers);
       proxyRes.pipe(res);
     },
@@ -200,6 +223,41 @@ requestHandler = (req, res) => {
 
   req.pipe(proxyReq);
 };
+
+function probeChildReadiness() {
+  if (childReady) {
+    return;
+  }
+
+  const probeReq = httpRequest(
+    {
+      host: '127.0.0.1',
+      port: internalPort,
+      method: 'GET',
+      path: '/api/rooms/AAAAAA',
+      timeout: 500,
+    },
+    (probeRes) => {
+      probeRes.resume();
+      childReady = true;
+      console.log('[bootstrap] SSR child is ready to serve requests.');
+    },
+  );
+
+  probeReq.on('timeout', () => {
+    probeReq.destroy();
+  });
+
+  probeReq.on('error', () => {
+    // Child still warming up.
+  });
+
+  probeReq.end();
+}
+
+const probeInterval = setInterval(probeChildReadiness, 250);
+probeInterval.unref();
+probeChildReadiness();
 
 process.on('SIGINT', () => child.kill('SIGINT'));
 process.on('SIGTERM', () => child.kill('SIGTERM'));

@@ -14,7 +14,8 @@
 
 /* Cards */
 .intro-card,
-.info-card {
+.info-card,
+.new-card {
   border-radius: 22px;
   padding: 1.25rem;
   border: 1px solid #3a878233; /* base color, low opacity */
@@ -25,9 +26,17 @@
 .intro-card {
   background:
     radial-gradient(circle at 85% 15%, #3a878233 0%, transparent 40%),
-    linear-gradient(135deg, #141e1d 0%, #3a3f87 55%, #3a8782 100%);
-  color: #f7fbff;
+    linear-gradient(135deg, #e8f4f3 0%, #dfe6f7 55%, #cfe8e6 100%);
+  color: #141e1d;
 }
+
+.new-card {
+  background:
+    radial-gradient(circle at 85% 15%, #3a878222 0%, transparent 40%),
+    linear-gradient(135deg, #b8dcd8 0%, #c7cbe8 55%, #a8d7d3 100%);
+  color: #141e1d;
+}
+
 
 /* Info card (light background + text color) */
 .info-card {
