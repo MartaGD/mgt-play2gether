@@ -1,0 +1,37 @@
+<main class="page">
+  @if (!store.room()) {
+    <app-treachery-home
+      [appTitle]="store.appTitle"
+      [busy]="store.busy()"
+      [message]="store.message()"
+      (createRoomClick)="store.createRoom()"
+      (joinRoomClick)="store.joinRoom()"
+    />
+  }
+
+  @if (store.room() && !store.roleCard()) {
+    <app-treachery-room
+      [room]="store.room()!"
+      [activePlayerCode]="store.activePlayerCode()"
+      [isHost]="store.isHost()"
+      [currentPlayer]="store.currentPlayer()"
+      [busy]="store.busy()"
+      [isDealing]="store.isDealing()"
+      [message]="store.message()"
+      (refreshClick)="store.refreshRoom()"
+      (startGameClick)="store.startGame()"
+      (leaveRoomClick)="store.leaveRoom()"
+    />
+  }
+
+  @if (store.roleCard()) {
+    <app-treachery-role-card
+      [roleCard]="store.roleCard()!"
+      [cardImageUrl]="store.cardImageUrl()"
+      [busy]="store.busy()"
+      [message]="store.message()"
+      (refreshRoomClick)="store.refreshRoom()"
+      (backToLobbyClick)="store.leaveRoom()"
+    />
+  }
+</main>

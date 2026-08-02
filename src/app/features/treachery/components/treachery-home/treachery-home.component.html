@@ -1,0 +1,20 @@
+<section class="panel hero">
+  <p class="eyebrow">Magic: The Gathering</p>
+  <h1>{{ appTitle }}</h1>
+  <p class="subtitle">
+    Create a room, share the code, and reveal your identity when the game starts.
+  </p>
+
+  <div class="action-row">
+    <button type="button" [disabled]="busy" (click)="createRoomClick.emit()">
+      <i class="bi bi-plus-square-fill" aria-hidden="true"></i>
+      <span>Create room</span>
+    </button>
+    <button type="button" [disabled]="busy" class="muted" (click)="joinRoomClick.emit()">
+      <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+      <span>Join room</span>
+    </button>
+  </div>
+
+  <p class="status">{{ message }}</p>
+</section>

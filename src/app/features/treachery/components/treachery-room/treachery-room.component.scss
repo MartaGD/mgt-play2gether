@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 1.1rem;
+  box-shadow: 0 12px 38px rgb(0 0 0 / 0.28);
+}
+
+.action-row {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  background: linear-gradient(140deg, #b43e28, #7a1b1b);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+button.muted {
+  background: #ece4d2;
+  color: #2a2b2f;
+  border: 1px solid #cfbe9b;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.status {
+  margin: 0.8rem 0 0;
+  color: var(--text-soft);
+}
+
+.room-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.chip,
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.52rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #ead7b2;
+  color: #533311;
+}
+
+.chip.started {
+  background: #c7f3d8;
+  color: #0f5e35;
+}
+
+.tag.host {
+  background: #e5d4ff;
+  color: #4b2f75;
+}
+
+.tag.me {
+  background: #c8f7db;
+  color: #1b6d41;
+}
+
+ul {
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: space-between;
+  border: 1px solid #d8c7a6;
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  background: #fffaf0;
+}
+
+.lobby-screen {
+  position: relative;
+}
+
+.buffering-box {
+  margin-top: 1rem;
+  border: 1px dashed #9f7d36;
+  background: #fff8de;
+  padding: 0.8rem;
+  border-radius: 12px;
+}
+
+.buffering-box p {
+  margin: 0.35rem 0 0;
+}

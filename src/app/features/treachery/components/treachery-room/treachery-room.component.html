@@ -1,0 +1,53 @@
+<section class="panel room lobby-screen">
+  <div class="room-head">
+    <h2>Room {{ room.code }}
+        <button type="button" class="muted glyphicon glyphicon-copy" (click)="copyText()"><i class="bi bi-clipboard"></i></button>
+    </h2>
+    <span class="chip" [class.started]="room.status === 'STARTED'">{{ room.status }}</span>
+  </div>
+
+  <p>
+    Your player code in this browser:
+    <strong>{{ activePlayerCode || 'Not set' }}</strong>
+  </p>
+
+  <div class="action-row">
+    <button type="button" [disabled]="busy" class="muted" (click)="refreshClick.emit()">Refresh</button>
+    <button
+      type="button"
+      [disabled]="busy || !isHost || room.status === 'STARTED' || room.players.length < 4"
+      (click)="startGameClick.emit()"
+    >
+      Start game
+    </button>
+    <button type="button" [disabled]="busy" class="muted" (click)="leaveRoomClick.emit()">Leave room</button>
+  </div>
+
+  @if (room.players.length < 4) {
+    <p class="status">At least 4 players are required to start Treachery.</p>
+  }
+
+  <h3>Player codes ({{ room.players.length }})</h3>
+  <ul>
+    @for (player of room.players; track player.code) {
+      <li>
+        <span>{{ player.code }}</span>
+        @if (currentPlayer?.code === player.code) {
+          <span class="tag me">You</span>
+        }
+        @if (room.hostPlayerCode === player.code) {
+          <span class="tag host">Host</span>
+        }
+      </li>
+    }
+  </ul>
+
+  @if (isDealing) {
+    <div class="buffering-box">
+      <strong>Buffering</strong>
+      <p>The roles are being dealt right now...</p>
+    </div>
+  }
+
+  <p class="status">{{ message }}</p>
+</section>

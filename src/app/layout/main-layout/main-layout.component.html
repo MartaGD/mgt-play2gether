@@ -1,0 +1,23 @@
+<div class="layout-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/home">
+      <i class="bi bi-controller brand-icon" aria-hidden="true"></i>
+      <span>MTG Play2Gether</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+        <span>Home</span>
+      </a>
+      <a routerLink="/treachery" routerLinkActive="active">
+        <i class="bi bi-incognito" aria-hidden="true"></i>
+        <span>Treachery</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="content-area">
+    <router-outlet />
+  </main>
+</div>

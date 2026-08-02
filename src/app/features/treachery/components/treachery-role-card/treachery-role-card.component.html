@@ -1,0 +1,28 @@
+<section
+  class="panel card-shell"
+  [class.traitor]="roleCard.role === 'TRAITOR'"
+  [class.assassin]="roleCard.role === 'ASSASSIN'"
+  [class.leader]="roleCard.role === 'LEADER'"
+>
+  <article class="card-frame">
+    <header class="card-header">
+        <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" width="18px" height="18px"/>
+        {{ roleCard.title }}</header>
+    <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" />
+    <div class="card-body">
+      <p><strong>Identity:</strong> {{ roleCard.role }}</p>
+      <p class="card-text">{{ roleCard.objective }}</p>
+    </div>
+    <footer class="card-footer">
+      <p><strong>Team:</strong> {{ roleCard.team }}</p>
+      <p>{{ roleCard.hint }}</p>
+    </footer>
+  </article>
+
+  <div class="action-row">
+    <button type="button" [disabled]="busy" class="muted" (click)="refreshRoomClick.emit()">Refresh room</button>
+    <button type="button" [disabled]="busy" class="muted" (click)="backToLobbyClick.emit()">Back to lobby</button>
+  </div>
+
+  <p class="status">{{ message }}</p>
+</section>
