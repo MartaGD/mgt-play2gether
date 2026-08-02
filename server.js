@@ -9,6 +9,9 @@ function resolveServerEntry() {
     join(process.cwd(), ...SERVER_RELATIVE_PATH),
     join(process.cwd(), '..', 'source', 'repository', ...SERVER_RELATIVE_PATH),
     join(process.cwd(), '..', '..', 'source', 'repository', ...SERVER_RELATIVE_PATH),
+    join(process.cwd(), '..', '..', '..', 'source', 'repository', ...SERVER_RELATIVE_PATH),
+    join(process.cwd(), '..', '..', '..', '..', 'source', 'repository', ...SERVER_RELATIVE_PATH),
+    join(process.cwd(), '..', '..', '..', '..', '..', 'source', 'repository', ...SERVER_RELATIVE_PATH),
   ];
 
   for (const candidate of candidates) {
@@ -17,13 +20,20 @@ function resolveServerEntry() {
     }
   }
 
-  return null;
+  return { entry: null, candidates };
 }
 
 function runBuildIfNeeded() {
-  let entry = resolveServerEntry();
+  const resolved = resolveServerEntry();
+  let entry = typeof resolved === 'string' ? resolved : resolved.entry;
+  const checkedCandidates = typeof resolved === 'string' ? [] : resolved.candidates;
 
   if (!entry) {
+    console.log(`[bootstrap] process.cwd() = ${process.cwd()}`);
+    console.log('[bootstrap] Checked paths:');
+    for (const path of checkedCandidates) {
+      console.log(`[bootstrap] - ${path}`);
+    }
     console.log('[bootstrap] Build output not found. Running npm run build...');
     const result = spawnSync('npm', ['run', 'build'], {
       stdio: 'inherit',
@@ -37,7 +47,8 @@ function runBuildIfNeeded() {
       process.exit(result.status ?? 1);
     }
 
-    entry = resolveServerEntry();
+    const retryResolved = resolveServerEntry();
+    entry = typeof retryResolved === 'string' ? retryResolved : retryResolved.entry;
   }
 
   if (!entry) {
