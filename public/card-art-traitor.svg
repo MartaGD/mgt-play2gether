@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" role="img" aria-label="Traitor card art">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b83e2a"/>
+      <stop offset="100%" stop-color="#451713"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg)"/>
+  <path d="M120 250 L300 72 L480 250" fill="none" stroke="#ffe8e1" stroke-width="22" opacity="0.62"/>
+  <circle cx="300" cy="170" r="46" fill="#fff0ea" opacity="0.88"/>
+  <text x="300" y="318" text-anchor="middle" font-size="24" font-family="Georgia, serif" fill="#fff4f1">Traitor</text>
+</svg>

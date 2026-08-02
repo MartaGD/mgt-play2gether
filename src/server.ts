@@ -443,6 +443,30 @@ app.post('/api/rooms/:roomCode/join', (req, res) => {
   });
 });
 
+app.patch('/api/rooms/:roomCode/players/:playerCode', (req, res) => {
+  const room = getRoomOrFail(req.params['roomCode'], res);
+  if (!room) {
+    return;
+  }
+
+  const playerCode = req.params['playerCode'];
+  const player = room.players.find((entry) => entry.code === playerCode);
+
+  if (!player) {
+    res.status(404).json({ error: 'Player not found in room.' });
+    return;
+  }
+
+  const updatedName = normalizeName(req.body?.playerName, player.name);
+  player.name = updatedName;
+
+  res.json({
+    room: serializeRoom(room),
+    playerCode: player.code,
+    playerName: player.name,
+  });
+});
+
 app.post('/api/rooms/:roomCode/start', (req, res) => {
   const room = getRoomOrFail(req.params['roomCode'], res);
   if (!room) {

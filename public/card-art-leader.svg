@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" role="img" aria-label="Leader card art">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a8b42"/>
+      <stop offset="100%" stop-color="#1f3f25"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg)"/>
+  <circle cx="300" cy="170" r="108" fill="#eaf6e3" opacity="0.28"/>
+  <path d="M300 68 L352 170 L300 272 L248 170 Z" fill="#f2ffe9" opacity="0.85"/>
+  <text x="300" y="318" text-anchor="middle" font-size="24" font-family="Georgia, serif" fill="#f4fff1">Leader</text>
+</svg>

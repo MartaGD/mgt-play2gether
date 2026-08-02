@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" role="img" aria-label="Assassin card art">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c2f79"/>
+      <stop offset="100%" stop-color="#2e1436"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg)"/>
+  <circle cx="300" cy="170" r="116" fill="#ffeefe" opacity="0.2"/>
+  <path d="M242 96 L358 170 L242 244 Z" fill="#fdeeff" opacity="0.86"/>
+  <path d="M358 96 L242 170 L358 244 Z" fill="#fff5ff" opacity="0.7"/>
+  <text x="300" y="318" text-anchor="middle" font-size="24" font-family="Georgia, serif" fill="#fff0ff">Assassin</text>
+</svg>
