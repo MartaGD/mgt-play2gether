@@ -103,6 +103,7 @@ const serverEntry = runBuildIfNeeded();
 
 const port = Number(process.env.PORT || 4000);
 const internalPort = Number(process.env.INTERNAL_SSR_PORT || port + 1);
+
 const defaultAllowedHosts = [
   'mgt-play2gether.com',
   'www.mgt-play2gether.com',
@@ -117,29 +118,20 @@ const defaultTrustedProxyHeaders = [
   'x-forwarded-for',
 ];
 
-let requestHandler = (_req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-  res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
+const defaultTrustedProxyHeaders = [
+  'x-forwarded-host',
+  'x-forwarded-proto',
+  'x-forwarded-port',
+  'x-forwarded-for',
+];
+
+const childEnv = {
+  ...process.env,
+  NG_ALLOWED_HOSTS:
+    process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
+  NG_TRUST_PROXY_HEADERS:
+    process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
 };
-
-const server = createServer((req, res) => {
-  try {
-    requestHandler(req, res);
-  } catch (error) {
-    console.error('[bootstrap] Request handling failed.', error);
-    if (!res.headersSent) {
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    }
-    res.end('Internal server error.');
-  }
-});
-
-server.listen(port, () => {
-  console.log(`[bootstrap] Main process listening on port ${port}.`);
-});
 
 const child = spawn(process.execPath, [serverEntry], {
   stdio: 'inherit',
