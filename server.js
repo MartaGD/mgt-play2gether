@@ -2,6 +2,7 @@ const { existsSync } = require('node:fs');
 const { join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v3';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -46,6 +47,8 @@ function resolveServerEntry() {
 }
 
 function runBuildIfNeeded() {
+  console.log(`[bootstrap] version = ${BOOTSTRAP_VERSION}`);
+
   const resolved = resolveServerEntry();
   let entry = typeof resolved === 'string' ? resolved : resolved.entry;
   const checkedCandidates = typeof resolved === 'string' ? [] : resolved.candidates;
