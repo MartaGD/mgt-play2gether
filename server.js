@@ -3,7 +3,7 @@ const { createServer, request: httpRequest } = require('node:http');
 const { dirname, join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v9';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v10';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -110,7 +110,10 @@ function resolveChildCwd(entryPath) {
 }
 
 const publicPort = Number(process.env.PORT || 4000);
-const internalPort = Number(process.env.INTERNAL_SSR_PORT || publicPort + 1);
+const internalPort = Number(
+  process.env.INTERNAL_SSR_PORT ||
+    20000 + Math.floor(Math.random() * 20000),
+);
 
 const defaultAllowedHosts = [
   'mgt-play2gether.com',
