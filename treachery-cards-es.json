@@ -1,0 +1,1545 @@
+{
+    "game_variant": "MTG Treachery",
+    "api_author": "Stefouch, Tymbaroth",
+    "api_version": 0.2,
+    "set_name": "Treachery",
+    "set_code": "TRD-2025",
+    "set_lang": "ES",
+    "cards_count": 62,
+    "cards": [
+        {
+            "id": 1,
+            "name": "El Eterista",
+            "name_anchor": "el-eterista",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-Ætherist",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {3}|Cuando El Eterista es revelado, contrarresta el hechizo objetivo. Al comienzo de la próxima fase principal del jugador objetivo, ese jugador gana vida y añade una cantidad de {C} igual al valor de maná de ese hechizo.",
+            "flavor": "",
+            "artist": "Roggles (Rogie Custodio) @ DeviantArt",
+            "rulings": [
+                "La habilidad desencadenada de revelación de El Eterista puede tener como objetivo un hechizo que no pueda ser contrarrestado. Cuando la habilidad se resuelve, ese hechizo no será contrarrestado, pero el jugador objetivo igualmente ganará vida y añadirá maná a su reserva de maná al comienzo de su próxima fase principal.",
+                "Si el hechizo objetivo es un objetivo ilegal cuando la habilidad desencadenada de revelación de El Eterista intenta resolverse, el jugador objetivo igualmente recibe vida y maná."
+            ]
+        },
+        {
+            "id": 2,
+            "name": "El Augur",
+            "name_anchor": "el-augur",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-augur",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {X}|Cuando El Augur es revelado, el jugador objetivo baraja, explora X (scry X), luego exilia la carta superior de su biblioteca. Gana vida igual al doble del valor de maná de esa carta, luego puede lanzarla sin pagar su coste de maná.",
+            "flavor": "",
+            "artist": "lorlandchain (Chen Wei) @ DeviantArt",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Si X es 0, no explorarás (scry) en absoluto. Ninguna habilidad que se desencadene al explorar se activará.",
+                "Una vez que la habilidad desencadenada de revelación de El Augur comienza a resolverse, ningún jugador puede realizar otras acciones hasta que termine. En particular, los oponentes no pueden intentar cambiar tu biblioteca después de explorar pero antes de revelar la carta superior.",
+                "Si la carta revelada en tu biblioteca tiene {X} en su coste de maná, debes elegir 0 como valor de X al lanzarla sin pagar su coste de maná.",
+                "Si exilias una carta de tierra de esta forma, no puedes jugarla. Su valor de maná es 0 y no ganarás vida.",
+                "La carta revelada jugada con la habilidad desencadenada de revelación de El Augur se juega desde tu biblioteca.",
+                "Si juegas la carta revelada, lo haces como parte de la resolución de la habilidad desencadenada. No puedes esperar a jugarla más tarde en el turno. Los permisos de sincronización basados en el tipo de carta se ignoran, pero otras restricciones (como \"Lanza [esta carta] solo durante el combate\") no.",
+                "Si lanzas una carta \"sin pagar su coste de maná\", no puedes pagar ningún coste alternativo. Sin embargo, puedes pagar costes adicionales. Si la carta tiene costes adicionales obligatorios, como el de Saqueo Costoso, deben pagarse para lanzar la carta.",
+                "El valor de maná convertido de una carta partida se basa en el coste de maná combinado de sus dos mitades."
+            ]
+        },
+        {
+            "id": 3,
+            "name": "El Guardaespaldas",
+            "name_anchor": "el-guardaespaldas",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-bodyguard",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {4} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Guardaespaldas es revelado, hasta tu próximo turno, previene todo el daño que sería infligido al jugador objetivo y a cada criatura y planeswalker que controle.",
+            "flavor": "",
+            "artist": "Hokunin (Prokopii Osipov) @ DeviantArt",
+            "rulings": [
+                "El efecto de sustitución termina cuando comienza tu próximo paso de enderezar, antes de que enderaces tus permanentes. Si esto provoca que se apliquen acciones basadas en el estado, o si se desencadenan habilidades, estas se resuelven durante tu mantenimiento."
+            ]
+        },
+        {
+            "id": 4,
+            "name": "El Cátaro",
+            "name_anchor": "el-cátaro",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-cathar",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar—{5}, Paga 5 de vida. (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Cátaro es revelado, exilia hasta tres permanentes no terrestres objetivo hasta que pierdas la partida. (Esos permanentes vuelven bajo el control de sus propietarios.)",
+            "flavor": "",
+            "artist": "akizhao @ DeviantArt",
+            "rulings": [
+                "No puedes pagar el coste de revelación si tu vida es inferior a 5.",
+                "Si el controlador de El Cátaro pierde la partida antes de que se resuelva la habilidad desencadenada, los permanentes objetivo no serán exiliados.",
+                "Los encantamientos adjuntos a los permanentes exiliados irán al cementerio de sus propietarios. Cualquier equipo se desprenderá y permanecerá en el campo de batalla. Cualquier contador en el permanente exiliado dejará de existir. Cuando la carta regrese al campo de batalla, será un nuevo objeto sin conexión con la carta que fue exiliada.",
+                "Si una ficha es exiliada de esta forma, dejará de existir y no volverá al campo de batalla."
+            ]
+        },
+        {
+            "id": 5,
+            "name": "El Criomante",
+            "name_anchor": "el-criomante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-cryomancer",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {X}|Cuando El Criomante es revelado, gira X permanentes objetivo y retíralos del combate. Si es tu turno, distribuye X contadores de aturdimiento entre cualquier número de esos permanentes. (Si un permanente con un contador de aturdimiento fuera a enderezarse, quita uno de ellos en su lugar.)",
+            "flavor": "",
+            "artist": "OPOA @ Pinterest",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "La habilidad desencadenada de revelación de El Criomante puede tener como objetivo permanentes que ya estén girados. Aún así puede ponerles contadores de aturdimiento."
+            ]
+        },
+        {
+            "id": 6,
+            "name": "El Mago Parpadeante",
+            "name_anchor": "el-mago-parpadeante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-flickering-mage",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {4} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Mago Parpadeante es revelado, exilia hasta cuatro permanentes no terrestres objetivo. Devuelve esas cartas al campo de batalla giradas bajo el control de su propietario al comienzo del próximo paso final.",
+            "flavor": "",
+            "artist": "Zolaida (Lisa Buijteweg) @ DeviantArt",
+            "rulings": [
+                "Todas las cartas exiliadas con El Mago Parpadeante volverán al campo de batalla, incluso si ya no son criaturas.",
+                "Si se exilia una ficha de criatura, deja de existir. No volverá al campo de batalla.",
+                "Si se exilia una carta de dos caras, volverá con su cara frontal hacia arriba.",
+                "Cuando las criaturas son exiliadas, cualquier encantamiento o equipo en ellas se desprende y se eliminan sus contadores. Cuando vuelven al campo de batalla, regresan giradas y se tratan como nuevas versiones de las cartas.",
+                "Normalmente, las criaturas volverán al campo de batalla al final del mismo turno en que fueron exiliadas. Pero si son exiliadas durante el paso final, es demasiado tarde para que vuelvan ese turno. Deben esperar a volver al campo de batalla hasta el próximo paso final."
+            ]
+        },
+        {
+            "id": 7,
+            "name": "El Gólem",
+            "name_anchor": "el-gólem",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-golem",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {6} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Gólem es revelado, el jugador Líder objetivo pierde 6 de vida y tú ganas 6 de vida.|Los jugadores Líderes tienen protección talismán y no pueden ser atacados. (Hasta que pierdas la partida.)",
+            "flavor": "",
+            "artist": "Michael Phillippi @ DeviantArt",
+            "rulings": [
+                "Cuando se desencadena la habilidad de revelación de El Gólem, puedes elegir como objetivo a un jugador Líder que tenga protección talismán porque ahora se considera que sois compañeros de equipo, ya que ambas cartas de identidad están boca arriba.",
+                "La última habilidad de El Gólem solo afecta a la partida mientras la carta de identidad esté boca arriba, y hasta que su controlador pierda la partida."
+            ]
+        },
+        {
+            "id": 8,
+            "name": "El Gran Mártir",
+            "name_anchor": "el-gran-mártir",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-great-martyr",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "M",
+            "text": "Encubierto|Revelar {2}|Cuando El Gran Mártir es revelado, hasta el final del turno, si una fuente que controla un oponente fuera a infligir daño a un jugador Líder, ese daño se te inflige a ti en su lugar. Lo mismo aplica a perder vida, descartar cartas y sacrificar permanentes. Cada vez que recibas daño o pierdas vida de esta forma, roba la mitad de esa cantidad, redondeando hacia arriba. Cada vez que descartes una carta o sacrifiques un permanente de esta forma, ganas 2 de vida.",
+            "flavor": "",
+            "artist": "Jason Engle @ DeviantArt",
+            "rulings": [
+                "El efecto de sustitución de El Gran Mártir redirige todo el daño hacia ti y cualquier resultado que se derive de ese daño, como el daño de comandante y los contadores de veneno de una fuente con infectar.",
+                "Si no tienes suficientes cartas para descartar o permanentes para sacrificar, descartas o sacrificas todo lo que puedas, incluso si es nada.",
+                "Esta habilidad afecta a los sacrificios, pero no a otras formas en que los permanentes pueden abandonar el campo de batalla. No evitará que una criatura controlada por un Líder vaya al cementerio por daño letal o por tener 0 de resistencia, ni evitará que un permanente vaya al cementerio por la \"regla de leyenda\". Ninguna de esas situaciones es un sacrificio; son el resultado de las reglas del juego.",
+                "Si un efecto que controla tu oponente reduce el tamaño máximo de mano de un jugador Líder, el efecto de sustitución de El Gran Mártir no se aplicará y ese jugador Líder seguirá descartando cartas cuando las reglas del juego lo obliguen a hacerlo durante su paso de limpieza.",
+                "Un efecto que te impida perder vida se aplicará, y cualquier daño redirigido a ti por el efecto de sustitución de El Gran Mártir no hará nada.",
+                "Un efecto que te impida descartar cartas o sacrificar permanentes (como Tamiyo, Recopiladora de Historias) se aplicará, y cualquier descarte o sacrificio redirigido a ti no hará nada.",
+                "Un efecto que impida a un jugador Líder perder vida, descartar cartas o sacrificar permanentes puede aplicarse antes o después del efecto de sustitución de El Gran Mártir, según elijan.",
+                "Si un efecto de una fuente que controla tu oponente indica que algo sucede a menos que un jugador Líder pague vida, descarte una carta o sacrifique un permanente (como Mogis, Dios de la Masacre), o si un efecto de una fuente que controla tu oponente indica a un jugador Líder que pague vida, descarte una carta o sacrifique un permanente a menos que realice una acción (como Ola Mortífera), y elige realizar esa acción, en su lugar tú pierdes esa vida, descartas esas cartas o sacrificas esos permanentes.",
+                "Si un jugador Líder gasta vida, descarta una carta o sacrifica un permanente para pagar el coste de una habilidad que controla un oponente (como Excavación), el efecto de sustitución de El Gran Mártir no se aplica y ese jugador Líder paga el coste él mismo.",
+                "Cuando al controlador de El Gran Mártir se le inflige 1 o 2 de daño de esta forma, solo roba una carta."
+            ]
+        },
+        {
+            "id": 9,
+            "name": "El Inmortal",
+            "name_anchor": "el-inmortal",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-immortal",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {3} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Inmortal es revelado, hasta un jugador objetivo gana 15 de vida y hasta un jugador objetivo baraja su cementerio en su biblioteca.",
+            "flavor": "",
+            "artist": "malisaa @ DeviantArt",
+            "rulings": [
+                "Si eliges ambos modos, puedes elegir al mismo jugador dos veces."
+            ]
+        },
+        {
+            "id": 10,
+            "name": "El Inquisidor",
+            "name_anchor": "el-inquisidor",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-inquisitor",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {X}{1} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Inquisidor es revelado, elige X jugadores objetivo distintos. Cada uno revela su mano. Por cada uno de esos jugadores, elige una carta de su cementerio o mano y exíliala.",
+            "flavor": "",
+            "artist": "Asahisuperdry @ DeviantArt",
+            "rulings": [
+                "No hay información de reglas adicional."
+            ]
+        },
+        {
+            "id": 11,
+            "name": "El Mariscal",
+            "name_anchor": "el-mariscal",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-marshal",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {X}{4}|Cuando El Mariscal es revelado, elige un color y un tipo de criatura. El jugador objetivo crea X más cuatro fichas de criatura 1/1 del color y tipo elegidos. Si X es 3 o más, destruye todas las demás criaturas.",
+            "flavor": "",
+            "artist": "Diego Gisbert Llorens @ DeviantArt",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "La habilidad desencadenada de revelación de El Mariscal comprueba el número que elegiste para X, no la cantidad de maná que realmente gastaste.",
+                "Se hace lo que indica el hechizo en orden. Si X es 4 o más, primero pondrás las fichas de criatura en el campo de batalla, y luego destruirás las demás criaturas.",
+                "Nadie puede lanzar hechizos ni activar habilidades entre el momento en que las fichas de criatura entran al campo de batalla y el momento en que se destruyen las demás criaturas. Por ejemplo, no puedes sacrificar una de esas fichas para regenerar a un Guardia de la Casa Dimir.",
+                "Debes elegir un tipo de criatura existente, como Pez o Artífice. No puedes elegir tipos de carta (por ejemplo, artefacto) ni supertipos (por ejemplo, níveo)."
+            ]
+        },
+        {
+            "id": 12,
+            "name": "La Maestra del Espejo",
+            "name_anchor": "la-maestra-del-espejo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-mirror-maestra",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "U",
+            "text": "Encubierto (Revela solo si otra identidad ha sido revelada o si otro jugador atacó al Líder este juego.)|Revelar {X}{X}{2} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando La Maestra del Espejo es revelada, elige un jugador y X permanentes objetivo. Por cada uno de esos permanentes, ese jugador crea una ficha que es una copia de él.",
+            "flavor": "",
+            "artist": "Anne Stokes",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "La ficha copia exactamente lo impreso en la carta original y nada más, con las excepciones indicadas (a menos que ese permanente esté copiando algo más; ver abajo). No copia si el permanente está girado o enderezado, si tiene contadores o encantamientos adjuntos, ni ningún efecto que no sea de copia que haya cambiado su fuerza, resistencia, tipos, color, etc.",
+                "Si el permanente copiado está copiando otra cosa, entonces la ficha entra al campo de batalla como aquello que ese permanente copiaba, con las excepciones indicadas.",
+                "Si el permanente copiado tiene {X} en su coste de maná, X es 0.",
+                "Si el permanente copiado es a su vez una ficha, la ficha creada por la habilidad desencadenada de revelación de La Maestra del Espejo copia las características originales de esa ficha tal como las estableció el efecto que la creó, con la excepción indicada.",
+                "Cualquier habilidad de \"entra al campo de batalla\" del permanente copiado se desencadenará cuando la ficha entre al campo de batalla. Las habilidades \"mientras [este permanente] entra al campo de batalla\" o \"[este permanente] entra al campo de batalla con\" del permanente también funcionarán."
+            ]
+        },
+        {
+            "id": 13,
+            "name": "El Oráculo",
+            "name_anchor": "el-oráculo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-oracle",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "M",
+            "text": "Encubierto|Revelar {2}|Cuando El Oráculo es revelado, hasta el final del turno, los jugadores Líderes tienen protección contra todo y su vida no puede cambiar. (No pueden ser objetivo, recibir daño ni ser encantados por nada, y su vida no puede cambiar.)",
+            "flavor": "",
+            "artist": "GENZOMAN (Gonzalo Ordóñez Arias) @ DeviantArt",
+            "rulings": [
+                "---------- Las siguientes reglas se centran en la palabra clave \"protección contra\" ----------",
+                "Si un jugador tiene protección contra todo, significa tres cosas: 1) Se previene todo el daño que le sería infligido. 2) No se le pueden adjuntar encantamientos. 3) No puede ser objetivo de hechizos ni habilidades.",
+                "Nada más allá de los eventos especificados se previene o se vuelve ilegal. Un efecto que no te tenga como objetivo aún puede hacer que descartes cartas, por ejemplo. Las criaturas aún pueden atacarte mientras tienes protección contra todo, aunque el daño de combate que te infligirían se previene.",
+                "---------- Las siguientes reglas se centran en lo que significa que tu vida no pueda cambiar ----------",
+                "Los hechizos y habilidades que normalmente te harían ganar o perder vida se siguen resolviendo mientras tu vida no puede cambiar, pero la parte de ganancia o pérdida de vida simplemente no tiene efecto.",
+                "La protección contra todo normalmente prevendrá el daño que te sería infligido, pero cierto daño no se puede prevenir. En ese caso, como tu vida tampoco puede cambiar, ese daño igualmente tiene cualquier otro efecto que pueda tener aparte de hacerte perder esa vida (como los efectos de vínculo vital o infectar), y los desencadenantes y efectos pueden reconocer que se infligió daño aunque tu vida no haya cambiado.",
+                "No puedes pagar un coste que incluya el pago de cualquier cantidad de vida distinta de 0.",
+                "Si un coste incluye hacerte ganar vida (como el coste alternativo de Vigorizar de un oponente), ese coste no se puede pagar.",
+                "Los efectos que sustituirían el hecho de que ganes vida por otro evento no podrán aplicarse porque te resulta imposible ganar vida. Lo mismo aplica a los efectos que sustituirían el hecho de que pierdas vida por otro evento.",
+                "Los efectos que sustituyen un evento por hacerte ganar vida (como el efecto de Palabras de Adoración) o hacerte perder vida se aplicarán y terminarán sustituyendo el evento por nada.",
+                "Si un efecto fijara tu vida en un número distinto de tu vida actual, esa parte del efecto no hará nada.",
+                "Si un efecto te hiciera intercambiar tu vida con la de otro jugador, el intercambio no ocurrirá. La vida de ningún jugador cambia."
+            ]
+        },
+        {
+            "id": 14,
+            "name": "El Sofocador",
+            "name_anchor": "el-sofocador",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-quellmaster",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {9}. Este coste se reduce en {1} por cada criatura controlada por jugadores no Líderes.|Cuando El Sofocador es revelado, gira todas las criaturas controladas por jugadores no Líderes y ponles un contador de aturdimiento. (Si un permanente con un contador de aturdimiento fuera a enderezarse, quita uno de ellos en su lugar.)",
+            "flavor": "",
+            "artist": "Kekai @ CGHUB",
+            "rulings": [
+                "La segunda parte del efecto de El Sofocador pone un contador de aturdimiento en todas las criaturas controladas por jugadores no Líderes al resolverse, no solo en las que El Sofocador realmente hizo girar."
+            ]
+        },
+        {
+            "id": 15,
+            "name": "El Ladrón de Hechizos",
+            "name_anchor": "el-ladrón-de-hechizos",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-spellsnatcher",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {4}|Cuando El Ladrón de Hechizos es revelado, contrarresta el hechizo objetivo. Si ese hechizo es contrarrestado de esta forma, exílialo en lugar de ponerlo en el cementerio de su propietario. Puedes lanzar esa carta sin pagar su coste de maná mientras permanezca exiliada.",
+            "flavor": "",
+            "artist": "bpsola (Bryan Marvin P. Sola) @ DeviantArt",
+            "rulings": [
+                "Puedes elegir como objetivo un hechizo que tú controles con la habilidad desencadenada de revelación de El Ladrón de Hechizos. Esto te dará la posibilidad de lanzar la carta más tarde sin pagar su coste de maná.",
+                "Si lanzas un hechizo \"sin pagar su coste de maná\", no puedes optar por lanzarlo con ningún coste alternativo. Sin embargo, puedes pagar costes adicionales, como los costes de kicker. Si el hechizo tiene costes adicionales obligatorios, deben pagarse para lanzarlo.",
+                "Si un hechizo tiene {X} en su coste de maná, debes elegir 0 como valor de X al lanzarlo sin pagar su coste de maná."
+            ]
+        },
+        {
+            "id": 16,
+            "name": "El Convocador",
+            "name_anchor": "el-convocador",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-summoner",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "R",
+            "text": "Encubierto|Revelar {X}{Y}. X e Y no pueden ser 0.|Cuando El Convocador es revelado, el jugador objetivo crea X fichas de criatura Cambiante incolora 0/0 con cambiaformas y alcance. Pon Y contadores +1/+1 en cada una de ellas.",
+            "flavor": "",
+            "artist": "Kevin Glint @ ArtStation",
+            "rulings": [
+                "La X y la Y de la habilidad desencadenada de revelación tienen el mismo valor que la X y la Y pagadas en la habilidad Revelar. Es fácil deducirlo ya que no hay otras fuentes de X e Y."
+            ]
+        },
+        {
+            "id": 17,
+            "name": "El Proveedor",
+            "name_anchor": "el-proveedor",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-supplier",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "M",
+            "text": "Encubierto|Revelar—Descarta una carta que no sea de tierra.|Cuando El Proveedor es revelado, obtienes {m}{m}{m}{m}{m}{m} (seis contadores de gema).|{1}, Paga {m}: El jugador objetivo elige una carta de su cementerio o una carta exiliada que posea y la pone en su biblioteca en tercera posición desde arriba.|{2}, Paga {m}{m}: El jugador objetivo revela las siete cartas superiores de su biblioteca. Pone dos de ellas en su mano y el resto en el fondo de su biblioteca en orden aleatorio.",
+            "flavor": "",
+            "artist": "Kieran Yanner",
+            "rulings": [
+                "No puedes pagar el coste de revelación si no tienes cartas en la mano.",
+                "La cuarta y quinta habilidades de El Proveedor solo pueden activarse mientras la carta de identidad esté boca arriba.",
+                "Si El Proveedor afecta a una carta suspendida, esa carta pierde sus contadores de tiempo y deja de estar suspendida. (Esto no desencadena la última habilidad de suspender.)",
+                "Si El Proveedor afecta a una carta que está embrujando a una criatura, el efecto de embrujar termina.",
+                "{m} es el símbolo de gema. Representa un contador de gema.",
+                "Los contadores de gema son un tipo de contador que puede tener un jugador. No están asociados a permanentes específicos. (Otros tipos de contadores que pueden tener los jugadores incluyen veneno, energía y experiencia.)",
+                "Lleva un control cuidadoso de cuántos contadores de gema tiene el jugador. Puedes hacerlo llevando una cuenta en papel, usando un dado sobre esa carta, o mediante cualquier otro método claro y mutuamente acordado.",
+                "Si un efecto dice que obtienes uno o más {m}, obtienes esa cantidad de contadores de gema. Para pagar uno o más {m}, pierdes esa cantidad de contadores de gema. Cualquier efecto que interactúe con los contadores que un jugador obtiene, tiene o pierde puede interactuar con los contadores de gema."
+            ]
+        },
+        {
+            "id": 18,
+            "name": "El Brujo",
+            "name_anchor": "el-brujo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-warlock",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identidad — Guardián",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Guardián"
+            },
+            "rarity": "M",
+            "text": "Encubierto|Revelar {3}|Cuando El Brujo es revelado, termina la fase si no es la fase final. (Exilia todos los hechizos y habilidades en la pila. Retira todas las criaturas del combate. Luego, el jugador activo comienza su próxima fase.)",
+            "flavor": "",
+            "artist": "Hokunin (Prokopii Osipov) @ DeviantArt",
+            "rulings": [
+                "Terminar la fase de esta forma significa que ocurre lo siguiente en orden: 1) Todos los hechizos y habilidades en la pila se exilian. Esto incluye hechizos y habilidades que no pueden ser contrarrestados. 2) Si hay criaturas atacando o bloqueando, se retiran del combate. 3) Se comprueban las acciones basadas en el estado. Ningún jugador recibe prioridad y ninguna habilidad desencadenada se pone en la pila. 4) La fase y/o el paso actual termina. El juego pasa directamente a la siguiente fase.",
+                "Si se desencadenan habilidades durante este proceso, se ponen en la pila al comienzo del siguiente paso o fase.",
+                "Aunque otros hechizos y habilidades exiliados no tendrán la oportunidad de resolverse, no se consideran contrarrestados.",
+                "Las fases de un turno son, en orden: inicial, principal previa al combate, combate, principal posterior al combate y final."
+            ]
+        },
+        {
+            "id": 19,
+            "name": "El Desterrador",
+            "name_anchor": "el-desterrador",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-banisher",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "U",
+            "text": "Revelar {7} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Desterrador es revelado, exilia cualquier número de criaturas objetivo. Roba una carta por cada criatura no ficha exiliada de esta forma.",
+            "flavor": "",
+            "artist": "Astri Lohne @ ArtStation",
+            "rulings": [
+                "No hay información de reglas adicional."
+            ]
+        },
+        {
+            "id": 20,
+            "name": "El Limpiador",
+            "name_anchor": "el-limpiador",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-cleaner",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "R",
+            "text": "Revelar {8} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Limpiador es revelado, si es tu turno, exilia todos los permanentes no terrestres que no controles y todos los cementerios de tus oponentes.",
+            "flavor": "",
+            "artist": "Snook-8 @ DeviantArt",
+            "rulings": [
+                "No hay información de reglas adicional."
+            ]
+        },
+        {
+            "id": 21,
+            "name": "El Barquero",
+            "name_anchor": "el-barquero",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-ferryman",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "M",
+            "text": "Revelar {1}|Cuando El Barquero es revelado, elige un permanente objetivo. Cuando ese permanente sea puesto en un cementerio este turno, devuelve al campo de batalla bajo tu control otra carta que comparta un tipo de carta con él desde ese cementerio.|{3}: Pon a El Barquero boca abajo. Actívala solo durante tu turno y solo una vez cada turno.",
+            "flavor": "",
+            "artist": "Andrew Hou",
+            "rulings": [
+                "Todo lo que hace El Barquero al resolverse es establecer una habilidad desencadenada retrasada. Si el permanente objetivo no es puesto en un cementerio este turno, esa habilidad nunca se desencadena. Si el permanente objetivo es puesto en un cementerio este turno, esa habilidad se desencadena y se resuelve como cualquier otra habilidad desencadenada.",
+                "La carta de permanente que se devolverá al campo de batalla no se elige hasta que se resuelve la habilidad desencadenada retrasada. El jugador que elige es el que controlaba a El Barquero.",
+                "El permanente que se devuelve al campo de batalla no puede ser el mismo que fue puesto en el cementerio (suponiendo que todavía esté en el cementerio cuando se resuelva la habilidad desencadenada retrasada)."
+            ]
+        },
+        {
+            "id": 22,
+            "name": "El Guardián de la Puerta",
+            "name_anchor": "el-guardián-de-la-puerta",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-gatekeeper",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "U",
+            "text": "Revelar {3} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Guardián de la Puerta es revelado, crea a Cerbero, una ficha de criatura legendaria Perro Demonio negra y roja 4/8 con amenaza, golpe doble, arrolla y vínculo vital.|{2}: Pon a El Guardián de la Puerta boca abajo.",
+            "flavor": "",
+            "artist": "Pierluigi Abbondanza @ DeviantArt",
+            "rulings": [
+                "La última habilidad de El Guardián de la Puerta (ponerlo boca abajo) solo puede activarse mientras la carta de identidad esté boca arriba.",
+                "Si pones a El Guardián de la Puerta boca abajo, tus oponentes seguirán recordando tu papel."
+            ]
+        },
+        {
+            "id": 23,
+            "name": "El Granadero",
+            "name_anchor": "el-granadero",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-grenadier",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "U",
+            "text": "Revelar {X} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Granadero es revelado, crea X más tres fichas de artefacto incoloras llamadas Explosivo.|{1}, Sacrifica una ficha llamada Explosivo: Elige uno —|• Destruye el permanente no terrestre objetivo.|• El jugador objetivo pierde 3 de vida.",
+            "flavor": "",
+            "artist": "Kekai @ CGHUB",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Un Explosivo es un artefacto sin habilidades."
+            ]
+        },
+        {
+            "id": 24,
+            "name": "Aquel Que Viene a Salvar el Día",
+            "name_anchor": "aquel-que-viene-a-salvar-el-día",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=he-who-comes-to-save-the-day",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "M",
+            "text": "Revelar {2}|Cuando Aquel Que Viene a Salvar el Día es revelado, la próxima vez que el jugador objetivo fuera a perder la partida este turno, en su lugar baraja su mano, su cementerio y todos los permanentes que posea en su biblioteca, luego roba doce cartas y su vida pasa a ser 12. Luego, ese jugador pone en el campo de batalla cualquier número de cartas de permanente con valor de maná 4 o menos de su mano.",
+            "flavor": "",
+            "artist": "Kekai @ CGHUB",
+            "rulings": [
+                "Al resolverse, la habilidad desencadenada de revelación crea un efecto de sustitución que solo puede aplicarse una vez, y solo hasta el final del turno. Este efecto de sustitución se menciona a continuación como el \"efecto de salvación\".",
+                "Todo lo que se desencadene durante la resolución del efecto de salvación esperará a ponerse en la pila hasta que todo haya entrado al campo de batalla y la resolución haya terminado. El jugador cuyo turno es pondrá todas sus habilidades desencadenadas en la pila en el orden que elija, y luego cada uno de los demás jugadores hará lo mismo en orden de turno. (La última habilidad puesta en la pila será la primera en resolverse.)",
+                "Si un efecto dice que el jugador objetivo no puede perder la partida, el efecto de salvación no se aplica.",
+                "El efecto de salvación se aplica cada vez que el jugador objetivo fuera a perder la partida, incluso si no es por tener 0 o menos de vida. Si el jugador objetivo hubiera perdido la partida por intentar robar de una biblioteca vacía, su vida pasa a ser 12 y no volverá a perder hasta que intente robar de nuevo y aún no pueda hacerlo. Si el jugador objetivo hubiera perdido la partida por tener diez o más contadores de veneno, su vida pasa a ser 12, pero perderá la partida inmediatamente después porque sigue teniendo diez o más contadores de veneno.",
+                "El efecto de salvación no hace nada si el jugador objetivo se rinde. Un jugador que se rinde abandona la partida.",
+                "El efecto de salvación baraja en la biblioteca los permanentes que posea el jugador objetivo, sin importar quién los controle.",
+                "El efecto de salvación también baraja en la biblioteca las fichas que posea el jugador objetivo. Las fichas que posee abandonarán la partida. Sin embargo, no tiene sentido barajar físicamente fichas en la biblioteca porque el jugador no podrá robarlas como parte del efecto de salvación y dejarán de existir inmediatamente después.",
+                "El efecto de salvación no afecta a los hechizos en la pila, a las cartas que hayan sido exiliadas, ni a los permanentes que el jugador objetivo controle pero no posea. Permanecerán donde están. Los hechizos en la pila se resolverán con normalidad después.",
+                "Para que la vida de un jugador pase a ser 12, ganará o perderá la cantidad de vida correspondiente. Por ejemplo, si la vida del jugador objetivo es -4 cuando se aplica esta habilidad, hará que ese jugador gane 16 de vida. Alternativamente, si la vida del jugador objetivo es 20 cuando se aplica (quizás porque intentó robar una carta de una biblioteca vacía), perderá 8 de vida. Otras cartas que interactúen con ganar o perder vida interactuarán con este efecto en consecuencia. En particular, esto significa que si el jugador objetivo no puede ganar vida o si el evento de ganancia de vida es modificado por otro efecto de sustitución, podría seguir teniendo 0 o menos de vida y aun así perder la partida.",
+                "Si un hechizo hiciera que el jugador objetivo perdiera la partida la próxima vez que se comprueben las acciones basadas en el estado (por ejemplo, infligiéndole daño mayor que su vida), ese hechizo ya estará en el cementerio cuando ocurra el efecto de salvación. Si está en su cementerio, se barajará en su biblioteca.",
+                "Si, durante una comprobación de acciones basadas en el estado, el jugador objetivo fuera a perder la partida al mismo tiempo que una criatura que posee fuera a ponerse en su cementerio (debido a un Terremoto de 10 o daño de combate infligido tanto al jugador como a la criatura, por ejemplo), el controlador de esa criatura debe elegir. La regla de acciones basadas en el estado intenta simultáneamente (a) barajar esa carta de criatura en la biblioteca del jugador (por el efecto de sustitución de salvación) y (b) ponerla en su cementerio. Solo una de esas cosas puede ocurrir. El controlador de la criatura elige cuál. Si la criatura se pone en el cementerio, no se baraja en la biblioteca. Las habilidades que se desencadenan cuando esa criatura va a un cementerio solo se desencadenarán si se elige esa opción.",
+                "Si, durante una comprobación de acciones basadas en el estado, el jugador objetivo fuera a perder la partida por múltiples razones (por ejemplo, si tuviera 1 de vida y una carta en su biblioteca, y luego Susurro Nocturno le hiciera robar dos cartas y perder 2 de vida), un único efecto de salvación reemplazará todas ellas. Harás lo que indica el efecto de salvación solo una vez.",
+                "El propietario de una ficha es el jugador que la creó.",
+                "Si un efecto indica que un oponente gana la partida, el efecto de salvación no se aplica.",
+                "En una partida de Gigante de Dos Cabezas, si el equipo del jugador objetivo fuera a perder la partida durante un efecto de salvación, el equipo no perderá. En su lugar, el jugador objetivo hará lo que indica el efecto de salvación y su compañero de equipo no hará nada. Esto es así incluso si la razón por la que el equipo perdería es porque el compañero de equipo intentó robar una carta con una biblioteca vacía o fue afectado por una habilidad que decía que perdía la partida. La vida del jugador objetivo (que es la misma que la de su equipo) pasa a ser 12. La vida del equipo se ajusta según la cantidad de vida que el jugador objetivo gane o pierda como resultado, lo que básicamente significa que la vida del equipo pasa a ser 12.",
+                "Si una carta en la mano de un jugador tiene {X} en su coste de maná, se considera que X es 0.",
+                "Si una carta de permanente en la mano de un jugador no tiene símbolos de maná en su esquina superior derecha (por ser una carta de tierra, por ejemplo), su valor de maná es 0."
+            ]
+        },
+        {
+            "id": 25,
+            "name": "El Metamorfo",
+            "name_anchor": "el-metamorfo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-metamorph",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "S",
+            "text": "Revelar—Paga 8 de vida, Descarta una carta.|Cuando El Metamorfo es revelado, hasta el final del turno, cuando un oponente fuera a perder la partida, puedes retirar a El Metamorfo del juego. Si lo haces, obtén el control de la carta de identidad de ese jugador y ponla boca abajo si no es un Líder.",
+            "flavor": "",
+            "artist": "Myrmirada (Anna Verhoog) @ DeviantArt",
+            "rulings": [
+                "No puedes pagar el coste de revelación si no tienes cartas en la mano o si tu vida es inferior a 8.",
+                "Puedes robar la carta de identidad del jugador Líder mientras pierde la partida. Si lo haces, la partida continuará.",
+                "\"Retirar del juego\" significa ponerla fuera de la partida, no exiliarla.",
+                "Si la partida se reinicia y El Metamorfo fue retirado del juego, vuelve a la nueva partida. Esta es una excepción a la regla 108.5 de las reglas oficiales debido a que la regla 716.2 tiene precedencia. La carta de identidad previamente robada en la partida reiniciada abandonará el juego, ya que su propietario original perdió esa partida.",
+                "El efecto de sustitución de El Metamorfo se aplicará sin importar cómo pierda la partida un jugador: por una acción basada en el estado (por tener 0 o menos de vida, intentar robar de una biblioteca vacía, o tener diez contadores de veneno), por un hechizo o habilidad que indique que ese jugador pierde la partida, por rendirse, o por una pérdida de partida otorgada por un juez.",
+                "En una partida multijugador que use la opción de rango de influencia limitado (como una partida de Batalla Campal), si un hechizo o habilidad indica que ganas la partida, en su lugar hace que todos tus oponentes dentro de tu rango de influencia pierdan la partida. Esta es otra forma en que puede aplicarse el efecto de sustitución de El Metamorfo.",
+                "La víctima a la que le fue robada su carta de identidad por El Metamorfo sigue siendo miembro del último equipo conocido al que perteneció.",
+                "Cambias de equipo según tu nuevo papel."
+            ]
+        },
+        {
+            "id": 26,
+            "name": "El Oniromante",
+            "name_anchor": "el-oniromante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-oneiromancer",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "U",
+            "text": "Revelar {X}{X} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Oniromante es revelado, exilia boca abajo las X cartas superiores de la biblioteca de cada jugador.|Puedes mirar las cartas exiliadas con El Oniromante.|Una vez cada turno, puedes lanzar un hechizo de entre las cartas exiliadas con El Oniromante sin pagar su coste de maná. Cuando lo hagas, exilia boca abajo la carta superior de la biblioteca del jugador objetivo.",
+            "flavor": "",
+            "artist": "Hamsterfly (Viktor Titov) @ DeviantArt",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Un efecto que te indique \"lanzar\" una carta no te permite jugar tierras.",
+                "Si otro jugador obtiene el control de El Oniromante, ese jugador podrá ver todas las cartas exiliadas y podrá jugarlas. Una vez que un jugador mira una carta exiliada boca abajo, ese jugador puede mirar esa carta en cualquier momento posterior de la partida.",
+                "El Oniromante no cambia cuándo puedes lanzar la carta exiliada. Por ejemplo, si exilias una carta de criatura sin premura, solo podrás lanzarla durante tu fase principal cuando la pila esté vacía.",
+                "Debido a que ya estás lanzando las cartas usando un coste alternativo (lanzándolas sin pagar su coste de maná), no puedes pagar ningún otro coste alternativo por esas cartas, incluyendo lanzarlas boca abajo mediante la habilidad de metamorfosis. Puedes pagar costes adicionales, como los costes de kicker. Si las cartas tienen costes adicionales obligatorios, debes pagarlos.",
+                "Si una carta tiene {X} en su coste de maná, debes elegir 0 como valor de X al lanzarla.",
+                "Las cartas que no lances de esta forma permanecerán exiliadas.",
+                "Lanzar la carta hace que abandone el exilio. No puedes lanzarla varias veces.",
+                "Si abandonas la partida, las cartas permanecen exiliadas boca abajo indefinidamente. Ningún jugador podrá mirarlas."
+            ]
+        },
+        {
+            "id": 27,
+            "name": "El Titiritero",
+            "name_anchor": "el-titiritero",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-puppet-master",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "S",
+            "text": "Revelar {6}|Cuando El Titiritero es revelado, redistribuye el control de cualquier número de otras cartas de identidad. Luego pon boca abajo cada una de esas cartas que no sea un Líder. (Cada jugador debe controlar una carta de identidad.)|Puedes mirar en cualquier momento las cartas de identidad boca abajo que no controlas.|Al comienzo de tu paso final, roba dos cartas.",
+            "flavor": "",
+            "artist": "fuuryoku (Thom Scott) @ DeviantArt",
+            "rulings": [
+                "Otros jugadores pueden responder a la habilidad desencadenada de revelación de El Titiritero. Pueden usar la habilidad de Revelar de su propia Identidad mientras tengan prioridad. Después, esas cartas de identidad se pondrán boca abajo durante la resolución de la habilidad de El Titiritero.",
+                "Una vez que la habilidad desencadenada de revelación de El Titiritero comienza a resolverse, ningún jugador puede realizar otras acciones hasta que termine. En particular, los oponentes no podrán revelar su carta de identidad.",
+                "Eliges qué jugador obtiene qué carta de identidad cuando se resuelve la habilidad desencadenada, excepto por el control de la propia carta de identidad El Titiritero, que no puede cambiar de esta forma. Cuando la habilidad desencadenada de revelación de El Titiritero comienza a resolverse, para cada otro jugador, puedes elegir (a) dejar su carta de identidad como está o (b) intercambiar el control de esa identidad con otra (que no sea El Titiritero). No puedes elegir que un jugador se quede sin ninguna carta de identidad.",
+                "Puedes mirar las cartas de identidad boca abajo durante la resolución de la habilidad desencadenada. Si un jugador se rinde durante la resolución de la habilidad desencadenada de El Titiritero, su carta de identidad abandona el juego y nadie obtiene su control. Si ese jugador hubiera obtenido el control de otra carta de identidad, en su lugar asigna esa carta de identidad a otro jugador sin carta de identidad asignada.",
+                "La última habilidad de El Titiritero solo puede desencadenarse mientras la carta de identidad esté boca arriba.",
+                "Cada jugador cambia de equipo según su nuevo papel."
+            ]
+        },
+        {
+            "id": 28,
+            "name": "El Reflector",
+            "name_anchor": "el-reflector",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-reflector",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "R",
+            "text": "Revelar {5}|Cuando El Reflector es revelado, obtén el control del hechizo de habilidad, instantáneo o de conjuro objetivo. Puedes elegirle nuevos objetivos. Luego copia ese hechizo o habilidad por cada oponente. Puedes elegir nuevos objetivos para las copias.",
+            "flavor": "",
+            "artist": "LeeJJ (Jon Lee) @ DeviantArt",
+            "rulings": [
+                "La habilidad desencadenada de revelación de El Reflector puede tener como objetivo cualquier hechizo instantáneo o de conjuro, o habilidad en la pila, incluso uno sin objetivos. Las habilidades estáticas de los objetos no pueden ser elegidas como objetivo.",
+                "Si obtienes el control de un hechizo instantáneo o de conjuro, se pondrá en el cementerio de su propietario al resolverse.",
+                "Si obtienes el control de un hechizo instantáneo o de conjuro por el cual se pagó un coste de Recompra, la carta vuelve a la mano de su propietario.",
+                "Puedes cambiar cualquiera o ninguno de los objetivos del hechizo. Si cambias un objetivo, debes elegir un objetivo legal para el hechizo. Si no puedes, debes dejar el objetivo sin cambios (incluso si el objetivo actual es ilegal). En particular, si originalmente fuiste elegido como \"jugador oponente objetivo\" de un hechizo cuyo control obtienes con El Reflector, ahora eres un objetivo ilegal ya que no eres tu propio oponente.",
+                "Si el objetivo es retirado de la pila (por ejemplo, contrarrestado) antes de que se resuelva la habilidad de revelación, El Reflector fallará y no hará nada, ya que ese es su único objetivo."
+            ]
+        },
+        {
+            "id": 29,
+            "name": "El Doblegador del Tiempo",
+            "name_anchor": "el-doblegador-del-tiempo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-time-bender",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "R",
+            "text": "Revelar {6}|Cuando El Doblegador del Tiempo es revelado, elige dos —|• Cada jugador baraja su mano y cementerio en su biblioteca, luego roba siete cartas.|• Toma un turno adicional después de este.|• Termina el turno.",
+            "flavor": "",
+            "artist": "Bob Khel",
+            "rulings": [
+                "Si se resuelven varios efectos de \"turno adicional\" en el mismo turno, tómalos en el orden inverso al orden en que se resolvieron los efectos.",
+                "Si se desencadenan habilidades mientras los jugadores barajan cartas en su biblioteca o roban siete cartas, esas habilidades dejan de existir cuando termina el turno. No se pondrán en la pila.",
+                "Terminar el turno de esta forma significa que ocurre lo siguiente en orden: 1) Todos los hechizos y habilidades en la pila se exilian. Esto incluye hechizos y habilidades que no pueden ser contrarrestados. 2) Si hay criaturas atacando o bloqueando, se retiran del combate. 3) Se comprueban las acciones basadas en el estado. Ningún jugador recibe prioridad y ninguna habilidad desencadenada se pone en la pila. 4) La fase y/o el paso actual termina. El juego pasa directamente al paso de limpieza. 5) El paso de limpieza ocurre por completo.",
+                "Si se desencadenan habilidades durante este proceso, se ponen en la pila durante el paso de limpieza. Si esto sucede, los jugadores tendrán oportunidad de lanzar hechizos y activar habilidades, y luego habrá otro paso de limpieza antes de que termine el turno.",
+                "Aunque otros hechizos y habilidades exiliados no tendrán la oportunidad de resolverse, no se consideran contrarrestados.",
+                "Cualquier habilidad desencadenada de \"al comienzo del próximo paso final\" no tendrá la oportunidad de desencadenarse ese turno porque el paso final se salta. Esas habilidades se desencadenarán al comienzo del paso final del próximo turno.",
+                "Si tanto tu mano como tu cementerio están vacíos cuando comienza a resolverse la habilidad desencadenada de revelación de El Doblegador del Tiempo, igualmente barajarás tu biblioteca antes de robar siete cartas."
+            ]
+        },
+        {
+            "id": 30,
+            "name": "El Masoquista Traicionero",
+            "name_anchor": "el-masoquista-traicionero",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-treacherous-masochist",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "S",
+            "text": "Revelar {0}|Si fueras a ser el primer jugador en perder la partida, o estuvieras empatado en primer lugar, en su lugar ganas la partida. (Aún ganas la partida si eres el último jugador en pie.)|Mientras ningún jugador haya perdido la partida, los hechizos y habilidades que controlas no pueden hacer que pierdas la partida, y no puedes pagar vida.",
+            "flavor": "",
+            "artist": "Roman Baramzin @ ArtStation",
+            "rulings": [
+                "La segunda habilidad de El Masoquista Traicionero es un efecto de sustitución que afecta a la partida solo mientras la carta de identidad esté boca arriba. Si eres el primer jugador en perder la partida y la carta de identidad está boca abajo, no ganarás la partida.",
+                "El efecto de sustitución de El Masoquista Traicionero no hace nada si te rindes. Un jugador que se rinde abandona la partida.",
+                "Si no puedes perder la partida (por ejemplo, controlas un Ángel de Platino), El Masoquista Traicionero no hará nada.",
+                "Si un hechizo o una habilidad activada tiene un coste que requiere que pagues vida, ese hechizo o habilidad no se puede lanzar ni activar.",
+                "Otras cosas pueden hacer que pagues vida, como durante la resolución de un hechizo o habilidad. No puedes pagar vida para esos casos tampoco.",
+                "Los jugadores siempre pueden pagar 0 de vida, incluso si un efecto dice que no pueden pagar vida."
+            ]
+        },
+        {
+            "id": 31,
+            "name": "El Portador de Máscaras",
+            "name_anchor": "el-portador-de-máscaras",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-wearer-of-masks",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identidad — Traidor",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Traidor"
+            },
+            "rarity": "S",
+            "text": "Revelar {X}|Mientras El Portador de Máscaras es revelado, revela hasta X cartas de identidad no Líder al azar de fuera de la partida. Puedes elegir una de ellas. Si lo haces, hasta que El Portador de Máscaras sea puesto boca abajo, se convierte en una copia de esa carta, excepto que es un Traidor. (Pierde todos los demás tipos de identidad.)",
+            "flavor": "",
+            "artist": "moonxels (David Demaret) @ DeviantArt",
+            "rulings": [
+                "Para elegir algunas cartas de identidad al azar, puedes por ejemplo barajar las restantes de fuera de la partida en un mazo boca abajo, y luego revelar las cartas superiores de ese mazo. Si no quieres barajar todas tus cartas de identidad restantes por ser una pesadilla logística, también puedes usar una tirada de dado sobre un pequeño subconjunto de cartas, o cualquier otro método claro y mutuamente acordado.",
+                "La habilidad de El Portador de Máscaras de convertirse en una copia es un efecto de sustitución. Debido a que poner una identidad boca arriba y aplicar efectos de sustitución no usan la pila, los jugadores no podrán realizar acciones entre el momento en que anuncias que estás poniendo a El Portador de Máscaras boca arriba y el momento en que se convierte en una copia de la identidad que elijas.",
+                "Cualquier habilidad \"Cuando [esta identidad] es revelada\" o \"Mientras [esta identidad] es revelada\" de la identidad copiada se desencadenará y se aplicará si El Portador de Máscaras es revelado.",
+                "Si la carta de identidad copiada tiene una X en sus habilidades, X es 0.",
+                "El Portador de Máscaras sigue siendo un Traidor. No puede convertirse en otro tipo de identidad de esta forma.",
+                "Cuando El Portador de Máscaras se pone boca abajo, su efecto de copia desaparece. Mientras está boca abajo, es una carta de identidad Traidor que puede ponerse boca arriba por un coste de revelación de {X}."
+            ]
+        },
+        {
+            "id": 32,
+            "name": "La Reina Ambiciosa",
+            "name_anchor": "la-reina-ambiciosa",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-ambitious-queen",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar—Paga 1 de vida, Exilia una carta que no sea de tierra de tu mano. (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando La Reina Ambiciosa es revelada, contrarresta el hechizo no criatura objetivo.",
+            "flavor": "",
+            "artist": "88grzes (Grzegorz Rutkowski) @ DeviantArt",
+            "rulings": [
+                "No puedes pagar el coste de revelación si no tienes cartas en la mano o si tu vida es inferior a 1."
+            ]
+        },
+        {
+            "id": 33,
+            "name": "El Domador de Bestias",
+            "name_anchor": "el-domador-de-bestias",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-beastmaster",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {4} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Domador de Bestias es revelado, hasta dos jugadores objetivo crean cada uno dos fichas de criatura Bestia roja y verde 4/4 con arrollar.",
+            "flavor": "",
+            "artist": "Smolin (Nick Avallone) @ DeviantArt",
+            "rulings": [
+                "No hay información de reglas adicional."
+            ]
+        },
+        {
+            "id": 34,
+            "name": "El Bioingeniero",
+            "name_anchor": "el-bioingeniero",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-bio-engineer",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "M",
+            "text": "Revelar—Sacrifica un permanente que no sea una ficha.|Cuando El Bioingeniero es revelado, obtienes {a}{a}{a}{a}{a}{a} (seis contadores de fruto seco).|{1}, Paga {a}: Pon un contador +1/+1 en la criatura objetivo. Esa criatura se convierte en artefacto además de sus otros tipos.|{2}, Paga {a}{a}: Obtén el control del artefacto objetivo.",
+            "flavor": "",
+            "artist": "Ushihachi",
+            "rulings": [
+                "La tercera y cuarta habilidades de El Bioingeniero solo pueden activarse mientras la carta de identidad esté boca arriba.",
+                "Es la habilidad, no el contador, lo que convierte a la criatura en artefacto. La criatura sigue siendo un artefacto incluso si se quita el contador +1/+1.",
+                "El efecto de la cuarta habilidad de El Bioingeniero dura indefinidamente. No perderás el control de los permanentes si pierdes el control de El Bioingeniero o si se pone boca abajo.",
+                "Si obtienes el control de un permanente y abandonas la partida, el efecto de cambio de control terminará. A menos que otro efecto de cambio de control esté afectando a ese permanente, volverá al control de su propietario.",
+                "Si obtienes el control de un permanente que posee otro jugador, y ese jugador abandona la partida, el permanente también abandonará la partida.",
+                "{a} es el símbolo de fruto seco. Representa un contador de fruto seco.",
+                "Los contadores de fruto seco son un tipo de contador que puede tener un jugador. No están asociados a permanentes específicos. (Otros tipos de contadores que pueden tener los jugadores incluyen veneno, energía y experiencia.)",
+                "Lleva un control cuidadoso de cuántos contadores de fruto seco tiene el jugador. Puedes hacerlo llevando una cuenta en papel, usando un dado sobre esa carta, o mediante cualquier otro método claro y mutuamente acordado.",
+                "Si un efecto dice que obtienes uno o más {a}, obtienes esa cantidad de contadores de fruto seco. Para pagar uno o más {a}, pierdes esa cantidad de contadores de fruto seco. Cualquier efecto que interactúe con los contadores que un jugador obtiene, tiene o pierde puede interactuar con los contadores de fruto seco.",
+                "Los contadores de fruto seco no son maná. No desaparecen al terminar pasos, fases o turnos, y los efectos que añaden maná \"de cualquier tipo\" a tu reserva de maná no pueden darte contadores de fruto seco.",
+                "No puedes pagar más contadores de fruto seco de los que tienes."
+            ]
+        },
+        {
+            "id": 35,
+            "name": "El Portador del Caos",
+            "name_anchor": "el-portador-del-caos",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-chaos-wielder",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {2} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Portador del Caos es revelado, elige un tipo de carta. Hasta el final del turno, los hechizos que lances de ese tipo tienen cascada.",
+            "flavor": "",
+            "artist": "ericbraddock @ DeviantArt",
+            "rulings": [
+                "Cascada se desencadena cuando lanzas el hechizo, lo que significa que se resuelve antes que ese hechizo. Si terminas lanzando la carta exiliada, irá a la pila por encima del hechizo con cascada.",
+                "Cuando se resuelve la habilidad de cascada, debes exiliar cartas. La única parte opcional de la habilidad es si lanzas o no la última carta exiliada.",
+                "Si un hechizo con cascada es contrarrestado, la habilidad de cascada igualmente se resolverá con normalidad.",
+                "Exilias las cartas boca arriba. Todos los jugadores podrán verlas.",
+                "Si lanzas una carta \"sin pagar su coste de maná\", no puedes optar por lanzarla con ningún coste alternativo. Sin embargo, puedes pagar costes adicionales. Si la carta tiene costes adicionales obligatorios, debes pagarlos para lanzarla.",
+                "Si la carta tiene {X} en su coste de maná, debes elegir 0 como valor de X al lanzarla sin pagar su coste de maná.",
+                "Debido a un cambio de reglas de 2021 a cascada, no solo dejas de exiliar cartas si exilias una carta que no sea de tierra con un valor de maná menor que el del hechizo con cascada, sino que el hechizo resultante que lances también debe tener un valor de maná menor. Anteriormente, en casos donde el valor de maná de una carta difería del hechizo resultante, como con algunas cartas de dos caras modales o cartas con Aventura, se podía lanzar un hechizo con un valor de maná mayor que el de la carta exiliada.",
+                "El valor de maná de una carta partida se determina por el coste de maná combinado de sus dos mitades. Si cascada te permite lanzar una carta partida, puedes lanzar cualquiera de las dos mitades, pero no ambas."
+            ]
+        },
+        {
+            "id": 36,
+            "name": "El Ladrón de Cadáveres",
+            "name_anchor": "el-ladrón-de-cadáveres",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-corpse-snatcher",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {4}|Cuando El Ladrón de Cadáveres es revelado, cada jugador cementeriza dos cartas. Cuando una o más cartas sean cementerizadas de esta forma, pon una carta de criatura de un cementerio en el campo de batalla bajo el control del jugador objetivo. Esa criatura es un Zombi negro además de sus otros colores y tipos.",
+            "flavor": "",
+            "artist": "rk post",
+            "rulings": [
+                "El Ladrón de Cadáveres tiene un desencadenante reflexivo. Cuando es revelado, su habilidad desencadenada va a la pila sin objetivo. Cuando esa habilidad termina de resolverse, se desencadena una segunda habilidad y eliges un jugador objetivo que recibirá una criatura reanimada. Los jugadores pueden lanzar hechizos y activar habilidades antes de que se cementericen las cartas y luego de nuevo después de que se cementericen pero antes de que se reanime una criatura.",
+                "La habilidad desencadenada de reanimación de El Ladrón de Cadáveres no tiene como objetivo una carta de criatura. Eliges qué carta pones en el campo de batalla al resolverse. Puedes elegir cualquier carta de criatura en un cementerio en ese momento, incluida una que acabe de ser puesta ahí por El Ladrón de Cadáveres. Si no hay cartas de criatura en ningún cementerio en ese momento, El Ladrón de Cadáveres simplemente termina de resolverse."
+            ]
+        },
+        {
+            "id": 37,
+            "name": "El Demonio",
+            "name_anchor": "el-demonio",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-demon",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {4} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Demonio es revelado, el jugador objetivo busca en su biblioteca una carta, la pone en su mano y luego baraja.",
+            "flavor": "",
+            "artist": "KipcaHT @ DeviantArt",
+            "rulings": [
+                "Aunque el jugador objetivo no necesita encontrar una carta si no quiere, ese jugador debe barajar su biblioteca."
+            ]
+        },
+        {
+            "id": 38,
+            "name": "El Llamador de las Profundidades",
+            "name_anchor": "el-llamador-de-las-profundidades",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-depths-caller",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "M",
+            "text": "Revelar {X}{3}|Cuando El Llamador de las Profundidades es revelado, elige un tipo de permanente y gira cualquier número de permanentes enderezados de ese tipo que controles. Busca en tu biblioteca una carta de ese tipo con valor de maná no mayor que X más el número de permanentes girados de esta forma, ponla en el campo de batalla girada, luego baraja.",
+            "flavor": "",
+            "artist": "Gerald Brom",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Una vez que la habilidad desencadenada de revelación de El Llamador de las Profundidades comienza a resolverse, ningún jugador puede realizar otras acciones hasta que termine. En particular, los jugadores no pueden intentar destruir tus permanentes después de que hayas elegido un tipo.",
+                "Si una carta en la biblioteca de un jugador tiene {X} en su coste de maná, se considera que X es 0.",
+                "Puedes girar cualquier criatura enderezada que controles, incluso una que no hayas controlado continuamente desde el comienzo de tu último turno.",
+                "Girar una criatura enderezada que está atacando o bloqueando no hará que esa criatura deje de atacar o bloquear.",
+                "Girar un artefacto no hará que sus habilidades dejen de aplicarse, a menos que esas habilidades digan lo contrario.",
+                "El equipo adjunto a una criatura no se gira cuando esa criatura se gira, y girar ese equipo no hace que la criatura se gire."
+            ]
+        },
+        {
+            "id": 39,
+            "name": "La Loca",
+            "name_anchor": "la-loca",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-madwoman",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {4}|Cuando La Loca es revelada, gira hasta dos criaturas objetivo. Cada una de esas criaturas inflige daño igual a su fuerza a su controlador. Previene todo el daño de combate que sería infligido a esas criaturas y por ellas este turno.",
+            "flavor": "",
+            "artist": "Anna Ignatieva",
+            "rulings": [
+                "Girar una criatura es parte del efecto, por lo que puedes elegir como objetivo a una criatura que ya esté girada."
+            ]
+        },
+        {
+            "id": 40,
+            "name": "El Nigromante",
+            "name_anchor": "el-nigromante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-necromancer",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {6}|Cuando El Nigromante es revelado, si es tu turno, por cada jugador, puedes poner hasta una carta de criatura objetivo del cementerio de ese jugador en el campo de batalla bajo tu control.",
+            "flavor": "",
+            "artist": "Athayar (Nicolas Vallée) @ DeviantArt",
+            "rulings": [
+                "Puedes elegir un número de objetivos hasta el número de jugadores en la partida, un objetivo por jugador (incluyéndote a ti).",
+                "Las cartas de criatura entran al campo de batalla simultáneamente."
+            ]
+        },
+        {
+            "id": 41,
+            "name": "El Médico",
+            "name_anchor": "el-médico",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-physician",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {X}|Cuando El Médico es revelado, cualquier número de jugadores objetivo obtiene cada uno el doble de X más cuatro contadores de radiación. (Al comienzo de la fase principal previa al combate de esos jugadores, si tienen contadores de radiación, cementerizan esa cantidad de cartas. Por cada carta que no sea de tierra cementerizada de esta forma, pierden 1 de vida y un contador de radiación.)",
+            "flavor": "",
+            "artist": "gameriuxlt @ DeviantArt",
+            "rulings": [
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Los cuatro contadores de radiación se suman después de multiplicar X. Por ejemplo, si X es 3, todos los jugadores objetivo reciben 2×3+4 = 6+4 = 10 contadores de radiación.",
+                "Los contadores de radiación son un tipo de contador que puede tener un jugador. No están asociados a ningún permanente específico.",
+                "Lleva un control de cuántos contadores de radiación tiene cada jugador. Puedes hacerlo anotándolos en papel o usando dados, aunque cualquier método claro y mutuamente acordado es válido.",
+                "Los contadores de radiación no desaparecen al terminar pasos, fases o turnos. Solo desaparecen cuando un efecto indica a un jugador que se quite contadores de radiación.",
+                "Existe una habilidad desencadenada inherente asociada a tener contadores de radiación. Esta habilidad desencadenada no tiene fuente y la controla el jugador activo. El texto completo de esta habilidad es: \"Al comienzo de la fase principal previa al combate de un jugador con contadores de radiación, ese jugador cementeriza cartas iguales al número de contadores de radiación que tiene. Por cada carta que no sea de tierra cementerizada de esta forma, ese jugador pierde 1 de vida y se quita un contador de radiación.\"",
+                "En una partida que use la opción de turnos de equipo compartidos, como una partida de Archienemigo o Gigante de Dos Cabezas, la habilidad desencadenada inherente asociada a los contadores de radiación se desencadena una vez por cada jugador del equipo activo que tenga contadores de radiación. Cada instancia de esa habilidad la controla uno de esos jugadores.",
+                "Cualquier efecto (como proliferar) que interactúe con contadores que un jugador obtiene, tiene o pierde puede interactuar con los contadores de radiación.",
+                "Las cartas se cementerizan todas a la vez, lo que significa que las habilidades que se desencadenan \"cada vez que se cementerizan una o más cartas\" se desencadenarán exactamente una vez siempre que se haya cementerizado al menos una carta que no sea de tierra.",
+                "Si un jugador tiene menos cartas en su biblioteca que el número de contadores de radiación que tiene cuando se resuelve la habilidad desencadenada, cementerizará tantas cartas como pueda."
+            ]
+        },
+        {
+            "id": 42,
+            "name": "El Piromante",
+            "name_anchor": "el-piromante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-pyromancer",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {6}|Cuando El Piromante es revelado, si es tu turno, inflige 6 de daño al jugador objetivo y a cada criatura y planeswalker que controle. Si una criatura recibe daño de esta forma, pierde indestructible hasta el final del turno.",
+            "flavor": "",
+            "artist": "Andantonius (Jon Neimeister) @ DeviantArt",
+            "rulings": [
+                "Si El Piromante no inflige daño a una criatura (quizás porque ese daño fue prevenido), ninguno de los efectos adicionales se aplicará. No perderá indestructible.",
+                "Las criaturas con indestructible que entren al campo de batalla después de que se resuelva la habilidad desencadenada de revelación de El Piromante seguirán teniendo indestructible.",
+                "Una vez que la habilidad desencadenada de revelación de El Piromante comienza a resolverse, ningún jugador puede realizar acciones hasta que termine. En particular, los jugadores no pueden intentar dar indestructible de nuevo a una criatura para salvarla del daño.",
+                "Una carta de identidad no tiene color."
+            ]
+        },
+        {
+            "id": 43,
+            "name": "El General Rebelde",
+            "name_anchor": "el-general-rebelde",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-rebel-general",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {5}|Cuando El General Rebelde es revelado, si es tu turno, por cada jugador no Líder, obtén el control hasta el final del turno de hasta un permanente objetivo que controle ese jugador. Enderézalos. Ganan premura hasta el final del turno.",
+            "flavor": "",
+            "artist": "larbesta @ DeviantArt",
+            "rulings": [
+                "Obtener el control de una criatura no te hace obtener el control de ningún encantamiento o equipo adjunto a ella. Sin embargo, si obtienes el control de una criatura encantada por un Aura con armadura totémica y esa criatura sería destruida ese turno, en su lugar se destruirá el Aura y la criatura sobrevivirá."
+            ]
+        },
+        {
+            "id": 44,
+            "name": "El Vidente",
+            "name_anchor": "el-vidente",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-seer",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {X} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Vidente es revelado, baraja, luego explora X (scry X). Revela la carta superior de tu biblioteca y ponla en tu mano. Cuando reveles de esta forma una carta que no sea de tierra, El Vidente inflige daño igual al doble del valor de maná de esa carta a cualquier objetivo.",
+            "flavor": "",
+            "artist": "DM7 (Martin MeKenzie) @ DeviantArt",
+            "rulings": [
+                "La habilidad desencadenada de revelación de El Vidente va a la pila sin objetivo. Cuando revelas una carta que no sea de tierra durante su resolución, se desencadena su habilidad reflexiva y eliges un objetivo al que se le infligirá daño. Sabrás el valor de maná de la carta revelada y cuánto daño se infligirá al elegir tu objetivo.",
+                "La X de la habilidad desencadenada de revelación tiene el mismo valor que la X pagada en la habilidad Revelar. Es fácil deducirlo ya que no hay otra fuente de X.",
+                "Si X es 0, no explorarás (scry) en absoluto. Ninguna habilidad que se desencadene al explorar se activará.",
+                "Una vez que la habilidad desencadenada de revelación de El Vidente comienza a resolverse, ningún jugador puede realizar otras acciones hasta que termine. En particular, los oponentes no pueden intentar cambiar tu biblioteca después de explorar pero antes de revelar la carta superior.",
+                "Si la carta revelada en tu biblioteca tiene {X} en su coste de maná, se considera que X es 0.",
+                "El valor de maná convertido de una carta partida se basa en el coste de maná combinado de sus dos mitades.",
+                "Una carta de identidad no tiene color."
+            ]
+        },
+        {
+            "id": 45,
+            "name": "El Asesino Cambiaformas",
+            "name_anchor": "el-asesino-cambiaformas",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-shapeshifting-slayer",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "M",
+            "text": "Revelar {5}|Cuando El Asesino Cambiaformas es revelado, si es tu turno, elige una criatura en el campo de batalla o una carta de criatura en cualquier zona que no sea la mano o la biblioteca de un jugador. Crea una ficha que sea una copia de ella. Esa ficha gana amenaza, arrolla y premura.",
+            "flavor": "",
+            "artist": "Matjosh (Andrius Matijosius) @ DeviantArt",
+            "rulings": [
+                "La habilidad desencadenada de revelación de El Asesino Cambiaformas no tiene como objetivo a la criatura elegida.",
+                "Otras zonas son el cementerio, el campo de batalla, la pila, el exilio, el ante y la zona de mando.",
+                "Al crearse, la ficha comprueba los valores impresos de la criatura que está copiando —o, si esa criatura es a su vez una ficha, las características originales de esa ficha tal como las estableció el efecto que la puso en el campo de batalla—, así como cualquier efecto de copia que se le haya aplicado. No copiará los contadores de la criatura, ni otros efectos que hayan cambiado su fuerza, resistencia, tipos, color, etc.",
+                "Si la criatura copiada tiene {X} en su coste de maná, se considera que esa X es 0.",
+                "Si la criatura elegida está copiando algo más (por ejemplo, si la criatura elegida es un Clon), entonces la ficha de El Asesino Cambiaformas entra al campo de batalla como aquello que copiaba la criatura elegida.",
+                "Si la criatura elegida es una ficha, la ficha de El Asesino Cambiaformas copia las características originales de esa ficha tal como las estableció el efecto que la puso en el campo de batalla.",
+                "Cualquier habilidad de \"entra al campo de batalla\" de la criatura copiada se desencadenará cuando la ficha de El Asesino Cambiaformas entre al campo de batalla. Las habilidades \"mientras [esta criatura] entra al campo de batalla\" o \"[esta criatura] entra al campo de batalla con\" de la criatura elegida también funcionarán."
+            ]
+        },
+        {
+            "id": 46,
+            "name": "El Mago del Sigilo",
+            "name_anchor": "el-mago-del-sigilo",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-sigil-mage",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {5} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando El Mago del Sigilo es revelado, puedes lanzar hasta dos cartas instantáneas o de conjuro objetivo de cementerios sin pagar sus costes de maná.",
+            "flavor": "",
+            "artist": "Peter Orullian",
+            "rulings": [
+                "Las cartas instantáneas o de conjuro pueden provenir de cementerios distintos.",
+                "Lanzas las cartas una a la vez, eligiendo modos, objetivos, etc. La última carta que lances será la primera en resolverse.",
+                "Al lanzar una carta instantánea o de conjuro de esta forma, ignora las restricciones de sincronización basadas en el tipo de carta. Otras restricciones de sincronización, como \"Lanza [esta carta] solo durante el combate\", deben seguirse.",
+                "Si no puedes lanzar una de las cartas instantáneas o de conjuro objetivo, quizás porque no hay objetivos legales disponibles, o si eliges no lanzarla, permanecerá en el cementerio de su propietario.",
+                "Si lanzas una carta \"sin pagar su coste de maná\", no puedes pagar costes alternativos como los costes de sobrecarga. Puedes pagar costes adicionales como los costes de kicker. Si la carta tiene costes adicionales obligatorios, debes pagarlos.",
+                "Si una carta tiene {X} en su coste de maná, debes elegir 0 como su valor.",
+                "Si una carta instantánea o de conjuro que lanzas de esta forma es contrarrestada, igualmente será exiliada.",
+                "Si lanzas de esta forma un hechizo instantáneo o de conjuro con cifrado, puedes exiliar la carta cifrada en una criatura que controles. Si no puedes, o si eliges no hacerlo, la carta terminará exiliada pero no cifrada en una criatura.",
+                "Si una carta instantánea o de conjuro que lanzas de esta forma va a una zona distinta del exilio o de un cementerio, quizás porque una de sus habilidades dice que se ponga en la mano de su propietario, no será exiliada. Esto es así incluso si esa misma carta fuera a un cementerio más tarde ese turno."
+            ]
+        },
+        {
+            "id": 47,
+            "name": "La Hechicera",
+            "name_anchor": "la-hechicera",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-sorceress",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "U",
+            "text": "Revelar {3} (Comienza el juego con esta identidad boca abajo en la zona de mando. Ponla boca arriba en cualquier momento pagando su coste de revelación.)|Cuando La Hechicera es revelada, puedes elegir nuevos objetivos para el hechizo instantáneo o de conjuro objetivo. Luego copia ese hechizo. Puedes elegir nuevos objetivos para la copia.",
+            "flavor": "",
+            "artist": "Bluefley (Marc Brunet)",
+            "rulings": [
+                "La habilidad desencadenada de revelación de La Hechicera puede tener como objetivo (y copiar) cualquier hechizo instantáneo o de conjuro, no solo uno con objetivos. No importa quién lo controle.",
+                "Cuando se resuelve la habilidad desencadenada, se crea una copia de un hechizo. Tú controlas la copia. El controlador del hechizo original conserva el control de ese hechizo. La copia se crea en la pila, por lo que no se \"lanza\". Las habilidades que se desencadenan cuando un jugador lanza un hechizo no se desencadenarán. La copia se resolverá luego como un hechizo normal, después de que los jugadores tengan oportunidad de lanzar hechizos y activar habilidades. La copia se resuelve antes que el hechizo original.",
+                "La copia tendrá los mismos objetivos que el hechizo que está copiando, a menos que elijas otros nuevos. Puedes cambiar cualquier número de los objetivos, incluidos todos o ninguno. Si, para alguno de los objetivos, no puedes elegir un nuevo objetivo legal, permanecerá sin cambios (incluso si el objetivo actual es ilegal).",
+                "Si el hechizo que copia La Hechicera es modal (es decir, dice \"Elige uno —\" o algo similar), la copia tendrá el mismo modo. No puedes elegir uno diferente.",
+                "Si el hechizo que copia La Hechicera tiene una X cuyo valor se determinó al lanzarlo (como Bola de Fuego), la copia tiene el mismo valor de X.",
+                "No puedes elegir pagar ningún coste adicional por la copia. Sin embargo, los efectos basados en costes adicionales que se pagaron por el hechizo original se copian como si esos mismos costes se hubieran pagado por la copia también. Por ejemplo, si un jugador sacrifica una criatura 3/3 para lanzar Lanzamiento, y tú lo copias con La Hechicera, la copia de Lanzamiento también infligirá 3 de daño a su objetivo.",
+                "Si la copia afecta a \"ti\", afecta al controlador de la copia, no al controlador del hechizo original. De manera similar, si la copia afecta a un \"oponente\", afecta a un oponente del controlador de la copia, no a un oponente del controlador del hechizo original."
+            ]
+        },
+        {
+            "id": 48,
+            "name": "El Villano",
+            "name_anchor": "el-villano",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-villain",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {5}|Cuando El Villano es revelado, si es tu turno, el oponente objetivo enfrenta una decisión villana — Sacrifica la mitad de los permanentes no terrestres que controla, redondeando hacia arriba, o pierde la mitad de su vida, redondeando hacia arriba. Al comienzo de tu próximo mantenimiento, enfrenta esa decisión una vez más. (Puede tomar la misma decisión o una diferente.)",
+            "flavor": "",
+            "artist": "sbraithwaite @ DeviantArt",
+            "rulings": [
+                "Cuando un jugador enfrenta una decisión villana, primero elige una de las dos opciones, y luego se realizan todas las acciones de la opción elegida.",
+                "Un jugador que enfrenta una decisión villana siempre puede elegir cualquiera de las dos opciones, incluso si una o ambas son imposibles. Por ejemplo, si una de las opciones es sacrificar una criatura, un jugador que no controla ninguna criatura aún puede elegir esa opción.",
+                "Si un jugador intenta dividir a la mitad una vida negativa, divide 0 a la mitad. Esto significa que la vida se mantiene igual. Una vida de -10 permanecería en -10.",
+                "Todas las habilidades que se desencadenan mientras se resuelve la habilidad desencadenada de revelación de El Villano se ponen en la pila después de que termine de resolverse. Primero se ponen en la pila todas las habilidades controladas por el jugador cuyo turno es, luego las del siguiente jugador en orden de turno, y así sucesivamente. Cada jugador puede poner sus habilidades en la pila en el orden que elija. Las habilidades no tienen que ponerse en la pila en el orden en que se desencadenaron."
+            ]
+        },
+        {
+            "id": 49,
+            "name": "El Chamán de Guerra",
+            "name_anchor": "el-chamán-de-guerra",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-war-shaman",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identidad — Asesino",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Asesino"
+            },
+            "rarity": "R",
+            "text": "Revelar {5}|Cuando El Chamán de Guerra es revelado, destruye hasta dos permanentes no terrestres objetivo. Si ninguno de ellos era una criatura, crea una ficha de criatura Elemental roja X/X, donde X es el valor de maná total de los permanentes destruidos de esta forma.",
+            "flavor": "",
+            "artist": "Bob Khel @ DeviantArt",
+            "rulings": [
+                "La habilidad desencadenada de revelación de El Chamán de Guerra es contrarrestada y no obtienes ninguna ficha si los permanentes son objetivos ilegales al resolverse."
+            ]
+        },
+        {
+            "id": 50,
+            "name": "La Emperatriz de Sangre",
+            "name_anchor": "la-emperatriz-de-sangre",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-blood-empress",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "U",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Cada vez que una o más criaturas que controlan tus oponentes abandonen el campo de batalla, elige dos. Esta habilidad se desencadena solo una vez cada turno.|• Crea una ficha de criatura Larva negra 0/1.|• Crea dos fichas de Sangre.|• Gira o endereza el permanente objetivo.|• El oponente objetivo pierde 2 de vida y tú ganas 2 de vida.",
+            "flavor": "",
+            "artist": "rkpost",
+            "rulings": [
+                "Si varias criaturas abandonan el campo de batalla al mismo tiempo, la habilidad de La Emperatriz de Sangre se desencadenará solo una vez."
+            ]
+        },
+        {
+            "id": 51,
+            "name": "El Portador del Caos",
+            "name_anchor": "el-portador-del-caos",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-chaos-bringer",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "M",
+            "text": "Al comienzo de tu paso final, tira un dado de seis caras, luego tira de nuevo por cada jugador que haya perdido la partida.|1 — Crea una ficha de criatura Cabra blanca 0/1.|2 o 3 — Explora X (scry X), donde X es el resultado.|4 o 5 — Crea, a tu elección, una ficha de Pista, una ficha de Comida o una ficha de Tesoro.|6 — Crea una ficha de Pista, una ficha de Comida y una ficha de Tesoro.",
+            "flavor": "",
+            "artist": "One Vox",
+            "rulings": [
+                "La habilidad desencadenada de El Portador del Caos cuenta a todos los jugadores que hayan perdido, sin importar cómo perdieron la partida: por una acción basada en el estado (tener 0 o menos de vida, intentar robar de una biblioteca vacía, tener 10 o más contadores de veneno), por un hechizo o efecto que indique que pierden la partida, porque tu asombroso poder no les dejó más opción que rendirse, o por cualquier otra razón.",
+                "Tiras un dado al resolverse la habilidad de El Portador del Caos. Ningún jugador puede realizar acciones entre ver el resultado de una tirada y completar la resolución de la habilidad. Ningún jugador recibe prioridad entre la resolución de cada dado.",
+                "Aplicas el resultado de cada dado de forma independiente (no se suman entre sí)."
+            ]
+        },
+        {
+            "id": 52,
+            "name": "El Regente Corrupto",
+            "name_anchor": "el-regente-corrupto",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-corrupted-regent",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "R",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Al comienzo de tu paso de robo, puedes robar una carta adicional. Si lo haces, elige una carta en tu mano robada este turno. Paga 3 de vida o pon esa carta en la parte superior de tu biblioteca.",
+            "flavor": "",
+            "artist": "ArchLimit (Leo Li) @ DeviantArt",
+            "rulings": [
+                "Siempre realizas tu robo normal antes de esta habilidad. El robo normal ocurre antes de que algo pueda ponerse en la pila durante el paso de robo de un jugador.",
+                "Si controlas otras habilidades desencadenadas que te permiten robar cartas durante tu paso de robo, puedes elegir ordenar la habilidad de El Regente Corrupto antes o después de esas habilidades. Las habilidades desencadenadas controladas por otros jugadores se resolverán antes que las que tú controlas.",
+                "Cualquier carta robada antes de que se resuelva la habilidad de El Regente Corrupto, incluso durante tu mantenimiento o en respuesta a su habilidad desencadenada, puede elegirse para devolverla con este efecto. El controlador de El Regente Corrupto es responsable de mantener esas cartas distinguibles en la mano, por ejemplo manteniéndolas separadas de las cartas que empezaron el turno en la mano.",
+                "Puedes devolver cero o una carta.",
+                "Si eliges robar una carta y luego sustituyes ese robo por otro efecto, el resto de la habilidad de El Regente Corrupto igualmente ocurre. Si en realidad solo has robado una carta ese turno, debes elegir esa carta y pagar 3 de vida o ponerla en la parte superior de tu biblioteca. Si no has robado ninguna carta ese turno, el resto de la habilidad no tiene efecto.",
+                "No es posible realizar ninguna acción entre robar las cartas y elegir una carta. No puedes lanzar las cartas que robaste para evitar tener que elegir una."
+            ]
+        },
+        {
+            "id": 53,
+            "name": "El Cobrador de Deudas",
+            "name_anchor": "el-cobrador-de-deudas",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-debt-collector",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "M",
+            "text": "Al comienzo de tu mantenimiento, cada jugador pierde 1 de vida por cada contador de deuda entre las cartas de identidad que controla. Ganas vida igual a la vida perdida de esta forma.|Al comienzo de tu paso final, el jugador objetivo que no seas tú roba una carta y pone un contador de deuda en una carta de identidad que controle.|Cada vez que un jugador pierda la partida, roba una carta por cada contador de deuda entre las cartas de identidad que controlaba.",
+            "flavor": "",
+            "artist": "Grafitart @ CGHUB",
+            "rulings": [
+                "La última habilidad de El Cobrador de Deudas se desencadenará sin importar cómo pierda la partida un jugador: por una acción basada en el estado (por tener 0 o menos de vida, intentar robar de una biblioteca vacía, o tener diez contadores de veneno), por un hechizo o habilidad que indique que ese jugador pierde la partida, por rendirse, o por una pérdida de partida otorgada por un juez.",
+                "En una partida multijugador que use la opción de rango de influencia limitado (como una partida de Batalla Campal), si un hechizo o habilidad indica que ganas la partida, en su lugar hace que todos tus oponentes dentro de tu rango de influencia pierdan la partida. Esta es otra forma en que puede desencadenarse la última habilidad de El Cobrador de Deudas.",
+                "Poner una carta de identidad boca arriba o boca abajo no elimina los contadores que tenga.",
+                "Los contadores en las cartas de identidad no pueden proliferarse porque las cartas de identidad no son permanentes."
+            ]
+        },
+        {
+            "id": 54,
+            "name": "La Reunión",
+            "name_anchor": "la-reunión",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-gathering",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "M",
+            "text": "Al comienzo de tu mantenimiento, puedes elegir uno que no haya sido elegido —|• Blanco — Crea cuatro fichas de criatura Soldado blanca 1/1.|• Azul — Explora 4 (scry 4), luego roba dos cartas.|• Negro — Devuelve la carta de criatura objetivo de tu cementerio al campo de batalla.|• Rojo — La Reunión inflige 4 de daño dividido como elijas entre cualquier número de objetivos.|• Verde — Destruye el permanente no criatura objetivo.",
+            "flavor": "",
+            "artist": "HarryBuddhaPalm (Justin Reed) @ DeviantArt",
+            "rulings": [
+                "Eliges el modo cuando la habilidad desencadenada va a la pila. Solo puedes elegir un modo que requiera objetivos si hay objetivos legales disponibles.",
+                "Si la habilidad es contrarrestada (ya sea porque su objetivo se vuelve ilegal o porque un hechizo o habilidad la contrarresta), el modo elegido para esa instancia de la habilidad igualmente cuenta como elegido.",
+                "La frase \"que no haya sido elegido\" se refiere únicamente a esa La Reunión en concreto.",
+                "No importa quién haya elegido un modo en particular. Por ejemplo, digamos que controlas a La Reunión y has elegido los primeros tres modos. Si un oponente obtiene el control de La Reunión, ese jugador solo podrá elegir el cuarto o el quinto modo.",
+                "En situaciones muy inusuales, es posible que no puedas elegir un modo, ya sea porque todos los modos ya fueron elegidos o porque los modos restantes requieren objetivos y no hay objetivos legales disponibles. En ese caso, la habilidad simplemente se retira de la pila sin efecto.",
+                "Lleva un control cuidadoso de qué modos ha elegido el jugador Líder. Puedes hacerlo llevando una cuenta en papel, usando contadores de colores sobre esa carta, usando una tierra básica de cada color debajo de esa carta, o mediante cualquier otro método claro y mutuamente acordado.",
+                "Para el modo rojo, eliges cuántos objetivos tiene la habilidad y cómo se divide el daño al ponerla en la pila. Cada objetivo debe recibir al menos 1 de daño. Si algunos de los objetivos son ilegales cuando la habilidad intenta resolverse, la división original del daño se mantiene, pero no se inflige daño a los objetivos ilegales. Si todos los objetivos son ilegales, la habilidad no se resuelve."
+            ]
+        },
+        {
+            "id": 55,
+            "name": "Su Alteza de la Semilla",
+            "name_anchor": "su-alteza-de-la-semilla",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=her-seedborn-highness",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "U",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Comienza el juego con un número de contadores de semilla en Su Alteza de la Semilla igual al número de jugadores.|{2}, Quita un contador de semilla de Su Alteza de la Semilla: Endereza todos los permanentes que controlas. Actívala solo una vez cada turno.",
+            "flavor": "",
+            "artist": "Jason Engle @ DeviantArt",
+            "rulings": [
+                "Los contadores en las cartas de identidad no pueden proliferarse porque las cartas de identidad no son permanentes."
+            ]
+        },
+        {
+            "id": 56,
+            "name": "Su Amada Majestad",
+            "name_anchor": "su-amada-majestad",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=his-beloved-majesty",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "M",
+            "text": "Al comienzo de tu mantenimiento, comenzando por el siguiente jugador en orden de turno, cada jugador no Líder puede elegir un permanente que no sea ficha ni encantamiento que controle y robar una carta. Por cada jugador que lo haga, obtén el control de ese permanente y enderézalo. Si nadie lo hace, robas una carta.",
+            "flavor": "",
+            "artist": "Armandeo @ Terminally Incoherent",
+            "rulings": [
+                "Los demás jugadores deciden en orden de turno si aceptan o no la ofrenda (elegir un permanente que no sea ficha ni encantamiento y robar una carta). Cada jugador conocerá las decisiones de los jugadores anteriores en el orden de turno al tomar su decisión.",
+                "Después de que cada uno de los demás jugadores haya decidido, el efecto de robo ocurre simultáneamente para cada uno de los que aceptaron la ofrenda."
+            ]
+        },
+        {
+            "id": 57,
+            "name": "El Rey del Desguace",
+            "name_anchor": "el-rey-del-desguace",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-king-over-the-scrapyard",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "R",
+            "text": "Cada vez que una criatura que controlas muera, si estaba atacando o bloqueando, crea una ficha de Chatarra o una ficha de Tesoro. (Una ficha de Chatarra es un artefacto con \"{T}, Sacrifica esta ficha: Exilia la carta superior de tu biblioteca. Puedes jugar esa carta este turno. Actívala solo como si fuera un conjuro.\")|Cada vez que un hechizo o habilidad que controla un oponente haga que un permanente que no sea ficha y que controlas abandone el campo de batalla, crea una ficha de Chatarra y una ficha de Tesoro.",
+            "flavor": "",
+            "artist": "Ralph Horsley @ DeviantArt",
+            "rulings": [
+                "La primera habilidad de El Rey del Desguace se desencadena por cada criatura atacante o bloqueadora que controlas y que muere. Por cada una de ellas, puedes elegir crear una ficha de Chatarra o una ficha de Tesoro al resolverse, pero no ambas.",
+                "La segunda habilidad de El Rey del Desguace solo se desencadena con hechizos y habilidades que hagan directamente que un permanente que no sea ficha y que controlas abandone el campo de batalla. Lo siguiente no hará que se desencadene la segunda habilidad de El Rey del Desguace: si un hechizo o habilidad que controla un oponente inflige daño letal a una criatura que controlas, elimina todos los contadores de lealtad de un planeswalker que controlas, o hace que se desencadene una habilidad que controlas (y luego esa habilidad destruye o exilia un permanente que controlas)."
+            ]
+        },
+        {
+            "id": 58,
+            "name": "La Reina Liche",
+            "name_anchor": "la-reina-liche",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-lich-queen",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "M",
+            "text": "Comienza el juego con un número de contadores de tumba en La Reina Liche igual al número de jugadores.|Al comienzo de tu mantenimiento, vigila 1.|Quita un contador de tumba de La Reina Liche: Puedes jugar la carta objetivo de tu cementerio este turno. Si un hechizo instantáneo o de conjuro lanzado de esta forma fuera a ponerse en tu cementerio, exílialo en su lugar. Si es una carta de permanente, entra con un contador de finalidad. Actívala solo una vez cada turno.",
+            "flavor": "",
+            "artist": "DavidBlac @ DeviantArt",
+            "rulings": [
+                "Pagas todos los costes y sigues todas las reglas normales de sincronización para los hechizos lanzados y las tierras jugadas mediante el permiso otorgado por la última habilidad de La Reina Liche.",
+                "Si una carta instantánea o de conjuro que lanzas de esta forma es contrarrestada, será exiliada.",
+                "Si una carta instantánea o de conjuro que lanzas de esta forma va a una zona distinta del exilio o de un cementerio, quizás porque una de sus habilidades dice que se ponga en la mano de su propietario, no será exiliada. Esto es así incluso si esa misma carta fuera a un cementerio más tarde ese turno.",
+                "Los contadores de finalidad funcionan en cualquier permanente, no solo en criaturas. Si un permanente con un contador de finalidad fuera a ponerse en un cementerio desde el campo de batalla, exílialo en su lugar.",
+                "Los contadores de finalidad no evitan que los permanentes vayan a otras zonas distintas del cementerio desde el campo de batalla. Por ejemplo, si un permanente con un contador de finalidad fuera a ponerse en la mano de su propietario desde el campo de batalla, lo hace con normalidad.",
+                "Los contadores de finalidad no son contadores de palabra clave, y un contador de finalidad no otorga ninguna habilidad al permanente en el que está. Si ese permanente pierde sus habilidades y luego fuera a ir a un cementerio, igualmente será exiliado.",
+                "Varios contadores de finalidad en un mismo permanente son redundantes.",
+                "Los contadores en las cartas de identidad no pueden proliferarse porque las cartas de identidad no son permanentes."
+            ]
+        },
+        {
+            "id": 59,
+            "name": "El Viejo Gobernante",
+            "name_anchor": "el-viejo-gobernante",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-old-ruler",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "U",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Tu vida inicial se incrementa en 20.|El tamaño de tu mano inicial y tu tamaño máximo de mano se incrementan en uno cada uno.|Al comienzo de tu primer mantenimiento, crea una ficha de Sangre, una ficha de Pista, una ficha de Comida, una ficha de Mapa y una ficha de Tesoro.",
+            "flavor": "",
+            "artist": "AnthonyFoti (Tony Foti) @ DeviantArt",
+            "rulings": [
+                "Aunque el tamaño de tu mano inicial se incrementa en uno, nada más del procedimiento previo a la partida cambia.",
+                "Una ficha de Sangre es un artefacto con \"{1}, {T}, Descarta una carta, Sacrifica esta ficha: Roba una carta.\"",
+                "Una ficha de Pista es un artefacto con \"{2}, Sacrifica esta ficha: Roba una carta.\"",
+                "Una ficha de Comida es un artefacto con \"{2}, {T}, Sacrifica esta ficha: Ganas 3 de vida.\"",
+                "Una ficha de Mapa es un artefacto con \"{1}, {T}, Sacrifica esta ficha: La criatura objetivo que controlas explora. Actívala solo como si fuera un conjuro. (Revela la carta superior de tu biblioteca. Ponla en tu mano si es una tierra. En caso contrario, pon un contador +1/+1 en esa criatura, luego vuelve a poner la carta o ponla en tu cementerio.)\"",
+                "Una ficha de Tesoro es un artefacto con \"{T}, Sacrifica esta ficha: Añade un maná de cualquier color.\""
+            ]
+        },
+        {
+            "id": 60,
+            "name": "La Reina de la Luz",
+            "name_anchor": "la-reina-de-la-luz",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-queen-of-light",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "U",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Comienza el juego con un número de contadores de purificación en La Reina de la Luz igual a la mitad del número de jugadores, redondeando hacia abajo.|{3}, Quita un contador de purificación de La Reina de la Luz: Exilia un permanente de tu elección. (Esta habilidad no tiene objetivo. Eliges un permanente al resolverse.)",
+            "flavor": "",
+            "artist": "Jason Engle @ DeviantArt",
+            "rulings": [
+                "El permanente afectado no es objetivo de la habilidad. El jugador Líder puede elegir un permanente con manto, por ejemplo.",
+                "Una vez que la habilidad de La Reina de la Luz comienza a resolverse, ningún jugador puede realizar otras acciones hasta que termine. En particular, los jugadores no pueden intentar salvar su permanente después de que lo hayas elegido.",
+                "Los contadores en las cartas de identidad no pueden proliferarse porque las cartas de identidad no son permanentes."
+            ]
+        },
+        {
+            "id": 61,
+            "name": "Las Princesas Gemelas",
+            "name_anchor": "las-princesas-gemelas",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-twin-princesses",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "R",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|{2}: Copia la habilidad activada o desencadenada objetivo que controlas. Puedes elegir nuevos objetivos para la copia. Actívala solo una vez cada turno. (Las habilidades de maná no pueden ser elegidas como objetivo.)",
+            "flavor": "",
+            "artist": "phoenixlu @ DeviantArt",
+            "rulings": [
+                "Las habilidades activadas contienen dos puntos. Se escriben en la forma \"[Coste]: [Efecto]\". Algunas habilidades de palabra clave, como equipar y tripular, son habilidades activadas y tendrán dos puntos en su texto de recordatorio.",
+                "Las habilidades desencadenadas usan las palabras \"cuando\", \"cada vez que\" o \"al\". A menudo se escriben como \"[Condición de desencadenamiento], [efecto]\". Algunas habilidades de palabra clave, como ímpetu y fabricar, son habilidades desencadenadas y tendrán \"cuando\", \"cada vez que\" o \"al\" en su texto de recordatorio.",
+                "La habilidad de Las Princesas Gemelas tiene como objetivo una habilidad activada o desencadenada que ha sido activada o se ha desencadenado y está en la pila. Crea otra instancia de esa habilidad en la pila. No hace que ningún objeto gane una habilidad.",
+                "La fuente de la copia es la misma que la fuente de la habilidad original.",
+                "Si la habilidad activada o desencadenada es modal (es decir, si dice \"Elige uno —\" o algo similar), el modo se copia y no se puede cambiar.",
+                "Si la habilidad activada o desencadenada divide daño o distribuye contadores entre varios objetivos (por ejemplo, la habilidad de Bogardan Hellkite), la división y el número de objetivos no se pueden cambiar. Si eliges nuevos objetivos, debes elegir el mismo número de objetivos.",
+                "Cualquier decisión tomada al resolverse la habilidad activada o desencadenada aún no se habrá tomado cuando se copie. Esas decisiones se tomarán por separado cuando se resuelva la copia. Si la habilidad activada o desencadenada te pide pagar un coste (como el de Duende Frenético), pagas ese coste por la copia.",
+                "Si una habilidad desencadenada está vinculada a una segunda habilidad, las copias de esa habilidad desencadenada también están vinculadas a esa segunda habilidad. Si la segunda habilidad se refiere a \"la carta exiliada\", se refiere a todas las cartas exiliadas por la habilidad desencadenada y su copia. Por ejemplo, si la habilidad de entrar al campo de batalla de Anillo del Olvido se copia y se exilian dos permanentes, ambos vuelven cuando Anillo del Olvido abandona el campo de batalla.",
+                "En algunos casos con habilidades vinculadas, una habilidad requiere información sobre \"la carta exiliada\". Cuando esto sucede, la habilidad obtiene múltiples respuestas. Si esas respuestas se usan para determinar el valor de una variable, se usa la suma. Por ejemplo, si se copia la habilidad de entrar al campo de batalla de Arcanista de Élite, se exilian dos cartas. El valor de X en el coste de activación de la otra habilidad de Arcanista de Élite es la suma de los valores de maná combinados de las dos cartas. Al resolverse la habilidad, creas copias de ambas cartas y puedes lanzar ninguna, una o ambas copias en cualquier orden.",
+                "Una habilidad de maná es una habilidad que (1) no es una habilidad de lealtad, (2) no tiene objetivo y (3) podría añadir maná a la reserva de maná de un jugador al resolverse."
+            ]
+        },
+        {
+            "id": 62,
+            "name": "El Tirano del Vacío",
+            "name_anchor": "el-tirano-del-vacío",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=the-void-tyrant",
+            "cost": "",
+            "cmc": 0,
+            "color": "multicolor",
+            "type": "Identidad — Líder",
+            "types": {
+                "supertype": "Identidad",
+                "subtype": "Líder"
+            },
+            "rarity": "U",
+            "text": "(Comienza el juego con esta identidad boca arriba en la zona de mando. Eres el jugador inicial.)|Comienza el juego con un número de contadores de vacío en El Tirano del Vacío igual a la mitad del número de jugadores, redondeando hacia abajo.|{2}, Quita un contador de vacío de El Tirano del Vacío: Contrarresta el hechizo o habilidad objetivo de una fuente que no sea de identidad. (Las habilidades de maná no pueden ser elegidas como objetivo.)",
+            "flavor": "",
+            "artist": "Grivetart (Bastien Grivet) @ DeviantArt",
+            "rulings": [
+                "Los contadores en las cartas de identidad no pueden proliferarse porque las cartas de identidad no son permanentes.",
+                "Las habilidades activadas contienen dos puntos. Se escriben en la forma \"[Coste]: [Efecto]\". Algunas habilidades de palabra clave, como equipar y tripular, son habilidades activadas y tendrán dos puntos en su texto de recordatorio.",
+                "Las habilidades desencadenadas usan las palabras \"cuando\", \"cada vez que\" o \"al\". A menudo se escriben como \"[Condición de desencadenamiento], [efecto]\". Algunas habilidades de palabra clave, como ímpetu y fabricar, son habilidades desencadenadas y tendrán \"cuando\", \"cada vez que\" o \"al\" en su texto de recordatorio.",
+                "Solo las habilidades activadas y desencadenadas en la pila pueden ser contrarrestadas. Las habilidades estáticas de los objetos no pueden ser elegidas como objetivo.",
+                "Si contrarrestas una habilidad desencadenada retrasada que se desencadena al comienzo de la \"próxima\" ocurrencia de un paso o fase específico, esa habilidad no se desencadenará de nuevo la siguiente vez que ocurra esa fase o paso.",
+                "Una habilidad de maná activada es aquella que añade maná a la reserva de maná de un jugador al resolverse, no tiene objetivo y no es una habilidad de lealtad. Una habilidad de maná desencadenada es aquella que añade maná a la reserva de maná de un jugador y se desencadena por una habilidad de maná activada.",
+                "Las habilidades que crean efectos de sustitución, como que un permanente entre al campo de batalla girado o con contadores, no pueden ser elegidas como objetivo. Las habilidades que se aplican \"mientras [esta criatura] entra al campo de batalla\" también son efectos de sustitución y no pueden ser elegidas como objetivo."
+            ]
+        }
+    ]
+}

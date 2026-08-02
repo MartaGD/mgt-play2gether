@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { getTranslation } from '../../shared/translations';
 
 interface LifePlayer {
   name: string;
@@ -17,6 +18,11 @@ interface LifePlayer {
 export class LifeCounterPageComponent {
   players: LifePlayer[] = [];
   damageOptions = [1, 2, 3, 5, 10];
+  readonly t = {
+    counterTitle: getTranslation('lifeCounter', 'counterTitle'),
+    resetButton: getTranslation('lifeCounter', 'resetButton'),
+    playerName: getTranslation('lifeCounter', 'playerName'),
+  };
 
   constructor(private readonly route: ActivatedRoute) {
     const playerCount = this.parseNumber(this.route.snapshot.queryParamMap.get('players'), 4);
@@ -24,7 +30,7 @@ export class LifeCounterPageComponent {
     const safePlayerCount = Math.min(Math.max(playerCount, 2), 8);
 
     this.players = Array.from({ length: safePlayerCount }, (_, index) => ({
-      name: `Jugador ${index + 1}`,
+      name: `${this.t.playerName} ${index + 1}`,
       life: startingLife,
     }));
   }
@@ -42,7 +48,7 @@ export class LifeCounterPageComponent {
     this.players = this.players.map((player, index) => ({
       ...player,
       life: startingLife,
-      name: `Jugador ${index + 1}`,
+      name: `${this.t.playerName} ${index + 1}`,
     }));
   }
 

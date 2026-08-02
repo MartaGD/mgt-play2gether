@@ -113,6 +113,7 @@ class RedisRoomRepository implements RoomRepository {
 }
 
 const roomRepositoryPromise = initializeRoomRepository();
+const rolePoolsByLocale = new Map<string, RolePools>();
 
 const FALLBACK_LEADER_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
   {
@@ -161,8 +162,6 @@ const FALLBACK_TRAITOR_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     rulings: 'Traitors must sow discord and avoid being the focus of elimination while pursuing their own victory conditions.',
   },
 ];
-
-const rolePools = loadRolePools();
 
 function randomCode(length: number): string {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -325,7 +324,21 @@ function shuffle<T>(items: T[]): T[] {
   return copy;
 }
 
-function makeCardFromRole(role: IdentityRole): RoleCard {
+function getRolePools(locale = 'en'): RolePools {
+  const normalizedLocale = locale.startsWith('es') ? 'es' : 'en';
+  const cached = rolePoolsByLocale.get(normalizedLocale);
+  if (cached) {
+    return cached;
+  }
+
+  const pools = loadRolePools(normalizedLocale);
+  rolePoolsByLocale.set(normalizedLocale, pools);
+  return pools;
+}
+
+function makeCardFromRole(role: IdentityRole, locale = 'en'): RoleCard {
+  const rolePools = getRolePools(locale);
+
   if (role === 'LEADER') {
     const template = pickRandom(rolePools.leader);
     return {
@@ -373,11 +386,41 @@ function makeCardFromRole(role: IdentityRole): RoleCard {
   };
 }
 
-function pickFilePath(): string | null {
+function getPreferredLocale(acceptLanguageHeader?: string | string[]): string {
+  const envLocale = process.env['TREACHERY_LOCALE']?.trim().toLowerCase();
+  if (envLocale) {
+    return envLocale;
+  }
+
+  const headerValue = Array.isArray(acceptLanguageHeader)
+    ? acceptLanguageHeader[0]
+    : acceptLanguageHeader;
+  if (headerValue) {
+    const preferred = headerValue
+      .split(',')
+      .map((entry) => entry.trim().split(';')[0].trim().toLowerCase())
+      .find((entry) => entry === 'es' || entry.startsWith('es-'));
+
+    if (preferred) {
+      return 'es';
+    }
+  }
+
+  return 'en';
+}
+
+function pickFilePath(locale = 'en'): string | null {
+  const preferredFile = locale === 'es'
+    ? 'treachery-cards-es.json'
+    : 'treachery-cards-en.json';
+
   const candidates = [
-    join(process.cwd(), 'treachery-cards.json'),
-    join(import.meta.dirname, '../../../treachery-cards.json'),
-    join(import.meta.dirname, '../../treachery-cards.json'),
+    join(process.cwd(), preferredFile),
+    join(import.meta.dirname, `../../../${preferredFile}`),
+    join(import.meta.dirname, `../../${preferredFile}`),
+    join(process.cwd(), 'treachery-cards-en.json'),
+    join(import.meta.dirname, '../../../treachery-cards-en.json'),
+    join(import.meta.dirname, '../../treachery-cardsen.json'),
   ];
 
   for (const path of candidates) {
@@ -389,9 +432,9 @@ function pickFilePath(): string | null {
   return null;
 }
 
-function loadRolePools(): RolePools {
+function loadRolePools(locale = 'en'): RolePools {
   try {
-    const filePath = pickFilePath();
+    const filePath = pickFilePath(locale);
     if (!filePath) {
       console.warn('Role cards file not found. Using fallback role cards.');
       return {
@@ -566,10 +609,11 @@ app.post('/api/rooms/:roomCode/start', async (req, res) => {
   }
 
   const rolePlan = shuffle(buildRolePlan(room.players.length));
+  const locale = getPreferredLocale(req.headers['accept-language']);
 
   room.players.forEach((player, index) => {
     const plannedRole = rolePlan[index] ?? 'GUARDIAN';
-    player.roleCard = makeCardFromRole(plannedRole);
+    player.roleCard = makeCardFromRole(plannedRole, locale);
   });
 
   room.status = 'STARTED';
