@@ -1,10 +1,9 @@
 const { existsSync } = require('node:fs');
-const { createServer } = require('node:http');
-const http = require('node:http');
+const { createServer, request: httpRequest } = require('node:http');
 const { join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v8';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v9';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -101,8 +100,8 @@ function runBuildIfNeeded() {
 
 const serverEntry = runBuildIfNeeded();
 
-const port = Number(process.env.PORT || 4000);
-const internalPort = Number(process.env.INTERNAL_SSR_PORT || port + 1);
+const publicPort = Number(process.env.PORT || 4000);
+const internalPort = Number(process.env.INTERNAL_SSR_PORT || publicPort + 1);
 
 const defaultAllowedHosts = [
   'mgt-play2gether.com',
@@ -118,32 +117,44 @@ const defaultTrustedProxyHeaders = [
   'x-forwarded-for',
 ];
 
-const defaultTrustedProxyHeaders = [
-  'x-forwarded-host',
-  'x-forwarded-proto',
-  'x-forwarded-port',
-  'x-forwarded-for',
-];
-
 const childEnv = {
   ...process.env,
-  NG_ALLOWED_HOSTS:
-    process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
+  PORT: String(internalPort),
+  NG_ALLOWED_HOSTS: process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
   NG_TRUST_PROXY_HEADERS:
     process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
 };
 
+let requestHandler = (_req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.end(
+    '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
+  );
+};
+
+const server = createServer((req, res) => {
+  try {
+    requestHandler(req, res);
+  } catch (error) {
+    console.error('[bootstrap] Request handling failed.', error);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    }
+    res.end('Internal server error.');
+  }
+});
+
+server.listen(publicPort, () => {
+  console.log(`[bootstrap] Main process listening on port ${publicPort}.`);
+});
+
 const child = spawn(process.execPath, [serverEntry], {
   stdio: 'inherit',
   cwd: process.cwd(),
-  env: {
-    ...process.env,
-    PORT: String(internalPort),
-    NG_ALLOWED_HOSTS:
-      process.env.NG_ALLOWED_HOSTS || defaultAllowedHosts.join(','),
-    NG_TRUST_PROXY_HEADERS:
-      process.env.NG_TRUST_PROXY_HEADERS || defaultTrustedProxyHeaders.join(','),
-  },
+  env: childEnv,
 });
 
 child.on('spawn', () => {
@@ -161,7 +172,7 @@ child.on('exit', (code, signal) => {
 });
 
 requestHandler = (req, res) => {
-  const proxyReq = http.request(
+  const proxyReq = httpRequest(
     {
       host: '127.0.0.1',
       port: internalPort,
@@ -182,7 +193,9 @@ requestHandler = (req, res) => {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
-    res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
+    res.end(
+      '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>',
+    );
   });
 
   req.pipe(proxyReq);
