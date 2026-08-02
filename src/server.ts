@@ -7,6 +7,7 @@ import {
 import express from 'express';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { createClient } from 'redis';
 import type {
   IdentityRole,
   Player,
@@ -21,9 +22,97 @@ import type {
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const defaultAllowedHosts = [
+  'mtg-play2gether.com',
+  'www.mtg-play2gether.com',
+  'localhost',
+  '127.0.0.1',
+];
 
-const rooms = new Map<string, Room>();
+const envAllowedHosts = process.env['NG_ALLOWED_HOSTS']
+  ?.split(',')
+  .map((host) => host.trim())
+  .filter((host) => host.length > 0);
+
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: envAllowedHosts && envAllowedHosts.length > 0 ? envAllowedHosts : defaultAllowedHosts,
+});
+
+interface RoomRepository {
+  has(roomCode: string): Promise<boolean>;
+  get(roomCode: string): Promise<Room | null>;
+  set(room: Room): Promise<void>;
+}
+
+interface RedisRoomClient {
+  exists(key: string): Promise<number>;
+  get(key: string): Promise<string | null>;
+  set(
+    key: string,
+    value: string,
+    options: {
+      EX: number;
+    },
+  ): Promise<string | null>;
+}
+
+class InMemoryRoomRepository implements RoomRepository {
+  private readonly rooms = new Map<string, Room>();
+
+  async has(roomCode: string): Promise<boolean> {
+    return this.rooms.has(roomCode.toUpperCase());
+  }
+
+  async get(roomCode: string): Promise<Room | null> {
+    return this.rooms.get(roomCode.toUpperCase()) ?? null;
+  }
+
+  async set(room: Room): Promise<void> {
+    this.rooms.set(room.code.toUpperCase(), room);
+  }
+}
+
+class RedisRoomRepository implements RoomRepository {
+  private static readonly roomKeyPrefix = 'treachery:room:';
+
+  constructor(
+    private readonly client: RedisRoomClient,
+    private readonly roomTtlSeconds: number,
+  ) {}
+
+  async has(roomCode: string): Promise<boolean> {
+    const key = this.makeRoomKey(roomCode);
+    const exists = await this.client.exists(key);
+    return exists === 1;
+  }
+
+  async get(roomCode: string): Promise<Room | null> {
+    const key = this.makeRoomKey(roomCode);
+    const raw = await this.client.get(key);
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as Room;
+    } catch {
+      return null;
+    }
+  }
+
+  async set(room: Room): Promise<void> {
+    const key = this.makeRoomKey(room.code);
+    await this.client.set(key, JSON.stringify(room), {
+      EX: this.roomTtlSeconds,
+    });
+  }
+
+  private makeRoomKey(roomCode: string): string {
+    return `${RedisRoomRepository.roomKeyPrefix}${roomCode.toUpperCase()}`;
+  }
+}
+
+const roomRepositoryPromise = initializeRoomRepository();
 
 const FALLBACK_LEADER_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
   {
@@ -86,10 +175,41 @@ function randomCode(length: number): string {
   return value;
 }
 
-function createUniqueRoomCode(): string {
+async function getRoomRepository(): Promise<RoomRepository> {
+  return roomRepositoryPromise;
+}
+
+async function initializeRoomRepository(): Promise<RoomRepository> {
+  const redisUrl = process.env['REDIS_URL']?.trim();
+  const roomTtlSecondsRaw = Number(process.env['ROOM_TTL_SECONDS'] ?? 86400);
+  const roomTtlSeconds = Number.isFinite(roomTtlSecondsRaw) && roomTtlSecondsRaw > 0
+    ? Math.floor(roomTtlSecondsRaw)
+    : 86400;
+
+  if (!redisUrl) {
+    console.log('REDIS_URL is not set. Using in-memory room repository.');
+    return new InMemoryRoomRepository();
+  }
+
+  const client = createClient({ url: redisUrl });
+  client.on('error', (error) => {
+    console.error('Redis client error:', error);
+  });
+
+  try {
+    await client.connect();
+    console.log(`Connected to Redis room repository (TTL ${roomTtlSeconds}s).`);
+    return new RedisRoomRepository(client, roomTtlSeconds);
+  } catch (error) {
+    console.error('Failed to connect to Redis. Falling back to in-memory room repository.', error);
+    return new InMemoryRoomRepository();
+  }
+}
+
+async function createUniqueRoomCode(roomRepository: RoomRepository): Promise<string> {
   let code = randomCode(6);
 
-  while (rooms.has(code)) {
+  while (await roomRepository.has(code)) {
     code = randomCode(6);
   }
 
@@ -324,8 +444,12 @@ function loadRolePools(): RolePools {
   }
 }
 
-function getRoomOrFail(roomCode: string, res: express.Response): Room | null {
-  const room = rooms.get(roomCode.toUpperCase());
+async function getRoomOrFail(
+  roomRepository: RoomRepository,
+  roomCode: string,
+  res: express.Response,
+): Promise<Room | null> {
+  const room = await roomRepository.get(roomCode.toUpperCase());
 
   if (!room) {
     res.status(404).json({ error: 'Room not found.' });
@@ -350,8 +474,9 @@ function serializeRoom(room: Room) {
 
 app.use(express.json());
 
-app.post('/api/rooms', (req, res) => {
-  const roomCode = createUniqueRoomCode();
+app.post('/api/rooms', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const roomCode = await createUniqueRoomCode(roomRepository);
   const room: Room = {
     code: roomCode,
     createdAt: Date.now(),
@@ -367,7 +492,7 @@ app.post('/api/rooms', (req, res) => {
 
   room.hostPlayerCode = player.code;
   room.players.push(player);
-  rooms.set(room.code, room);
+  await roomRepository.set(room);
 
   res.status(201).json({
     room: serializeRoom(room),
@@ -375,8 +500,9 @@ app.post('/api/rooms', (req, res) => {
   });
 });
 
-app.post('/api/rooms/:roomCode/join', (req, res) => {
-  const room = getRoomOrFail(req.params['roomCode'], res);
+app.post('/api/rooms/:roomCode/join', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
   if (!room) {
     return;
   }
@@ -397,6 +523,7 @@ app.post('/api/rooms/:roomCode/join', (req, res) => {
   };
 
   room.players.push(player);
+  await roomRepository.set(room);
 
   res.status(201).json({
     room: serializeRoom(room),
@@ -404,8 +531,9 @@ app.post('/api/rooms/:roomCode/join', (req, res) => {
   });
 });
 
-app.post('/api/rooms/:roomCode/start', (req, res) => {
-  const room = getRoomOrFail(req.params['roomCode'], res);
+app.post('/api/rooms/:roomCode/start', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
   if (!room) {
     return;
   }
@@ -434,6 +562,7 @@ app.post('/api/rooms/:roomCode/start', (req, res) => {
   });
 
   room.status = 'STARTED';
+  await roomRepository.set(room);
 
   const roleSummary = room.players.reduce(
     (summary, player) => {
@@ -456,8 +585,9 @@ app.post('/api/rooms/:roomCode/start', (req, res) => {
   });
 });
 
-app.get('/api/rooms/:roomCode', (req, res) => {
-  const room = getRoomOrFail(req.params['roomCode'], res);
+app.get('/api/rooms/:roomCode', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
   if (!room) {
     return;
   }
@@ -465,8 +595,9 @@ app.get('/api/rooms/:roomCode', (req, res) => {
   res.json({ room: serializeRoom(room) });
 });
 
-app.get('/api/rooms/:roomCode/role', (req, res) => {
-  const room = getRoomOrFail(req.params['roomCode'], res);
+app.get('/api/rooms/:roomCode/role', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
   if (!room) {
     return;
   }
