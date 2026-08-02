@@ -1,0 +1,53 @@
+.life-counter-page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.player-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.2rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.16);
+}
+
+.player-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.life-value {
+  margin: 0;
+  font-size: 3.2rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.life-actions,
+.damage-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  flex: 1;
+  min-width: 48px;
+}
+
+.damage-buttons button {
+  flex: 1 1 45%;
+}

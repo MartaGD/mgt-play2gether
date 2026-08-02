@@ -28,7 +28,7 @@ export class TreacheryPageComponent implements OnDestroy {
       role: 'LEADER',
       team: 'LEADER_TEAM',
       title,
-      objective: 'Debug objective {0} redraw this card to review spacing, fonts, icons, and long text wrapping.',
+      objective: 'Debug objective {0} redraw this card to review spacing, fonts, icons, and long text wrapping.<br>Debug objective {0} redraw this card to review spacing, fonts, icons, and long text wrapping.',
       hint: 'Debug preview loaded from query param roleCard.title.',
       rulings: 'Debug preview loaded from query param roleCard.title.',
     };

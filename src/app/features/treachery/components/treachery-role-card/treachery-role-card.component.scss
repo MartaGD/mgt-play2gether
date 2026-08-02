@@ -15,6 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+  justify-content: center;
 }
 
 button {
@@ -74,8 +75,6 @@ button:disabled {
   overflow: hidden;
   box-shadow: inset 0 0 0 4px #e4d2ae;
 }
-
-
 
 .card-header {
   background: linear-gradient(180deg, #f6debc, #e9cba0);

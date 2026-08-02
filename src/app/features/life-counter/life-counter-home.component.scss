@@ -1,0 +1,70 @@
+.life-counter-home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.panel {
+  width: min(100%, 480px);
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  color: #8ba7ff;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.description {
+  margin-bottom: 1.5rem;
+  color: #d6e2ff;
+}
+
+.controls {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+select,
+input {
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 0.75rem;
+  padding: 0.8rem 0.95rem;
+  background: rgba(19, 25, 43, 0.9);
+  color: white;
+}
+
+.start-button,
+.secondary-button,
+.action-button,
+.damage-buttons button {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #5d7cff, #7a4dff);
+}
+
+.start-button {
+  margin-top: 1.25rem;
+  width: 100%;
+}

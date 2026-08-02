@@ -30,6 +30,7 @@ export interface TreacheryDataCard {
   text?: string;
   color?: string;
   type?: string;
+  rulings?: string | string[];
   types?: {
     subtype?: string;
   };

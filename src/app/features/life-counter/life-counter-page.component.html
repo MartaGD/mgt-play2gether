@@ -1,0 +1,24 @@
+<section class="life-counter-page">
+  <div class="page-header">
+    <h1>Contador de vidas</h1>
+    <button type="button" class="secondary-button" (click)="resetPlayers()">Reiniciar</button>
+  </div>
+
+  <div class="players-grid">
+    <article class="player-card" *ngFor="let player of players; let index = index">
+      <h2>{{ player.name }}</h2>
+      <p class="life-value">{{ player.life }}</p>
+
+      <div class="life-actions">
+        <button type="button" class="action-button" (click)="changeLife(index, -1)">-</button>
+        <button type="button" class="action-button" (click)="changeLife(index, 1)">+</button>
+      </div>
+
+      <div class="damage-buttons">
+        <button type="button" *ngFor="let amount of damageOptions" (click)="applyDamage(index, amount)">
+          -{{ amount }}
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,3 +1,5 @@
+<p class="status">{{ message }}</p>  
+
 <section
   class="panel card-shell"
   [class.traitor]="roleCard.role === 'TRAITOR'"
@@ -18,15 +20,8 @@
       <p>{{ roleCard.hint }}</p>
     </footer>
   </article>
-
-  <div class="action-row">
-    <button type="button" [disabled]="busy" class="muted" (click)="refreshRoomClick.emit()">Refresh Room</button>
-    <button type="button" [disabled]="busy" class="muted" (click)="leaveRoomClick.emit()">Leave Room</button>
-  </div>
-
-  <p class="status">{{ message }}</p>
-
 </section>
+
 <section>
   <article class="ruling-frame">
     <p class="ruling-header">Rulings</p>
@@ -34,3 +29,7 @@
   </article>
 </section>
 
+  <div class="action-row">
+    <button type="button" [disabled]="busy" class="muted" (click)="refreshRoomClick.emit()">Refresh Room</button>
+    <button type="button" [disabled]="busy" class="muted" (click)="leaveRoomClick.emit()">Leave Room</button>
+  </div>
