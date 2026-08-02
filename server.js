@@ -1,9 +1,10 @@
 const { existsSync } = require('node:fs');
+const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { spawnSync } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v4';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v5';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -100,8 +101,40 @@ function runBuildIfNeeded() {
 
 const serverEntry = runBuildIfNeeded();
 
-process.env.FORCE_LISTEN = '1';
-import(pathToFileURL(serverEntry).href).catch((error) => {
-  console.error('Failed to start SSR server from dist output.', error);
-  process.exit(1);
+const port = Number(process.env.PORT || 4000);
+let requestHandler = (_req, res) => {
+  res.statusCode = 503;
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.end('Booting server, please retry in a moment.');
+};
+
+const server = createServer((req, res) => {
+  try {
+    requestHandler(req, res);
+  } catch (error) {
+    console.error('[bootstrap] Request handling failed.', error);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    }
+    res.end('Internal server error.');
+  }
 });
+
+server.listen(port, () => {
+  console.log(`[bootstrap] Main process listening on port ${port}.`);
+});
+
+import(pathToFileURL(serverEntry).href)
+  .then((moduleExports) => {
+    if (typeof moduleExports.reqHandler !== 'function') {
+      throw new Error('reqHandler export not found in SSR entry module.');
+    }
+
+    requestHandler = moduleExports.reqHandler;
+    console.log('[bootstrap] SSR request handler attached successfully.');
+  })
+  .catch((error) => {
+    console.error('Failed to start SSR server from dist output.', error);
+    process.exit(1);
+  });
