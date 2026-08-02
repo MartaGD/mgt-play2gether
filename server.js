@@ -16,7 +16,7 @@ function resolveProjectRoot() {
   ];
 
   for (const candidate of candidates) {
-    if (existsSync(join(candidate, 'package.json'))) {
+    if (existsSync(join(candidate, 'package.json')) && existsSync(join(candidate, 'angular.json'))) {
       return candidate;
     }
   }
@@ -60,7 +60,9 @@ function runBuildIfNeeded() {
     }
 
     if (!projectRoot) {
-      console.error('[bootstrap] package.json not found in known Hostinger paths. Cannot run build.');
+      console.error(
+        '[bootstrap] Angular project root not found. Ensure Hostinger Root Folder points to the repository containing angular.json, not only the nodejs runtime folder.',
+      );
       process.exit(1);
     }
 
