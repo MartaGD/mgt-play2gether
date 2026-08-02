@@ -1,8 +1,9 @@
 const { existsSync } = require('node:fs');
 const { join } = require('node:path');
-const { spawnSync, spawn } = require('node:child_process');
+const { pathToFileURL } = require('node:url');
+const { spawnSync } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v3';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v4';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -99,20 +100,8 @@ function runBuildIfNeeded() {
 
 const serverEntry = runBuildIfNeeded();
 
-const child = spawn(process.execPath, [serverEntry], {
-  stdio: 'inherit',
-  cwd: process.cwd(),
-  env: process.env,
-});
-
-process.on('SIGINT', () => child.kill('SIGINT'));
-process.on('SIGTERM', () => child.kill('SIGTERM'));
-
-child.on('exit', (code) => {
-  process.exit(code ?? 0);
-});
-
-child.on('error', (error) => {
+process.env.FORCE_LISTEN = '1';
+import(pathToFileURL(serverEntry).href).catch((error) => {
   console.error('Failed to start SSR server from dist output.', error);
   process.exit(1);
 });
