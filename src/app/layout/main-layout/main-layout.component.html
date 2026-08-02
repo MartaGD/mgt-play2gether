@@ -1,0 +1,14 @@
+<div class="layout-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/home">MTG Play2Gether</a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/treachery" routerLinkActive="active">Treachery</a>
+    </nav>
+  </header>
+
+  <main class="content-area">
+    <router-outlet />
+  </main>
+</div>

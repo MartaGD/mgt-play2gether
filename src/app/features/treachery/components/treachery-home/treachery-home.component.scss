@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 1.1rem;
+  box-shadow: 0 12px 38px rgb(0 0 0 / 0.28);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.subtitle {
+  margin: 0.4rem 0 0;
+  color: var(--text-soft);
+}
+
+.action-row {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  background: linear-gradient(140deg, #b43e28, #7a1b1b);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+button.muted {
+  background: #ece4d2;
+  color: #2a2b2f;
+  border: 1px solid #cfbe9b;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.status {
+  margin: 0.8rem 0 0;
+  color: var(--text-soft);
+}
