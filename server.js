@@ -1,10 +1,10 @@
 const { existsSync } = require('node:fs');
 const { createServer } = require('node:http');
+const http = require('node:http');
 const { join } = require('node:path');
-const { pathToFileURL } = require('node:url');
-const { spawnSync } = require('node:child_process');
+const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v5';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v6';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -102,6 +102,7 @@ function runBuildIfNeeded() {
 const serverEntry = runBuildIfNeeded();
 
 const port = Number(process.env.PORT || 4000);
+const internalPort = Number(process.env.INTERNAL_SSR_PORT || 4100);
 let requestHandler = (_req, res) => {
   res.statusCode = 503;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -125,16 +126,55 @@ server.listen(port, () => {
   console.log(`[bootstrap] Main process listening on port ${port}.`);
 });
 
-import(pathToFileURL(serverEntry).href)
-  .then((moduleExports) => {
-    if (typeof moduleExports.reqHandler !== 'function') {
-      throw new Error('reqHandler export not found in SSR entry module.');
-    }
+const child = spawn(process.execPath, [serverEntry], {
+  stdio: 'inherit',
+  cwd: process.cwd(),
+  env: {
+    ...process.env,
+    PORT: String(internalPort),
+  },
+});
 
-    requestHandler = moduleExports.reqHandler;
-    console.log('[bootstrap] SSR request handler attached successfully.');
-  })
-  .catch((error) => {
-    console.error('Failed to start SSR server from dist output.', error);
-    process.exit(1);
+child.on('spawn', () => {
+  console.log(`[bootstrap] SSR child spawned on internal port ${internalPort}.`);
+});
+
+child.on('error', (error) => {
+  console.error('[bootstrap] Failed to spawn SSR child process.', error);
+  process.exit(1);
+});
+
+child.on('exit', (code, signal) => {
+  console.error(`[bootstrap] SSR child exited (code=${code ?? 'null'}, signal=${signal ?? 'null'}).`);
+  process.exit(code ?? 1);
+});
+
+requestHandler = (req, res) => {
+  const proxyReq = http.request(
+    {
+      host: '127.0.0.1',
+      port: internalPort,
+      method: req.method,
+      path: req.url,
+      headers: req.headers,
+    },
+    (proxyRes) => {
+      res.writeHead(proxyRes.statusCode ?? 502, proxyRes.headers);
+      proxyRes.pipe(res);
+    },
+  );
+
+  proxyReq.on('error', (error) => {
+    console.error('[bootstrap] Proxy request failed.', error);
+    if (!res.headersSent) {
+      res.statusCode = 503;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    }
+    res.end('Booting server, please retry in a moment.');
   });
+
+  req.pipe(proxyReq);
+};
+
+process.on('SIGINT', () => child.kill('SIGINT'));
+process.on('SIGTERM', () => child.kill('SIGTERM'));
