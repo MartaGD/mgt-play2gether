@@ -227,11 +227,21 @@ function createPlayerCode(room: Room): string {
 }
 
 function asText(value: unknown, fallback: string): string {
+  if (Array.isArray(value)) {
+    const cleanedParts = value
+      .map((item) => (typeof item === 'string' ? item : ''))
+      .map((item) => item.replaceAll('|', '<br>').trim())
+      .filter((item) => item.length > 0);
+
+    const cleaned = cleanedParts.join('<br><br>');
+    return cleaned.length > 0 ? cleaned : fallback;
+  }
+
   if (typeof value !== 'string') {
     return fallback;
   }
 
-  const cleaned = value.replaceAll('|', '. ').trim();
+  const cleaned = value.replaceAll('|', '<br>').trim();
   return cleaned.length > 0 ? cleaned : fallback;
 }
 
@@ -251,12 +261,13 @@ function toRoleTemplate(card: TreacheryDataCard): Omit<RoleCard, 'role' | 'team'
   const objective = asText(card.text, 'No rules text available for this card.');
   const typeText = asText(card.type, 'Identity');
   const colorText = asText(card.color, 'colorless');
+  const ruleText = asText(card.rulings, 'No rules text available for this card.');
 
   return {
     title,
     objective,
     hint: `${typeText} | ${colorText}`,
-    rulings: `Rulings for ${title}: ${objective}`,
+    rulings: `${ruleText}`,
   };
 }
 

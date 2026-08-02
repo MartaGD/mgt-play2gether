@@ -19,14 +19,22 @@ export default {
   },
   {
     "renderMode": 0,
+    "route": "/life-counter"
+  },
+  {
+    "renderMode": 0,
+    "route": "/life-counter/counter"
+  },
+  {
+    "renderMode": 0,
     "redirectTo": "/home",
     "route": "/**"
   }
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 1445, hash: '707539f4c1b381ab3da17f36e42d0fcc4e139e4d293a82bfb011d19255ceb926', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1011, hash: '7334d7f88b4ccbf9f7ff855df9117b7584b31c616dd53673a6d8622649c691e0', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 1445, hash: '3a5f3c52c91993f6e2e8f0c4d7ff2afaeb477e57efa4a9b1c17e32f58f968186', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1011, hash: '269ee9db5e3853489aa0face2e1bae589b5d1e06d32074fd07e46e615f8de72c', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-CAEAGL2V.css': {size: 133262, hash: 'gne5NF85Ml0', text: () => import('./assets-chunks/styles-CAEAGL2V_css.mjs').then(m => m.default)}
   },
 };

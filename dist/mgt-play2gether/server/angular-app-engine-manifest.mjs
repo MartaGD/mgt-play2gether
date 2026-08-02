@@ -1,12 +1,7 @@
 
 export default {
   basePath: '/',
-  allowedHosts: [
-  "mtg-play2gether.com",
-  "www.mtg-play2gether.com",
-  "localhost",
-  "127.0.0.1"
-],
+  allowedHosts: [],
   supportedLocales: {
   "en-US": ""
 },
