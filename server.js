@@ -3,7 +3,7 @@ const { createServer, request: httpRequest } = require('node:http');
 const { dirname, join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v11';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v12';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -70,8 +70,9 @@ function runBuildIfNeeded() {
   const projectRoot = resolveProjectRoot();
 
   if (entry && !hasBrowserStylesForEntry(entry)) {
-    console.log('[bootstrap] Dist entry found but browser styles are missing. Rebuilding...');
-    entry = null;
+    console.warn(
+      '[bootstrap] Dist entry found but browser styles are missing. Continuing without runtime rebuild; ensure deploy includes full dist/browser output.',
+    );
   }
 
   if (!entry) {
