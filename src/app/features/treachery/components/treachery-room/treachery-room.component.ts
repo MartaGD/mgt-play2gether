@@ -19,4 +19,15 @@ export class TreacheryRoomComponent {
   @Output() refreshClick = new EventEmitter<void>();
   @Output() startGameClick = new EventEmitter<void>();
   @Output() leaveRoomClick = new EventEmitter<void>();
+
+copyText(): void {
+  const text = this.room.code;
+
+  navigator.clipboard.writeText(text)
+    .then(() => alert(`Room code "${text}" copied to clipboard!`))
+    .catch(err => console.error("Error al copiar:", err));
 }
+
+
+}
+

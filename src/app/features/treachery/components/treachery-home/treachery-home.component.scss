@@ -39,6 +39,9 @@
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   border: 0;
   border-radius: 999px;
   padding: 0.55rem 0.95rem;

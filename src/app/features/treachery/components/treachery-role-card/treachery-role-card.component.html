@@ -5,7 +5,9 @@
   [class.leader]="roleCard.role === 'LEADER'"
 >
   <article class="card-frame">
-    <header class="card-header">{{ roleCard.title }}</header>
+    <header class="card-header">
+        <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" width="18px" height="18px"/>
+        {{ roleCard.title }}</header>
     <img [src]="cardImageUrl" alt="Role card artwork" class="card-image" />
     <div class="card-body">
       <p><strong>Identity:</strong> {{ roleCard.role }}</p>

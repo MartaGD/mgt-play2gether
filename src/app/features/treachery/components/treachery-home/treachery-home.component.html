@@ -6,8 +6,14 @@
   </p>
 
   <div class="action-row">
-    <button type="button" [disabled]="busy" (click)="createRoomClick.emit()">Create room</button>
-    <button type="button" [disabled]="busy" class="muted" (click)="joinRoomClick.emit()">Join room</button>
+    <button type="button" [disabled]="busy" (click)="createRoomClick.emit()">
+      <i class="bi bi-plus-square-fill" aria-hidden="true"></i>
+      <span>Create room</span>
+    </button>
+    <button type="button" [disabled]="busy" class="muted" (click)="joinRoomClick.emit()">
+      <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+      <span>Join room</span>
+    </button>
   </div>
 
   <p class="status">{{ message }}</p>

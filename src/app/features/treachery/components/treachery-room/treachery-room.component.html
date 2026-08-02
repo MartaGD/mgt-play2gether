@@ -1,6 +1,8 @@
 <section class="panel room lobby-screen">
   <div class="room-head">
-    <h2>Room {{ room.code }}</h2>
+    <h2>Room {{ room.code }}
+        <button type="button" class="muted glyphicon glyphicon-copy" (click)="copyText()"><i class="bi bi-clipboard"></i></button>
+    </h2>
     <span class="chip" [class.started]="room.status === 'STARTED'">{{ room.status }}</span>
   </div>
 

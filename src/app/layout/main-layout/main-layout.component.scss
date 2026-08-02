@@ -31,11 +31,18 @@
 
 /* Brand */
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   color: #f7fbff;
   text-decoration: none;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.brand-icon {
+  font-size: 1.05rem;
 }
 
 /* Navigation */
@@ -46,6 +53,9 @@
 }
 
 .main-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   text-decoration: none;
   color: #f7fbffcc;
   padding: 0.45rem 0.75rem;
