@@ -5,6 +5,7 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -12,17 +13,523 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+type IdentityRole = 'LEADER' | 'GUARDIAN' | 'ASSASSIN' | 'TRAITOR';
+
+type Team = 'LEADER_TEAM' | 'ASSASSINS_TEAM' | 'TRAITOR_TEAM';
+
+interface RoleCard {
+  role: IdentityRole;
+  team: Team;
+  title: string;
+  objective: string;
+  hint: string;
+}
+
+interface Player {
+  code: string;
+  name: string;
+  joinedAt: number;
+  roleCard?: RoleCard;
+}
+
+interface Room {
+  code: string;
+  createdAt: number;
+  status: 'LOBBY' | 'STARTED';
+  hostPlayerCode: string;
+  players: Player[];
+}
+
+interface TreacheryDataCard {
+  name?: string;
+  text?: string;
+  color?: string;
+  type?: string;
+  types?: {
+    subtype?: string;
+  };
+}
+
+interface TreacheryDataFile {
+  cards?: TreacheryDataCard[];
+}
+
+interface RolePools {
+  leader: Omit<RoleCard, 'role' | 'team'>[];
+  guardian: Omit<RoleCard, 'role' | 'team'>[];
+  assassin: Omit<RoleCard, 'role' | 'team'>[];
+  traitor: Omit<RoleCard, 'role' | 'team'>[];
+}
+
+const rooms = new Map<string, Room>();
+
+const FALLBACK_LEADER_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Leader of the Alliance',
+    objective: 'Stay alive and coordinate with Guardians to defeat enemies.',
+    hint: 'You are the key target. Build defenses and identify threats early.',
+  },
+];
+
+const FALLBACK_GUARDIAN_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Guardian of the Realm',
+    objective: 'Protect the Leader and help eliminate Assassins and Traitors.',
+    hint: 'Track aggressive players and preserve resources for key turns.',
+  },
+];
+
+const FALLBACK_ASSASSIN_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Silent Assassin',
+    objective: 'Eliminate all Leader players while at least one Assassin survives.',
+    hint: 'Pressure the Leader team and disguise your alignment when possible.',
+  },
+];
+
+const FALLBACK_TRAITOR_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Shadow Schemer',
+    objective: 'Outlast every other player, including other Traitors.',
+    hint: 'Your role is solo. Keep allies temporary and opportunistic.',
+  },
+  {
+    title: 'False Ally',
+    objective: 'Create chaos and survive until all opponents are gone.',
+    hint: 'Offer good advice early, then mislead at key moments.',
+  },
+  {
+    title: 'Arcane Betrayer',
+    objective: 'Break alliances and finish the game as the last standing side.',
+    hint: 'Use confident calls and blame variance for bad outcomes.',
+  },
+];
+
+const rolePools = loadRolePools();
+
+function randomCode(length: number): string {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let value = '';
+
+  for (let index = 0; index < length; index += 1) {
+    value += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return value;
+}
+
+function createUniqueRoomCode(): string {
+  let code = randomCode(6);
+
+  while (rooms.has(code)) {
+    code = randomCode(6);
+  }
+
+  return code;
+}
+
+function createPlayerCode(room: Room): string {
+  let code = randomCode(8);
+
+  while (room.players.some((player) => player.code === code)) {
+    code = randomCode(8);
+  }
+
+  return code;
+}
+
+function normalizeName(name: unknown, fallback: string): string {
+  if (typeof name !== 'string') {
+    return fallback;
+  }
+
+  const cleaned = name.trim().slice(0, 40);
+  return cleaned.length > 0 ? cleaned : fallback;
+}
+
+function asText(value: unknown, fallback: string): string {
+  if (typeof value !== 'string') {
+    return fallback;
+  }
+
+  const cleaned = value.replaceAll('|', '. ').trim();
+  return cleaned.length > 0 ? cleaned : fallback;
+}
+
+function cardSubtype(card: TreacheryDataCard): string {
+  const subtypeFromObject = asText(card.types?.subtype, '');
+  if (subtypeFromObject.length > 0) {
+    return subtypeFromObject;
+  }
+
+  const fullType = asText(card.type, '');
+  const typeParts = fullType.split(' - ');
+  return typeParts.length > 1 ? typeParts[typeParts.length - 1].trim() : '';
+}
+
+function toRoleTemplate(card: TreacheryDataCard): Omit<RoleCard, 'role' | 'team'> {
+  const title = asText(card.name, 'Unknown Role Card');
+  const objective = asText(card.text, 'No rules text available for this card.');
+  const typeText = asText(card.type, 'Identity');
+  const colorText = asText(card.color, 'colorless');
+
+  return {
+    title,
+    objective,
+    hint: `${typeText} | ${colorText}`,
+  };
+}
+
+function toRoleTeam(role: IdentityRole): Team {
+  if (role === 'LEADER' || role === 'GUARDIAN') {
+    return 'LEADER_TEAM';
+  }
+
+  if (role === 'ASSASSIN') {
+    return 'ASSASSINS_TEAM';
+  }
+
+  return 'TRAITOR_TEAM';
+}
+
+function pickRandom<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function buildRolePlan(playerCount: number): IdentityRole[] {
+  const assassinCount = Math.floor(playerCount / 2);
+  const remainingAfterLeaderAndAssassins = playerCount - 1 - assassinCount;
+  const traitorCount = Math.max(1, Math.floor(remainingAfterLeaderAndAssassins / 2));
+  const guardianCount = Math.max(0, remainingAfterLeaderAndAssassins - traitorCount);
+
+  const roles: IdentityRole[] = ['LEADER'];
+
+  for (let index = 0; index < guardianCount; index += 1) {
+    roles.push('GUARDIAN');
+  }
+
+  for (let index = 0; index < assassinCount; index += 1) {
+    roles.push('ASSASSIN');
+  }
+
+  for (let index = 0; index < traitorCount; index += 1) {
+    roles.push('TRAITOR');
+  }
+
+  while (roles.length < playerCount) {
+    roles.push('GUARDIAN');
+  }
+
+  return roles;
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const copy = [...items];
+
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const target = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[target]] = [copy[target], copy[index]];
+  }
+
+  return copy;
+}
+
+function makeCardFromRole(role: IdentityRole): RoleCard {
+  if (role === 'LEADER') {
+    const template = pickRandom(rolePools.leader);
+    return {
+      role,
+      team: toRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+    };
+  }
+
+  if (role === 'GUARDIAN') {
+    const template = pickRandom(rolePools.guardian);
+    return {
+      role,
+      team: toRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+    };
+  }
+
+  if (role === 'ASSASSIN') {
+    const template = pickRandom(rolePools.assassin);
+    return {
+      role,
+      team: toRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+    };
+  }
+
+  const template = pickRandom(rolePools.traitor);
+  return {
+    role,
+    team: toRoleTeam(role),
+    title: template.title,
+    objective: template.objective,
+    hint: template.hint,
+  };
+}
+
+function pickFilePath(): string | null {
+  const candidates = [
+    join(process.cwd(), 'treachery-cards.json'),
+    join(import.meta.dirname, '../../../treachery-cards.json'),
+    join(import.meta.dirname, '../../treachery-cards.json'),
+  ];
+
+  for (const path of candidates) {
+    if (existsSync(path)) {
+      return path;
+    }
+  }
+
+  return null;
+}
+
+function loadRolePools(): RolePools {
+  try {
+    const filePath = pickFilePath();
+    if (!filePath) {
+      console.warn('Role cards file not found. Using fallback role cards.');
+      return {
+        leader: FALLBACK_LEADER_CARDS,
+        guardian: FALLBACK_GUARDIAN_CARDS,
+        assassin: FALLBACK_ASSASSIN_CARDS,
+        traitor: FALLBACK_TRAITOR_CARDS,
+      };
+    }
+
+    const raw = readFileSync(filePath, 'utf-8');
+    const parsed = JSON.parse(raw) as TreacheryDataFile;
+    const cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+
+    const leader = cards
+      .filter((card) => cardSubtype(card).toUpperCase() === 'LEADER')
+      .map((card) => toRoleTemplate(card));
+
+    const guardian = cards
+      .filter((card) => cardSubtype(card).toUpperCase() === 'GUARDIAN')
+      .map((card) => toRoleTemplate(card));
+
+    const assassin = cards
+      .filter((card) => cardSubtype(card).toUpperCase() === 'ASSASSIN')
+      .map((card) => toRoleTemplate(card));
+
+    const traitor = cards
+      .filter((card) => cardSubtype(card).toUpperCase() === 'TRAITOR')
+      .map((card) => toRoleTemplate(card));
+
+    if (leader.length === 0 || guardian.length === 0 || assassin.length === 0 || traitor.length === 0) {
+      console.warn(
+        'Role cards JSON missing one or more role groups (Leader/Guardian/Assassin/Traitor). Using fallback role cards.',
+      );
+      return {
+        leader: FALLBACK_LEADER_CARDS,
+        guardian: FALLBACK_GUARDIAN_CARDS,
+        assassin: FALLBACK_ASSASSIN_CARDS,
+        traitor: FALLBACK_TRAITOR_CARDS,
+      };
+    }
+
+    console.log(
+      `Loaded role cards from ${filePath}. Leader: ${leader.length}, Guardian: ${guardian.length}, Assassin: ${assassin.length}, Traitor: ${traitor.length}.`,
+    );
+
+    return {
+      leader,
+      guardian,
+      assassin,
+      traitor,
+    };
+  } catch (error) {
+    console.warn('Failed to load role cards JSON. Using fallback role cards.', error);
+    return {
+      leader: FALLBACK_LEADER_CARDS,
+      guardian: FALLBACK_GUARDIAN_CARDS,
+      assassin: FALLBACK_ASSASSIN_CARDS,
+      traitor: FALLBACK_TRAITOR_CARDS,
+    };
+  }
+}
+
+function getRoomOrFail(roomCode: string, res: express.Response): Room | null {
+  const room = rooms.get(roomCode.toUpperCase());
+
+  if (!room) {
+    res.status(404).json({ error: 'Room not found.' });
+    return null;
+  }
+
+  return room;
+}
+
+function serializeRoom(room: Room) {
+  return {
+    code: room.code,
+    status: room.status,
+    createdAt: room.createdAt,
+    hostPlayerCode: room.hostPlayerCode,
+    players: room.players.map((player) => ({
+      code: player.code,
+      name: player.name,
+      joinedAt: player.joinedAt,
+    })),
+  };
+}
+
+app.use(express.json());
+
+app.post('/api/rooms', (req, res) => {
+  const roomCode = createUniqueRoomCode();
+  const room: Room = {
+    code: roomCode,
+    createdAt: Date.now(),
+    status: 'LOBBY',
+    hostPlayerCode: '',
+    players: [],
+  };
+
+  const player: Player = {
+    code: createPlayerCode(room),
+    name: normalizeName(req.body?.playerName, 'Host'),
+    joinedAt: Date.now(),
+  };
+
+  room.hostPlayerCode = player.code;
+  room.players.push(player);
+  rooms.set(room.code, room);
+
+  res.status(201).json({
+    room: serializeRoom(room),
+    playerCode: player.code,
+  });
+});
+
+app.post('/api/rooms/:roomCode/join', (req, res) => {
+  const room = getRoomOrFail(req.params['roomCode'], res);
+  if (!room) {
+    return;
+  }
+
+  if (room.status !== 'LOBBY') {
+    res.status(409).json({ error: 'Game already started in this room.' });
+    return;
+  }
+
+  if (room.players.length >= 12) {
+    res.status(409).json({ error: 'Room is full.' });
+    return;
+  }
+
+  const player: Player = {
+    code: createPlayerCode(room),
+    name: normalizeName(req.body?.playerName, `Player ${room.players.length + 1}`),
+    joinedAt: Date.now(),
+  };
+
+  room.players.push(player);
+
+  res.status(201).json({
+    room: serializeRoom(room),
+    playerCode: player.code,
+  });
+});
+
+app.post('/api/rooms/:roomCode/start', (req, res) => {
+  const room = getRoomOrFail(req.params['roomCode'], res);
+  if (!room) {
+    return;
+  }
+
+  if (room.status === 'STARTED') {
+    res.status(409).json({ error: 'Game already started.' });
+    return;
+  }
+
+  const requesterPlayerCode = typeof req.body?.playerCode === 'string' ? req.body.playerCode : '';
+  if (requesterPlayerCode !== room.hostPlayerCode) {
+    res.status(403).json({ error: 'Only host can start the game.' });
+    return;
+  }
+
+  if (room.players.length < 4) {
+    res.status(400).json({ error: 'Treachery requires at least 4 players.' });
+    return;
+  }
+
+  const rolePlan = shuffle(buildRolePlan(room.players.length));
+
+  room.players.forEach((player, index) => {
+    const plannedRole = rolePlan[index] ?? 'GUARDIAN';
+    player.roleCard = makeCardFromRole(plannedRole);
+  });
+
+  room.status = 'STARTED';
+
+  const roleSummary = room.players.reduce(
+    (summary, player) => {
+      const role = player.roleCard?.role ?? 'GUARDIAN';
+      summary[role] += 1;
+      return summary;
+    },
+    {
+      LEADER: 0,
+      GUARDIAN: 0,
+      ASSASSIN: 0,
+      TRAITOR: 0,
+    } as Record<IdentityRole, number>,
+  );
+
+  res.json({
+    room: serializeRoom(room),
+    message: 'Game started and identity roles were dealt.',
+    roleSummary,
+  });
+});
+
+app.get('/api/rooms/:roomCode', (req, res) => {
+  const room = getRoomOrFail(req.params['roomCode'], res);
+  if (!room) {
+    return;
+  }
+
+  res.json({ room: serializeRoom(room) });
+});
+
+app.get('/api/rooms/:roomCode/role', (req, res) => {
+  const room = getRoomOrFail(req.params['roomCode'], res);
+  if (!room) {
+    return;
+  }
+
+  const playerCode = typeof req.query['playerCode'] === 'string' ? req.query['playerCode'] : '';
+  const player = room.players.find((entry) => entry.code === playerCode);
+
+  if (!player) {
+    res.status(404).json({ error: 'Player not found in room.' });
+    return;
+  }
+
+  if (room.status !== 'STARTED' || !player.roleCard) {
+    res.status(409).json({ error: 'Game not started yet.' });
+    return;
+  }
+
+  res.json({
+    roomCode: room.code,
+    playerCode: player.code,
+    playerName: player.name,
+    card: player.roleCard,
+  });
+});
 
 /**
  * Serve static files from /browser
