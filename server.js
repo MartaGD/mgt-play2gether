@@ -4,7 +4,7 @@ const http = require('node:http');
 const { join } = require('node:path');
 const { spawnSync, spawn } = require('node:child_process');
 
-const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v6';
+const BOOTSTRAP_VERSION = '2026-08-02-hostinger-v7';
 const SERVER_RELATIVE_PATH = ['dist', 'mgt-play2gether', 'server', 'server.mjs'];
 
 function resolveProjectRoot() {
@@ -103,10 +103,13 @@ const serverEntry = runBuildIfNeeded();
 
 const port = Number(process.env.PORT || 4000);
 const internalPort = Number(process.env.INTERNAL_SSR_PORT || 4100);
+let childReady = false;
+
 let requestHandler = (_req, res) => {
-  res.statusCode = 503;
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.end('Booting server, please retry in a moment.');
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
 };
 
 const server = createServer((req, res) => {
@@ -149,7 +152,58 @@ child.on('exit', (code, signal) => {
   process.exit(code ?? 1);
 });
 
+function markChildReady() {
+  if (childReady) {
+    return;
+  }
+
+  childReady = true;
+  console.log('[bootstrap] SSR child is ready to serve requests.');
+}
+
+function probeChildReadiness() {
+  if (childReady) {
+    return;
+  }
+
+  const probeReq = http.request(
+    {
+      host: '127.0.0.1',
+      port: internalPort,
+      method: 'GET',
+      path: '/api/rooms/AAAAAA',
+      timeout: 500,
+    },
+    (probeRes) => {
+      probeRes.resume();
+      markChildReady();
+    },
+  );
+
+  probeReq.on('timeout', () => {
+    probeReq.destroy();
+  });
+
+  probeReq.on('error', () => {
+    // Child is still warming up; keep waiting.
+  });
+
+  probeReq.end();
+}
+
+const probeInterval = setInterval(probeChildReadiness, 250);
+probeInterval.unref();
+probeChildReadiness();
+
 requestHandler = (req, res) => {
+  if (!childReady) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
+    return;
+  }
+
   const proxyReq = http.request(
     {
       host: '127.0.0.1',
@@ -167,10 +221,11 @@ requestHandler = (req, res) => {
   proxyReq.on('error', (error) => {
     console.error('[bootstrap] Proxy request failed.', error);
     if (!res.headersSent) {
-      res.statusCode = 503;
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
-    res.end('Booting server, please retry in a moment.');
+    res.end('<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>Starting</title></head><body>Starting app, retrying...</body></html>');
   });
 
   req.pipe(proxyReq);
