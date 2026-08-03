@@ -16,7 +16,7 @@ export class TreacheryHomeComponent {
   @Output() joinRoomClick = new EventEmitter<void>();
 
   readonly t = {   
-    subtitle: getTranslation('general', 'subtitle'),
+    eyebrow: getTranslation('home', 'eyebrow'),
     treacheryTitle: getTranslation('home', 'treacheryTitle'),
     description: getTranslation('treachery', 'description'),
     createButton: getTranslation('treachery', 'createButton'),

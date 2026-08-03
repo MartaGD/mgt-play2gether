@@ -1,6 +1,5 @@
 export const es_translations = {
     general: {      
-        subtitle: 'Modo de Juego',
         playerCodeLabel: 'Códigos de jugador',
     },
     server: {
@@ -15,9 +14,9 @@ export const es_translations = {
       gameNotStartedYet: 'La partida aún no ha empezado.',
     },
     home: {
-      eyebrow: 'Función',
-      moreTitle: '¡Más modos y funciones en el futuro!',
-      moreDescription: 'Mira este espacio para próximos juegos y funciones.',
+      eyebrow: 'Modo de Juego',
+      moreTitle: 'MTG Play2Gether',
+      moreDescription: '¡Más modos y funciones en el futuro! Mira este espacio para próximos juegos y funciones.',
     },
     treachery: {
       homeTitle: 'Treachery',

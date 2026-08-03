@@ -1,6 +1,5 @@
 export const ca_translations = {
     general: {
-        subtitle: 'Mode de Joc',
         playerCodeLabel: 'Codis de jugador',
     },
     server: {
@@ -15,13 +14,13 @@ export const ca_translations = {
       gameNotStartedYet: 'La partida encara no ha començat.',
     },
     home: {
-      eyebrow: 'Funció',
+      eyebrow: 'Mode de Joc',
       treacheryTitle: 'Treachery',
       description: 'Benvingut al teu espai multijugador de taula. Crea sales privades, convida amics i llança formats socials.',
       primaryCta: 'Obrir Nou Treachery',
       secondaryCta: 'Unir-se amb codi de sala',
-      moreTitle: 'Més modes i funcions en el futur!',
-      moreDescription: 'Mira aquest espai per a propers jocs i funcions.',
+      moreTitle: 'MTG Play2Gether',
+      moreDescription: 'Més modes i funcions en el futur! Mira aquest espai per a propers jocs i funcions.',
       },
     treachery: {
       homeTitle: 'Treachery',

@@ -1,6 +1,5 @@
 export const en_translations = {
     general: {
-        subtitle: 'Game Mode',
         playerCodeLabel: 'Player Codes',
     },
     server: {
@@ -15,9 +14,9 @@ export const en_translations = {
         gameNotStartedYet: 'Game not started yet.',
     },
     home: {
-        eyebrow: 'Feature',
-        moreTitle: 'More game modes and features in the future!',
-        moreDescription: 'Watch this space for upcoming games and features.',},
+        eyebrow: 'Game Mode',
+        moreTitle: 'MTG Play2Gether',
+        moreDescription: 'More game modes and features in the future! Watch this space for upcoming games and features.',},
     treachery: {
         homeTitle: 'Treachery',
         homeDescription: 'Choose how many players are participating and their starting life total.',
