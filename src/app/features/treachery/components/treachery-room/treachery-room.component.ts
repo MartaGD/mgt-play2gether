@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RoomDto, RoomPlayerDto } from '../../treachery.models';
+import { getTranslation } from '../../../../shared/translations';
 
 @Component({
   selector: 'app-treachery-room',
@@ -20,12 +21,24 @@ export class TreacheryRoomComponent {
   @Output() startGameClick = new EventEmitter<void>();
   @Output() leaveRoomClick = new EventEmitter<void>();
 
+  readonly t = {   
+    roomCodeLabel: getTranslation('treachery', 'roomCodeLabel'),
+    roomPlayerCode: getTranslation('treachery', 'roomPlayerCode'),
+    roomRequiredPlayers: getTranslation('treachery', 'roomRequiredPlayers'),
+    playerCodeLabel: getTranslation('general', 'playerCodeLabel'),
+    refreshButton: getTranslation('treachery', 'refreshButton'),
+    startGameButton: getTranslation('treachery', 'startGameButton'),
+    leaveRoomButton: getTranslation('treachery', 'leaveRoomButton'),
+    dealingMessage: getTranslation('treachery', 'dealingMessage'),
+    waitingPlayersMessage: getTranslation('treachery', 'waitingPlayersMessage'),
+  };
+
 copyText(): void {
   const text = this.room.code;
 
   navigator.clipboard.writeText(text)
     .then(() => alert(`Room code "${text}" copied to clipboard!`))
-    .catch(err => console.error("Error al copiar:", err));
+    .catch(err => console.error("Error copying to clipboard:", err));
 }
 
 

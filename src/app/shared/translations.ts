@@ -1,7 +1,8 @@
+
+/*/
 export const translations = {
   en: {
     home: {
-      eyebrow: 'feature',
       title: 'Play Together, Betray Together',
       description: 'Welcome to your multiplayer tabletop space. Build private rooms, invite friends and launch social formats.',
       primaryCta: 'Open Treachery',
@@ -25,7 +26,6 @@ export const translations = {
   },
   es: {
     home: {
-      eyebrow: 'función',
       title: 'Juega juntos, traiciona juntos',
       description: 'Bienvenido a tu espacio multijugador de mesa. Crea salas privadas, invita amigos y lanza formatos sociales.',
       primaryCta: 'Abrir Treachery',
@@ -48,8 +48,11 @@ export const translations = {
     },
   },
 } as const;
-
-export type TranslationKey = keyof typeof translations.en;
+*/
+import { en_translations } from './en';
+import { es_translations } from './es';
+import { ca_translations } from './ca';
+export type TranslationKey = typeof en_translations | typeof es_translations | typeof ca_translations;
 
 export function getBrowserLocale(): string {
   if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
@@ -57,12 +60,25 @@ export function getBrowserLocale(): string {
   }
 
   const browserLanguage = window.navigator.language?.toLowerCase() ?? 'en';
-  return browserLanguage.startsWith('es') ? 'es' : 'en';
+  console.log(browserLanguage);
+  return browserLanguage;
 }
 
-export function getTranslation<T extends keyof typeof translations.en>(section: T, key: string): string {
+export function getTranslation<T extends keyof typeof en_translations>(section: T, key: string): string {
   const locale = getBrowserLocale();
-  const lang = locale === 'es' ? translations.es : translations.en;
+  let lang: typeof en_translations;
+  switch (locale) {
+    case 'ca':
+      lang = ca_translations;
+      break;
+    case 'es':
+      lang = es_translations;
+      break;
+    default:
+      lang = en_translations;
+  }
+
   const sectionValue = lang[section] as Record<string, string>;
-  return sectionValue[key] ?? translations.en[section][key as keyof (typeof translations.en)[T]] ?? '';
+  return sectionValue[key];
+  //return sectionValue[key] ?? en_translations[section][key as keyof (typeof en_translations)[T]] ?? '';
 }

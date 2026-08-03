@@ -11,15 +11,17 @@ import { getTranslation } from '../../shared/translations';
 })
 export class HomePageComponent {
   readonly t = {
-    eyebrow: getTranslation('home', 'eyebrow'),
-    title: getTranslation('home', 'title'),
-    description: getTranslation('home', 'description'),
-    primaryCta: getTranslation('home', 'primaryCta'),
-    secondaryCta: getTranslation('home', 'secondaryCta'),
+    eyebrow: getTranslation('home', 'eyebrow'),    
     moreTitle: getTranslation('home', 'moreTitle'),
     moreDescription: getTranslation('home', 'moreDescription'),
-    lifeTitle: getTranslation('home', 'lifeTitle'),
-    lifeDescription: getTranslation('home', 'lifeDescription'),
-    lifeCta: getTranslation('home', 'lifeCta'),
+
+    treacheryTitle: getTranslation('treachery', 'homeTitle'),
+    description: getTranslation('treachery', 'homeDescription'),
+    treacheryPrimaryCta: getTranslation('treachery', 'homePrimaryCta'),
+    treacherySecondaryCta: getTranslation('treachery', 'homeSecondaryCta'),
+
+    lifeTitle: getTranslation('lifeCounter', 'homeTitle'),
+    lifeDescription: getTranslation('lifeCounter', 'homeDescription'),
+    lifeCta: getTranslation('lifeCounter', 'homePrimaryCta'),
   };
 }

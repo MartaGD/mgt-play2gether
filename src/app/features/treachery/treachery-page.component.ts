@@ -15,7 +15,6 @@ import { TreacheryRoomStore } from './treachery-room.store';
 })
 export class TreacheryPageComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
-
   protected readonly store: TreacheryRoomStore;
   protected readonly debugRoleCard = computed<RoleCardDto | null>(() => {
     const title = this.route.snapshot.queryParamMap.get('roleCard.title')?.trim();

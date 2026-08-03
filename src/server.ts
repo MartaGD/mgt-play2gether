@@ -18,6 +18,10 @@ import type {
   TreacheryDataCard,
   TreacheryDataFile,
 } from './app/features/treachery/treachery.models';
+import { en_translations } from './app/shared/en';
+import { es_translations } from './app/shared/es';
+import { ca_translations } from './app/shared/ca';
+
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -114,6 +118,8 @@ class RedisRoomRepository implements RoomRepository {
 
 const roomRepositoryPromise = initializeRoomRepository();
 const rolePoolsByLocale = new Map<string, RolePools>();
+type AppLocale = 'en' | 'es' | 'ca';
+type ServerMessageKey = keyof typeof en_translations.server;
 
 const FALLBACK_LEADER_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
   {
@@ -386,27 +392,53 @@ function makeCardFromRole(role: IdentityRole, locale = 'en'): RoleCard {
   };
 }
 
-function getPreferredLocale(acceptLanguageHeader?: string | string[]): string {
+function normalizeLocale(value: string): AppLocale {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === 'ca' || normalized.startsWith('ca-')) {
+    return 'ca';
+  }
+
+  if (normalized === 'es' || normalized.startsWith('es-')) {
+    return 'es';
+  }
+
+  return 'en';
+}
+
+function getPreferredLocale(acceptLanguageHeader?: string | string[]): AppLocale {
   const envLocale = process.env['TREACHERY_LOCALE']?.trim().toLowerCase();
   if (envLocale) {
-    return envLocale;
+    return normalizeLocale(envLocale);
   }
 
   const headerValue = Array.isArray(acceptLanguageHeader)
     ? acceptLanguageHeader[0]
     : acceptLanguageHeader;
+
   if (headerValue) {
     const preferred = headerValue
       .split(',')
       .map((entry) => entry.trim().split(';')[0].trim().toLowerCase())
-      .find((entry) => entry === 'es' || entry.startsWith('es-'));
+      .find((entry) => entry.startsWith('ca') || entry.startsWith('es') || entry.startsWith('en'));
 
     if (preferred) {
-      return 'es';
+      return normalizeLocale(preferred);
     }
   }
 
   return 'en';
+}
+
+function getServerMessage(locale: AppLocale, key: ServerMessageKey): string {
+  if (locale === 'es') {
+    return es_translations.server[key];
+  }
+
+  if (locale === 'ca') {
+    return ca_translations.server[key];
+  }
+
+  return en_translations.server[key];
 }
 
 function pickFilePath(locale = 'en'): string | null {
@@ -501,12 +533,13 @@ function loadRolePools(locale = 'en'): RolePools {
 async function getRoomOrFail(
   roomRepository: RoomRepository,
   roomCode: string,
+  locale: AppLocale,
   res: express.Response,
 ): Promise<Room | null> {
   const room = await roomRepository.get(roomCode.toUpperCase());
 
   if (!room) {
-    res.status(404).json({ error: 'Room not found.' });
+    res.status(404).json({ error: getServerMessage(locale, 'roomNotFound') });
     return null;
   }
 
@@ -556,18 +589,19 @@ app.post('/api/rooms', async (req, res) => {
 
 app.post('/api/rooms/:roomCode/join', async (req, res) => {
   const roomRepository = await getRoomRepository();
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
   if (!room) {
     return;
   }
 
   if (room.status !== 'LOBBY') {
-    res.status(409).json({ error: 'Game already started in this room.' });
+    res.status(409).json({ error: getServerMessage(locale, 'gameAlreadyStartedInRoom') });
     return;
   }
 
   if (room.players.length >= 12) {
-    res.status(409).json({ error: 'Room is full.' });
+    res.status(409).json({ error: getServerMessage(locale, 'roomIsFull') });
     return;
   }
 
@@ -587,29 +621,29 @@ app.post('/api/rooms/:roomCode/join', async (req, res) => {
 
 app.post('/api/rooms/:roomCode/start', async (req, res) => {
   const roomRepository = await getRoomRepository();
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
   if (!room) {
     return;
   }
 
   if (room.status === 'STARTED') {
-    res.status(409).json({ error: 'Game already started.' });
+    res.status(409).json({ error: getServerMessage(locale, 'gameAlreadyStarted') });
     return;
   }
 
   const requesterPlayerCode = typeof req.body?.playerCode === 'string' ? req.body.playerCode : '';
   if (requesterPlayerCode !== room.hostPlayerCode) {
-    res.status(403).json({ error: 'Only host can start the game.' });
+    res.status(403).json({ error: getServerMessage(locale, 'onlyHostCanStart') });
     return;
   }
 
   if (room.players.length < 4) {
-    res.status(400).json({ error: 'Treachery requires at least 4 players.' });
+    res.status(400).json({ error: getServerMessage(locale, 'treacheryRequiresAtLeast4Players') });
     return;
   }
 
   const rolePlan = shuffle(buildRolePlan(room.players.length));
-  const locale = getPreferredLocale(req.headers['accept-language']);
 
   room.players.forEach((player, index) => {
     const plannedRole = rolePlan[index] ?? 'GUARDIAN';
@@ -635,14 +669,15 @@ app.post('/api/rooms/:roomCode/start', async (req, res) => {
 
   res.json({
     room: serializeRoom(room),
-    message: 'Game started and identity roles were dealt.',
+    message: getServerMessage(locale, 'gameStartedAndRolesDealt'),
     roleSummary,
   });
 });
 
 app.get('/api/rooms/:roomCode', async (req, res) => {
   const roomRepository = await getRoomRepository();
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
   if (!room) {
     return;
   }
@@ -652,7 +687,8 @@ app.get('/api/rooms/:roomCode', async (req, res) => {
 
 app.get('/api/rooms/:roomCode/role', async (req, res) => {
   const roomRepository = await getRoomRepository();
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], res);
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
   if (!room) {
     return;
   }
@@ -661,12 +697,12 @@ app.get('/api/rooms/:roomCode/role', async (req, res) => {
   const player = room.players.find((entry) => entry.code === playerCode);
 
   if (!player) {
-    res.status(404).json({ error: 'Player not found in room.' });
+    res.status(404).json({ error: getServerMessage(locale, 'playerNotFoundInRoom') });
     return;
   }
 
   if (room.status !== 'STARTED' || !player.roleCard) {
-    res.status(409).json({ error: 'Game not started yet.' });
+    res.status(409).json({ error: getServerMessage(locale, 'gameNotStartedYet') });
     return;
   }
 
