@@ -54,31 +54,47 @@ import { es_translations } from './es';
 import { ca_translations } from './ca';
 export type TranslationKey = typeof en_translations | typeof es_translations | typeof ca_translations;
 
+type AppLocale = 'en' | 'es' | 'ca';
+
+function normalizeLocale(locale: string): AppLocale {
+  const normalized = locale.trim().toLowerCase();
+
+  if (normalized === 'ca' || normalized.startsWith('ca-')) {
+    return 'ca';
+  }
+
+  if (normalized === 'es' || normalized.startsWith('es-')) {
+    return 'es';
+  }
+
+  return 'en';
+}
+
+function getLocaleTranslations(locale: AppLocale): typeof en_translations {
+  if (locale === 'es') {
+    return es_translations;
+  }
+
+  if (locale === 'ca') {
+    return ca_translations;
+  }
+
+  return en_translations;
+}
+
 export function getBrowserLocale(): string {
   if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
     return 'en';
   }
 
-  const browserLanguage = window.navigator.language?.toLowerCase() ?? 'en';
-  console.log(browserLanguage);
-  return browserLanguage;
+  const browserLanguage = window.navigator.language ?? 'en';
+  return normalizeLocale(browserLanguage);
 }
 
 export function getTranslation<T extends keyof typeof en_translations>(section: T, key: string): string {
-  const locale = getBrowserLocale();
-  let lang: typeof en_translations;
-  switch (locale) {
-    case 'ca':
-      lang = ca_translations;
-      break;
-    case 'es':
-      lang = es_translations;
-      break;
-    default:
-      lang = en_translations;
-  }
+  const locale = getBrowserLocale() as AppLocale;
+  const localizedSection = getLocaleTranslations(locale)[section] as Record<string, string>;
+  const englishSection = en_translations[section] as Record<string, string>;
 
-  const sectionValue = lang[section] as Record<string, string>;
-  return sectionValue[key];
-  //return sectionValue[key] ?? en_translations[section][key as keyof (typeof en_translations)[T]] ?? '';
+  return localizedSection[key] ?? englishSection[key] ?? key;
 }
