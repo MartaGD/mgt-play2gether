@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { getTranslation } from '../../../../shared/translations';
 
 @Component({
   selector: 'app-treachery-home',
@@ -13,4 +14,14 @@ export class TreacheryHomeComponent {
 
   @Output() createRoomClick = new EventEmitter<void>();
   @Output() joinRoomClick = new EventEmitter<void>();
+
+  readonly t = {   
+    eyebrow: getTranslation('home', 'eyebrow'),
+    treacheryTitle: getTranslation('home', 'treacheryTitle'),
+    description: getTranslation('treachery', 'description'),
+    createButton: getTranslation('treachery', 'createButton'),
+    joinButton: getTranslation('treachery', 'joinButton'),
+
+  };
+
 }

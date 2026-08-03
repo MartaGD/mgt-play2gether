@@ -1,23 +1,23 @@
 <section class="life-counter-home">
   <div class="panel">
-    <p class="eyebrow">Nueva feature</p>
-    <h1>Contador de vidas</h1>
-    <p class="description">Elige cuántos jugadores participan y cuánta vida inicial tendrán.</p>
+    <p class="eyebrow">{{ t.homeTitle }}</p>
+    <h1>{{ t.homeTitle }}</h1>
+    <p class="description">{{ t.homeDescription }}</p>
 
     <div class="controls">
       <label>
-        <span>Número de jugadores</span>
+        <span>{{ t.playerCountLabel }}</span>
         <select [(ngModel)]="playerCount" name="playerCount">
           <option *ngFor="let count of playerOptions" [value]="count">{{ count }}</option>
         </select>
       </label>
 
       <label>
-        <span>Vidas iniciales</span>
+        <span>{{ t.startingLifeLabel }}</span>
         <input type="number" [(ngModel)]="startingLife" name="startingLife" min="1" max="999" />
       </label>
     </div>
 
-    <button type="button" class="start-button" (click)="startCounter()">Iniciar contador</button>
+    <button type="button" class="start-button" (click)="startCounter()">{{ t.startButton }}</button>
   </div>
 </section>

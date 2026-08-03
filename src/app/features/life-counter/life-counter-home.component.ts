@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { getTranslation } from '../../shared/translations';
 
 @Component({
   selector: 'app-life-counter-home',
@@ -13,6 +14,13 @@ export class LifeCounterHomeComponent {
   playerCount = 4;
   startingLife = 20;
   playerOptions = [2, 3, 4, 5, 6, 7, 8];
+  readonly t = {
+    homeTitle: getTranslation('lifeCounter', 'homeTitle'),
+    homeDescription: getTranslation('lifeCounter', 'homeDescription'),
+    playerCountLabel: getTranslation('lifeCounter', 'playerCountLabel'),
+    startingLifeLabel: getTranslation('lifeCounter', 'startingLifeLabel'),
+    startButton: getTranslation('lifeCounter', 'startButton'),
+  };
 
   constructor(private readonly router: Router) {}
 

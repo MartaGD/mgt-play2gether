@@ -1,17 +1,23 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { RoleCardDto, RoleSummaryDto, RoomDto, RoomPlayerDto } from './treachery.models';
+import { getTranslation } from '../../shared/translations'; 
 
 interface ExpiringStorageEntry {
   value: string;
   expiresAt: number;
 }
 
+
 @Injectable({ providedIn: 'root' })
 export class TreacheryRoomStore {
   private static readonly storageTtlMs = 24 * 60 * 60 * 1000;
   private static readonly debugRoleCardTitleParam = 'roleCard.title';
 
-  readonly appTitle = 'MTG Treachery Room';
+  readonly t = {
+    subtitle: getTranslation('treachery', 'homeTitle')
+  };
+
+  readonly appTitle = this.t.subtitle;
   readonly roomCodeInput = signal('');
   readonly activeRoomCode = signal('');
   readonly activePlayerCode = signal('');
@@ -19,7 +25,7 @@ export class TreacheryRoomStore {
   readonly roleCard = signal<RoleCardDto | null>(null);
   readonly busy = signal(false);
   readonly isDealing = signal(false);
-  readonly message = signal('Create a room or join one with a room code.');
+  readonly message = signal('');
 
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
   private readonly debugRoleCardTitle = this.readDebugRoleCardTitle();

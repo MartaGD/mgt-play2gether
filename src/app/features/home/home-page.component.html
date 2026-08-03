@@ -1,34 +1,27 @@
 <section class="home-wrap">
   <article class="intro-card">
-    <p class="eyebrow">feature</p>
-    <h1>Play Together, Betray Together</h1>
-    <p>
-      Welcome to your multiplayer tabletop space. Build private rooms, invite friends and launch social formats.
-    </p>
+    <p class="eyebrow">{{ t.eyebrow }}</p>
+    <h1>{{ t.treacheryTitle }}</h1>
+    <p>{{ t.description }}</p>
     <div class="cta-row">
-      <a class="cta-main" routerLink="/treachery">Open Treachery</a>
-      <a class="cta-ghost" routerLink="/treachery">Join With Room Code</a>
+      <a class="cta-main" routerLink="/treachery">{{ t.treacheryPrimaryCta }}</a>
+      <a class="cta-ghost" routerLink="/treachery">{{ t.treacherySecondaryCta }}</a>
     </div>
   </article>
 
-
-    <article class="new-card">
+  <article class="new-card">
     <p class="eyebrow">MTG Social Hub</p>
-    <h1>More games in the future!</h1>
-    <p>
-      Watch this space for upcoming games and features.
-    </p>
+    <h1>{{ t.moreTitle }}</h1>
+    <p>{{ t.moreDescription }}</p>
     <div class="cta-row"></div>
   </article>
-  
-  <article class="intro-card">
-    <p class="eyebrow">feature</p>
-    <h1>Count your HP</h1>
-    <p>
-      Keep track of your life total with a simple and easy to use life counter. Add players, set starting life totals, and adjust life as needed.
-    </p>
+
+  <!--article class="intro-card">
+    <p class="eyebrow">{{ t.eyebrow }}</p>
+    <h1>{{ t.lifeTitle }}</h1>
+    <p>{{ t.lifeDescription }}</p>
     <div class="cta-row">
-      <a class="cta-main" routerLink="/life-counter">Open Life Counter</a>
+      <a class="cta-main" routerLink="/life-counter">{{ t.lifeCta }}</a>
     </div>
-  </article>
+  </article>-->
 </section>
