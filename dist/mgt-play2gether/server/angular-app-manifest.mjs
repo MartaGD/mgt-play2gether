@@ -37,8 +37,8 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 1598, hash: 'd5140e8c3ef2e2c615dcf4ac2f951918e151b5ecadea1ae06bedd4261a84d98b', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1164, hash: '32740ae4e631aa44e0362fbb07ef5cfcca7ef1674f01a5166ef43ddf91ddcb23', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 1598, hash: 'c5600169301a8d98189cb8aeca3024829a522681e77184f770590028766ef92f', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1164, hash: 'd68167f51a425dbffd808937aa9b3efc6254803b31c6fb1560e6647137bf2fa8', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-CAEAGL2V.css': {size: 133262, hash: 'gne5NF85Ml0', text: () => import('./assets-chunks/styles-CAEAGL2V_css.mjs').then(m => m.default)}
   },
 };

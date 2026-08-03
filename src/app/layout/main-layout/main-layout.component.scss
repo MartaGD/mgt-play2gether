@@ -81,6 +81,12 @@
   min-height: 0;
 }
 
+img {
+  display: block;
+  width: 2rem;
+  height: auto;
+}
+
 /* Responsive */
 @media (max-width: 700px) {
   .topbar {
