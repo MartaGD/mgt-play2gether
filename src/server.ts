@@ -56,6 +56,13 @@ interface RoomRepository {
   set(room: Room): Promise<void>;
 }
 
+type RoomMode = 'treachery' | 'kingdom';
+
+interface RoomRepositories {
+  treachery: RoomRepository;
+  kingdom: RoomRepository;
+}
+
 interface RedisRoomClient {
   exists(key: string): Promise<number>;
   get(key: string): Promise<string | null>;
@@ -85,10 +92,9 @@ class InMemoryRoomRepository implements RoomRepository {
 }
 
 class RedisRoomRepository implements RoomRepository {
-  private static readonly roomKeyPrefix = 'treachery:room:';
-
   constructor(
     private readonly client: RedisRoomClient,
+    private readonly roomKeyPrefix: string,
     private readonly roomTtlSeconds: number,
   ) {}
 
@@ -120,11 +126,11 @@ class RedisRoomRepository implements RoomRepository {
   }
 
   private makeRoomKey(roomCode: string): string {
-    return `${RedisRoomRepository.roomKeyPrefix}${roomCode.toUpperCase()}`;
+    return `${this.roomKeyPrefix}${roomCode.toUpperCase()}`;
   }
 }
 
-const roomRepositoryPromise = initializeRoomRepository();
+const roomRepositoriesPromise = initializeRoomRepositories();
 const rolePoolsByLocale = new Map<string, RolePools>();
 const kingdomRolePoolsByLocale = new Map<string, KingdomRolePools>();
 type AppLocale = 'en' | 'es' | 'ca';
@@ -234,20 +240,35 @@ function randomCode(length: number): string {
   return value;
 }
 
-async function getRoomRepository(): Promise<RoomRepository> {
-  return roomRepositoryPromise;
+function roomCodePrefixForMode(mode: RoomMode): string {
+  return mode === 'kingdom' ? 'K' : 'T';
 }
 
-async function initializeRoomRepository(): Promise<RoomRepository> {
+function isRoomCodeForMode(roomCode: string, mode: RoomMode): boolean {
+  const normalized = roomCode.trim().toUpperCase();
+  return normalized.startsWith(roomCodePrefixForMode(mode));
+}
+
+async function getRoomRepository(mode: RoomMode): Promise<RoomRepository> {
+  const repositories = await roomRepositoriesPromise;
+  return repositories[mode];
+}
+
+async function initializeRoomRepositories(): Promise<RoomRepositories> {
   const redisUrl = process.env['REDIS_URL']?.trim();
   const roomTtlSecondsRaw = Number(process.env['ROOM_TTL_SECONDS'] ?? 86400);
   const roomTtlSeconds = Number.isFinite(roomTtlSecondsRaw) && roomTtlSecondsRaw > 0
     ? Math.floor(roomTtlSecondsRaw)
     : 86400;
 
+  const createInMemoryRepositories = (): RoomRepositories => ({
+    treachery: new InMemoryRoomRepository(),
+    kingdom: new InMemoryRoomRepository(),
+  });
+
   if (!redisUrl) {
     console.log('REDIS_URL is not set. Using in-memory room repository.');
-    return new InMemoryRoomRepository();
+    return createInMemoryRepositories();
   }
 
   const client = createClient({ url: redisUrl });
@@ -257,11 +278,14 @@ async function initializeRoomRepository(): Promise<RoomRepository> {
 
   try {
     await client.connect();
-    console.log(`Connected to Redis room repository (TTL ${roomTtlSeconds}s).`);
-    return new RedisRoomRepository(client, roomTtlSeconds);
+    console.log(`Connected to Redis room repositories (TTL ${roomTtlSeconds}s).`);
+    return {
+      treachery: new RedisRoomRepository(client, 'treachery:room:', roomTtlSeconds),
+      kingdom: new RedisRoomRepository(client, 'kingdom:room:', roomTtlSeconds),
+    };
   } catch (error) {
     console.error('Failed to connect to Redis. Falling back to in-memory room repository.', error);
-    return new InMemoryRoomRepository();
+    return createInMemoryRepositories();
   }
 }
 
@@ -270,6 +294,20 @@ async function createUniqueRoomCode(roomRepository: RoomRepository): Promise<str
 
   while (await roomRepository.has(code)) {
     code = randomCode(6);
+  }
+
+  return code;
+}
+
+async function createUniqueRoomCodeForMode(
+  roomRepository: RoomRepository,
+  mode: RoomMode,
+): Promise<string> {
+  const prefix = roomCodePrefixForMode(mode);
+  let code = `${prefix}${randomCode(5)}`;
+
+  while (await roomRepository.has(code)) {
+    code = `${prefix}${randomCode(5)}`;
   }
 
   return code;
@@ -807,9 +845,15 @@ function loadKingdomRolePools(locale = 'en'): KingdomRolePools {
 async function getRoomOrFail(
   roomRepository: RoomRepository,
   roomCode: string,
+  mode: RoomMode,
   locale: AppLocale,
   res: express.Response,
 ): Promise<Room | null> {
+  if (!isRoomCodeForMode(roomCode, mode)) {
+    res.status(404).json({ error: getServerMessage(locale, 'roomNotFound') });
+    return null;
+  }
+
   const room = await roomRepository.get(roomCode.toUpperCase());
 
   if (!room) {
@@ -836,8 +880,8 @@ function serializeRoom(room: Room) {
 app.use(express.json());
 
 app.post('/api/kingdom/rooms', async (req, res) => {
-  const roomRepository = await getRoomRepository();
-  const roomCode = await createUniqueRoomCode(roomRepository);
+  const roomRepository = await getRoomRepository('kingdom');
+  const roomCode = await createUniqueRoomCodeForMode(roomRepository, 'kingdom');
   const room: Room = {
     code: roomCode,
     createdAt: Date.now(),
@@ -862,9 +906,9 @@ app.post('/api/kingdom/rooms', async (req, res) => {
 });
 
 app.post('/api/kingdom/rooms/:roomCode/join', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('kingdom');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'kingdom', locale, res);
   if (!room) {
     return;
   }
@@ -894,9 +938,9 @@ app.post('/api/kingdom/rooms/:roomCode/join', async (req, res) => {
 });
 
 app.post('/api/kingdom/rooms/:roomCode/start', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('kingdom');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'kingdom', locale, res);
   if (!room) {
     return;
   }
@@ -952,9 +996,9 @@ app.post('/api/kingdom/rooms/:roomCode/start', async (req, res) => {
 });
 
 app.get('/api/kingdom/rooms/:roomCode', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('kingdom');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'kingdom', locale, res);
   if (!room) {
     return;
   }
@@ -963,9 +1007,9 @@ app.get('/api/kingdom/rooms/:roomCode', async (req, res) => {
 });
 
 app.get('/api/kingdom/rooms/:roomCode/role', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('kingdom');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'kingdom', locale, res);
   if (!room) {
     return;
   }
@@ -991,8 +1035,8 @@ app.get('/api/kingdom/rooms/:roomCode/role', async (req, res) => {
 });
 
 app.post('/api/rooms', async (req, res) => {
-  const roomRepository = await getRoomRepository();
-  const roomCode = await createUniqueRoomCode(roomRepository);
+  const roomRepository = await getRoomRepository('treachery');
+  const roomCode = await createUniqueRoomCodeForMode(roomRepository, 'treachery');
   const room: Room = {
     code: roomCode,
     createdAt: Date.now(),
@@ -1017,9 +1061,9 @@ app.post('/api/rooms', async (req, res) => {
 });
 
 app.post('/api/rooms/:roomCode/join', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('treachery');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'treachery', locale, res);
   if (!room) {
     return;
   }
@@ -1049,9 +1093,9 @@ app.post('/api/rooms/:roomCode/join', async (req, res) => {
 });
 
 app.post('/api/rooms/:roomCode/start', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('treachery');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'treachery', locale, res);
   if (!room) {
     return;
   }
@@ -1104,9 +1148,9 @@ app.post('/api/rooms/:roomCode/start', async (req, res) => {
 });
 
 app.get('/api/rooms/:roomCode', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('treachery');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'treachery', locale, res);
   if (!room) {
     return;
   }
@@ -1115,9 +1159,9 @@ app.get('/api/rooms/:roomCode', async (req, res) => {
 });
 
 app.get('/api/rooms/:roomCode/role', async (req, res) => {
-  const roomRepository = await getRoomRepository();
+  const roomRepository = await getRoomRepository('treachery');
   const locale = getPreferredLocale(req.headers['accept-language']);
-  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], 'treachery', locale, res);
   if (!room) {
     return;
   }
