@@ -1,0 +1,103 @@
+{
+    "game_variant": "MTG Kingdom",
+    "set_name": "Kingdom",
+    "set_lang": "EN",
+    "cards_count": 5,
+    "cards": [
+        {
+            "id": 1,
+            "name": "King",
+            "name_anchor": "king",
+            "uri": "",
+            "cost": "",
+            "cmc": 0,
+            "color": "yellow",
+            "type": "Identity — King",
+            "types": {
+                "supertype": "Identity",
+                "subtype": "King"
+            },
+            "rarity": "",
+            "text": "Reveal your role, start at 50 life and take the first turn. | Win if all others lose, or if only you and the Knight remain.",
+                      "flavor": "",
+            "artist": "",
+            "rulings": []
+        },
+        {
+            "id": 2,
+            "name": "Knight",
+            "name_anchor": "knight",
+            "uri": "",
+            "cost": "",
+            "cmc": 0,
+            "color": "blue",
+            "type": "Identity — Knight",
+            "types": {
+                "supertype": "Identity",
+                "subtype": "Knight"
+            },
+            "rarity": "",
+            "text": "Protect the King. Win only if everyone except the King loses.",
+            "flavor": "",
+            "artist": "",
+            "rulings": []
+        },
+        {
+            "id": 3,
+            "name": "Bandit",
+            "name_anchor": "bandit",
+            "uri": "https://mtgtreachery.net/rules/oracle/?card=bandit",
+            "cost": "",
+            "cmc": 0,
+            "color": "red",
+            "type": "Identity — Bandit",
+            "types": {
+                "supertype": "Identity",
+                "subtype": "Bandit"
+            },
+            "rarity": "",
+            "text": "Win if at least one Bandit remains when the King loses.",
+            "flavor": "",
+            "artist": "",
+            "rulings": []
+        },
+        {
+            "id": 4,
+            "name": "Assassin",
+            "name_anchor": "assassin",
+            "uri": "",
+            "cost": "",
+            "cmc": 0,
+            "color": "black",
+            "type": "Identity — Assassin",
+            "types": {
+                "supertype": "Identity",
+                "subtype": "Assassin"
+            },
+            "rarity": "",
+            "text": "Win if all others lose — the Bandits must fall before the King, or else the Bandits win.",
+            "flavor": "",
+            "artist": "",
+            "rulings": []
+        },
+        {
+            "id": 5,
+            "name": "Usurper ",
+            "name_anchor": "usurper",
+            "uri": "",
+            "cost": "",
+            "cmc": 0,
+            "color": "green",
+            "type": "Identity — Usurper",
+            "types": {
+                "supertype": "Identity",
+                "subtype": "Usurper"
+            },
+            "rarity": "R",
+            "text": "",
+            "flavor": "If you cause the King to lose, your life becomes 50 and you become the new King. | The former King becomes the Usurper at 5 life instead of losing.",
+            "artist": "",
+            "rulings": []
+        }
+    ]
+}

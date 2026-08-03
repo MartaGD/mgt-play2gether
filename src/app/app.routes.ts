@@ -3,6 +3,7 @@ import { HomePageComponent } from './features/home/home-page.component';
 import { LifeCounterHomeComponent } from './features/life-counter/life-counter-home.component';
 import { LifeCounterPageComponent } from './features/life-counter/life-counter-page.component';
 import { TreacheryPageComponent } from './features/treachery/treachery-page.component';
+import { KingdomPageComponent } from './features/kingdom/kingdom-page.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
@@ -18,6 +19,10 @@ export const routes: Routes = [
 			{
 				path: 'home',
 				component: HomePageComponent,
+			},
+			{
+				path: 'kingdom',
+				component: KingdomPageComponent,
 			},
 			{
 				path: 'treachery',

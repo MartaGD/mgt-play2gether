@@ -20,17 +20,12 @@ export class TreacheryRoleCardComponent {
   @Output() leaveRoomClick = new EventEmitter<void>();
 
   readonly t = {
-    subtitle: getTranslation('general', 'subtitle'),
-    eyebrow: getTranslation('home', 'eyebrow'),
-    treacheryTitle: getTranslation('home', 'treacheryTitle'),
-    description: getTranslation('home', 'description'),
-    primaryCta: getTranslation('home', 'primaryCta'),
-    secondaryCta: getTranslation('home', 'secondaryCta'),
-    moreTitle: getTranslation('home', 'moreTitle'),
-    moreDescription: getTranslation('home', 'moreDescription'),
-    lifeTitle: getTranslation('home', 'lifeTitle'),
-    lifeDescription: getTranslation('home', 'lifeDescription'),
-    lifeCta: getTranslation('home', 'lifeCta'),
+    identityLabel: getTranslation('treachery', 'identityLabel'),
+    teamLabel: getTranslation('treachery', 'teamLabel'),
+    rulingsLabel: getTranslation('treachery', 'rulingsLabel'),
+    refreshRoomButton: getTranslation('treachery', 'refreshRoomButton'),
+    leaveRoomButton: getTranslation('treachery', 'leaveRoomButton'),
+    roleCardArtworkAlt: getTranslation('treachery', 'roleCardArtworkAlt'),
   };
 
 }

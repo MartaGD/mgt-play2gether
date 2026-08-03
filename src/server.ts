@@ -18,6 +18,14 @@ import type {
   TreacheryDataCard,
   TreacheryDataFile,
 } from './app/features/treachery/treachery.models';
+import type {
+  IdentityRole as KingdomIdentityRole,
+  KingdomDataCard,
+  KingdomDataFile,
+  RoleCard as KingdomRoleCard,
+  RolePools as KingdomRolePools,
+  Team as KingdomTeam,
+} from './app/features/kingdom/kingdom.models';
 import { en_translations } from './app/shared/en';
 import { es_translations } from './app/shared/es';
 import { ca_translations } from './app/shared/ca';
@@ -118,6 +126,7 @@ class RedisRoomRepository implements RoomRepository {
 
 const roomRepositoryPromise = initializeRoomRepository();
 const rolePoolsByLocale = new Map<string, RolePools>();
+const kingdomRolePoolsByLocale = new Map<string, KingdomRolePools>();
 type AppLocale = 'en' | 'es' | 'ca';
 type ServerMessageKey = keyof typeof en_translations.server;
 
@@ -166,6 +175,51 @@ const FALLBACK_TRAITOR_CARDS: Omit<RoleCard, 'role' | 'team'>[] = [
     objective: 'Break alliances and finish the game as the last standing side.',
     hint: 'Use confident calls and blame variance for bad outcomes.',
     rulings: 'Traitors must sow discord and avoid being the focus of elimination while pursuing their own victory conditions.',
+  },
+];
+
+const FALLBACK_KING_CARDS: Omit<KingdomRoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'King',
+    objective: 'Reveal your role, start at 50 life and take the first turn. Win if all others lose, or if only you and the Knight remain.',
+    hint: 'You are public from the beginning and the central target.',
+    rulings: 'The King role is public immediately. Other roles remain secret unless a card effect says otherwise.',
+  },
+];
+
+const FALLBACK_KNIGHT_CARDS: Omit<KingdomRoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Knight',
+    objective: 'Protect the King. Win only if everyone except the King loses.',
+    hint: 'You and Assassin often share short-term goals against Bandits.',
+    rulings: 'Assist the King and stabilize the table. Keep your role secret.',
+  },
+];
+
+const FALLBACK_BANDIT_CARDS: Omit<KingdomRoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Bandit',
+    objective: 'Win if at least one Bandit remains when the King loses.',
+    hint: 'Bandits do not need to personally eliminate the King.',
+    rulings: 'As long as one Bandit survives when the King loses, Bandits win.',
+  },
+];
+
+const FALLBACK_KINGDOM_ASSASSIN_CARDS: Omit<KingdomRoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Assassin',
+    objective: 'Win if all others lose, but Bandits must fall before the King.',
+    hint: 'Coordinate pressure against Bandits while preserving flexibility.',
+    rulings: 'If the King loses while a Bandit remains, Bandits win.',
+  },
+];
+
+const FALLBACK_USURPER_CARDS: Omit<KingdomRoleCard, 'role' | 'team'>[] = [
+  {
+    title: 'Usurper',
+    objective: 'Cause the King to lose and claim the throne as the new King.',
+    hint: 'Your best window is usually after table trust has formed.',
+    rulings: 'When the Usurper causes the King to lose, they reveal and become the new King.',
   },
 ];
 
@@ -319,6 +373,42 @@ function buildRolePlan(playerCount: number): IdentityRole[] {
   return roles;
 }
 
+function buildKingdomRolePlan(playerCount: number): KingdomIdentityRole[] {
+  if (playerCount === 5) {
+    return ['KING', 'KNIGHT', 'BANDIT', 'BANDIT', 'ASSASSIN'];
+  }
+
+  if (playerCount === 6) {
+    return ['KING', 'KNIGHT', 'BANDIT', 'BANDIT', 'ASSASSIN', 'USURPER'];
+  }
+
+  if (playerCount === 7) {
+    return ['KING', 'KNIGHT', 'BANDIT', 'BANDIT', 'ASSASSIN', 'ASSASSIN', 'USURPER'];
+  }
+
+  return [];
+}
+
+function toKingdomRoleTeam(role: KingdomIdentityRole): KingdomTeam {
+  if (role === 'KING' || role === 'KNIGHT') {
+    return 'CROWN';
+  }
+
+  if (role === 'BANDIT') {
+    return 'SHADOW';
+  }
+
+  return 'ROGUE';
+}
+
+function isKingdomRole(value: unknown): value is KingdomIdentityRole {
+  return value === 'KING'
+    || value === 'KNIGHT'
+    || value === 'BANDIT'
+    || value === 'ASSASSIN'
+    || value === 'USURPER';
+}
+
 function shuffle<T>(items: T[]): T[] {
   const copy = [...items];
 
@@ -389,6 +479,91 @@ function makeCardFromRole(role: IdentityRole, locale = 'en'): RoleCard {
     objective: template.objective,
     hint: template.hint,
     rulings: template.rulings
+  };
+}
+
+function kingdomCardSubtype(card: KingdomDataCard): string {
+  const subtypeFromObject = asText(card.types?.subtype, '');
+  if (subtypeFromObject.length > 0) {
+    return subtypeFromObject;
+  }
+
+  const fullType = asText(card.type, '');
+  const typeParts = fullType.split(' - ');
+  return typeParts.length > 1 ? typeParts[typeParts.length - 1].trim() : '';
+}
+
+function getKingdomRolePools(locale = 'en'): KingdomRolePools {
+  const normalizedLocale = locale.startsWith('es') ? 'es' : 'en';
+  const cached = kingdomRolePoolsByLocale.get(normalizedLocale);
+  if (cached) {
+    return cached;
+  }
+
+  const pools = loadKingdomRolePools(normalizedLocale);
+  kingdomRolePoolsByLocale.set(normalizedLocale, pools);
+  return pools;
+}
+
+function makeKingdomCardFromRole(role: KingdomIdentityRole, locale = 'en'): KingdomRoleCard {
+  const rolePools = getKingdomRolePools(locale);
+
+  if (role === 'KING') {
+    const template = pickRandom(rolePools.king);
+    return {
+      role,
+      team: toKingdomRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+      rulings: template.rulings,
+    };
+  }
+
+  if (role === 'KNIGHT') {
+    const template = pickRandom(rolePools.knight);
+    return {
+      role,
+      team: toKingdomRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+      rulings: template.rulings,
+    };
+  }
+
+  if (role === 'BANDIT') {
+    const template = pickRandom(rolePools.bandit);
+    return {
+      role,
+      team: toKingdomRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+      rulings: template.rulings,
+    };
+  }
+
+  if (role === 'ASSASSIN') {
+    const template = pickRandom(rolePools.assassin);
+    return {
+      role,
+      team: toKingdomRoleTeam(role),
+      title: template.title,
+      objective: template.objective,
+      hint: template.hint,
+      rulings: template.rulings,
+    };
+  }
+
+  const template = pickRandom(rolePools.usurper);
+  return {
+    role,
+    team: toKingdomRoleTeam(role),
+    title: template.title,
+    objective: template.objective,
+    hint: template.hint,
+    rulings: template.rulings,
   };
 }
 
@@ -530,6 +705,105 @@ function loadRolePools(locale = 'en'): RolePools {
   }
 }
 
+function pickKingdomFilePath(locale = 'en'): string | null {
+  const preferredFile = locale === 'es'
+    ? 'kingdom-cards-es.json'
+    : locale === 'ca'
+      ? 'kingdom-cards-ca.json'
+      : 'kingdom-cards-en.json';
+
+  const candidates = [
+    join(process.cwd(), preferredFile),
+    join(import.meta.dirname, `../../../${preferredFile}`),
+    join(import.meta.dirname, `../../${preferredFile}`),
+    join(process.cwd(), 'kingdom-cards-en.json'),
+    join(import.meta.dirname, '../../../kingdom-cards-en.json'),
+    join(import.meta.dirname, '../../kingdom-cards-en.json'),
+  ];
+
+  for (const path of candidates) {
+    if (existsSync(path)) {
+      return path;
+    }
+  }
+
+  return null;
+}
+
+function loadKingdomRolePools(locale = 'en'): KingdomRolePools {
+  try {
+    const filePath = pickKingdomFilePath(locale);
+    if (!filePath) {
+      console.warn('Kingdom cards file not found. Using fallback Kingdom role cards.');
+      return {
+        king: FALLBACK_KING_CARDS,
+        knight: FALLBACK_KNIGHT_CARDS,
+        bandit: FALLBACK_BANDIT_CARDS,
+        assassin: FALLBACK_KINGDOM_ASSASSIN_CARDS,
+        usurper: FALLBACK_USURPER_CARDS,
+      };
+    }
+
+    const raw = readFileSync(filePath, 'utf-8');
+    const parsed = JSON.parse(raw) as KingdomDataFile;
+    const cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+
+    const king = cards
+      .filter((card) => kingdomCardSubtype(card).toUpperCase() === 'KING')
+      .map((card) => toRoleTemplate(card as unknown as TreacheryDataCard));
+
+    const knight = cards
+      .filter((card) => kingdomCardSubtype(card).toUpperCase() === 'KNIGHT')
+      .map((card) => toRoleTemplate(card as unknown as TreacheryDataCard));
+
+    const bandit = cards
+      .filter((card) => kingdomCardSubtype(card).toUpperCase() === 'BANDIT')
+      .map((card) => toRoleTemplate(card as unknown as TreacheryDataCard));
+
+    const assassin = cards
+      .filter((card) => kingdomCardSubtype(card).toUpperCase() === 'ASSASSIN')
+      .map((card) => toRoleTemplate(card as unknown as TreacheryDataCard));
+
+    const usurper = cards
+      .filter((card) => kingdomCardSubtype(card).toUpperCase() === 'USURPER')
+      .map((card) => toRoleTemplate(card as unknown as TreacheryDataCard));
+
+    if (king.length === 0 || knight.length === 0 || bandit.length === 0 || assassin.length === 0 || usurper.length === 0) {
+      console.warn(
+        'Kingdom cards JSON missing one or more role groups (King/Knight/Bandit/Assassin/Usurper). Using fallback Kingdom role cards.',
+      );
+      return {
+        king: FALLBACK_KING_CARDS,
+        knight: FALLBACK_KNIGHT_CARDS,
+        bandit: FALLBACK_BANDIT_CARDS,
+        assassin: FALLBACK_KINGDOM_ASSASSIN_CARDS,
+        usurper: FALLBACK_USURPER_CARDS,
+      };
+    }
+
+    console.log(
+      `Loaded Kingdom role cards from ${filePath}. King: ${king.length}, Knight: ${knight.length}, Bandit: ${bandit.length}, Assassin: ${assassin.length}, Usurper: ${usurper.length}.`,
+    );
+
+    return {
+      king,
+      knight,
+      bandit,
+      assassin,
+      usurper,
+    };
+  } catch (error) {
+    console.warn('Failed to load Kingdom cards JSON. Using fallback Kingdom role cards.', error);
+    return {
+      king: FALLBACK_KING_CARDS,
+      knight: FALLBACK_KNIGHT_CARDS,
+      bandit: FALLBACK_BANDIT_CARDS,
+      assassin: FALLBACK_KINGDOM_ASSASSIN_CARDS,
+      usurper: FALLBACK_USURPER_CARDS,
+    };
+  }
+}
+
 async function getRoomOrFail(
   roomRepository: RoomRepository,
   roomCode: string,
@@ -560,6 +834,161 @@ function serializeRoom(room: Room) {
 }
 
 app.use(express.json());
+
+app.post('/api/kingdom/rooms', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const roomCode = await createUniqueRoomCode(roomRepository);
+  const room: Room = {
+    code: roomCode,
+    createdAt: Date.now(),
+    status: 'LOBBY',
+    hostPlayerCode: '',
+    players: [],
+  };
+
+  const player: Player = {
+    code: createPlayerCode(room),
+    joinedAt: Date.now(),
+  };
+
+  room.hostPlayerCode = player.code;
+  room.players.push(player);
+  await roomRepository.set(room);
+
+  res.status(201).json({
+    room: serializeRoom(room),
+    playerCode: player.code,
+  });
+});
+
+app.post('/api/kingdom/rooms/:roomCode/join', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  if (!room) {
+    return;
+  }
+
+  if (room.status !== 'LOBBY') {
+    res.status(409).json({ error: getServerMessage(locale, 'gameAlreadyStartedInRoom') });
+    return;
+  }
+
+  if (room.players.length >= 7) {
+    res.status(409).json({ error: getServerMessage(locale, 'roomIsFull') });
+    return;
+  }
+
+  const player: Player = {
+    code: createPlayerCode(room),
+    joinedAt: Date.now(),
+  };
+
+  room.players.push(player);
+  await roomRepository.set(room);
+
+  res.status(201).json({
+    room: serializeRoom(room),
+    playerCode: player.code,
+  });
+});
+
+app.post('/api/kingdom/rooms/:roomCode/start', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  if (!room) {
+    return;
+  }
+
+  if (room.status === 'STARTED') {
+    res.status(409).json({ error: getServerMessage(locale, 'gameAlreadyStarted') });
+    return;
+  }
+
+  const requesterPlayerCode = typeof req.body?.playerCode === 'string' ? req.body.playerCode : '';
+  if (requesterPlayerCode !== room.hostPlayerCode) {
+    res.status(403).json({ error: getServerMessage(locale, 'onlyHostCanStart') });
+    return;
+  }
+
+  if (room.players.length < 5 || room.players.length > 7) {
+    res.status(400).json({ error: getServerMessage(locale, 'kingdomRequiresFiveToSevenPlayers') });
+    return;
+  }
+
+  const rolePlan = shuffle(buildKingdomRolePlan(room.players.length));
+
+  room.players.forEach((player, index) => {
+    const plannedRole = rolePlan[index] ?? 'KNIGHT';
+    player.roleCard = makeKingdomCardFromRole(plannedRole, locale) as unknown as RoleCard;
+  });
+
+  room.status = 'STARTED';
+  await roomRepository.set(room);
+
+  const roleSummary = room.players.reduce(
+    (summary, player) => {
+      const role = player.roleCard?.role;
+      if (isKingdomRole(role)) {
+        summary[role] += 1;
+      }
+      return summary;
+    },
+    {
+      KING: 0,
+      KNIGHT: 0,
+      BANDIT: 0,
+      ASSASSIN: 0,
+      USURPER: 0,
+    } as Record<KingdomIdentityRole, number>,
+  );
+
+  res.json({
+    room: serializeRoom(room),
+    message: getServerMessage(locale, 'gameStartedAndRolesDealt'),
+    roleSummary,
+  });
+});
+
+app.get('/api/kingdom/rooms/:roomCode', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  if (!room) {
+    return;
+  }
+
+  res.json({ room: serializeRoom(room) });
+});
+
+app.get('/api/kingdom/rooms/:roomCode/role', async (req, res) => {
+  const roomRepository = await getRoomRepository();
+  const locale = getPreferredLocale(req.headers['accept-language']);
+  const room = await getRoomOrFail(roomRepository, req.params['roomCode'], locale, res);
+  if (!room) {
+    return;
+  }
+
+  const playerCode = typeof req.query['playerCode'] === 'string' ? req.query['playerCode'] : '';
+  const player = room.players.find((entry) => entry.code === playerCode);
+
+  if (!player) {
+    res.status(404).json({ error: getServerMessage(locale, 'playerNotFoundInRoom') });
+    return;
+  }
+
+  if (room.status !== 'STARTED' || !player.roleCard) {
+    res.status(409).json({ error: getServerMessage(locale, 'gameNotStartedYet') });
+    return;
+  }
+
+  res.json({
+    roomCode: room.code,
+    playerCode: player.code,
+    card: player.roleCard,
+  });
+});
 
 app.post('/api/rooms', async (req, res) => {
   const roomRepository = await getRoomRepository();

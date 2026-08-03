@@ -31,14 +31,23 @@ export class TreacheryRoomComponent {
     leaveRoomButton: getTranslation('treachery', 'leaveRoomButton'),
     dealingMessage: getTranslation('treachery', 'dealingMessage'),
     waitingPlayersMessage: getTranslation('treachery', 'waitingPlayersMessage'),
+    notSet: getTranslation('treachery', 'notSet'),
+    youTag: getTranslation('treachery', 'youTag'),
+    hostTag: getTranslation('treachery', 'hostTag'),
+    bufferingLabel: getTranslation('treachery', 'bufferingLabel'),
+    copyRoomCodeSuccess: getTranslation('treachery', 'copyRoomCodeSuccess'),
+    copyRoomCodeError: getTranslation('treachery', 'copyRoomCodeError'),
   };
 
 copyText(): void {
   const text = this.room.code;
 
   navigator.clipboard.writeText(text)
-    .then(() => alert(`Room code "${text}" copied to clipboard!`))
-    .catch(err => console.error("Error copying to clipboard:", err));
+    .then(() => alert(this.t.copyRoomCodeSuccess.replace('{code}', text)))
+    .catch((error) => {
+      console.error(this.t.copyRoomCodeError, error);
+      alert(this.t.copyRoomCodeError);
+    });
 }
 
 

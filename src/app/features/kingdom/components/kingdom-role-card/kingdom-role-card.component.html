@@ -2,15 +2,15 @@
 
 <section
   class="panel card-shell"
-  [class.traitor]="roleCard.role === 'TRAITOR'"
+  [class.traitor]="roleCard.role === 'BANDIT' || roleCard.role === 'USURPER'"
   [class.assassin]="roleCard.role === 'ASSASSIN'"
-  [class.leader]="roleCard.role === 'LEADER'"
+  [class.leader]="roleCard.role === 'KING'"
+  [class.knight]="roleCard.role === 'KNIGHT'"
 >
   <article class="card-frame">
     <header class="card-header">
-      <img [src]="cardImageUrl" [alt]="t.roleCardArtworkAlt" class="card-icon" width="18px" height="18px"/>
+        <img [src]="cardImageUrl" alt="Role card artwork" class="card-icon" width="18px" height="18px"/>
         {{ roleCard.title }}</header>
-    <img [src]="cardImageUrl" [alt]="t.roleCardArtworkAlt" class="card-image" />
     <div class="card-body">
       <p><strong>{{ t.identityLabel }}:</strong> {{ roleCard.role }}</p>
       <p class="card-text" [innerHTML]="roleCard.objective | objectiveText"></p>
@@ -19,13 +19,6 @@
       <p><strong>{{ t.teamLabel }}:</strong> {{ roleCard.team }}</p>
       <p>{{ roleCard.hint }}</p>
     </footer>
-  </article>
-</section>
-
-<section>
-  <article class="ruling-frame">
-    <p class="ruling-header">{{ t.rulingsLabel }}</p>
-      <p class="ruling-text" [innerHTML]="roleCard.rulings | objectiveText"></p>
   </article>
 </section>
 

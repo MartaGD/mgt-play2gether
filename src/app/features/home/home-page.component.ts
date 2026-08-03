@@ -16,9 +16,15 @@ export class HomePageComponent {
     moreDescription: getTranslation('home', 'moreDescription'),
 
     treacheryTitle: getTranslation('treachery', 'homeTitle'),
-    description: getTranslation('treachery', 'homeDescription'),
+    treacheryDescription: getTranslation('treachery', 'homeDescription'),
     treacheryPrimaryCta: getTranslation('treachery', 'homePrimaryCta'),
     treacherySecondaryCta: getTranslation('treachery', 'homeSecondaryCta'),
+
+    kingdomTitle: getTranslation('kingdom', 'homeTitle'),
+    kingdomDescription: getTranslation('kingdom', 'homeDescription'),
+    kingdomPrimaryCta: getTranslation('kingdom', 'homePrimaryCta'),
+    kingdomSecondaryCta: getTranslation('kingdom', 'homeSecondaryCta'),
+
 
     lifeTitle: getTranslation('lifeCounter', 'homeTitle'),
     lifeDescription: getTranslation('lifeCounter', 'homeDescription'),
