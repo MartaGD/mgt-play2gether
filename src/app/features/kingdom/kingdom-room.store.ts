@@ -73,12 +73,14 @@ export class KingdomRoomStore {
     switch (card.role) {
       case 'KING':
         return '/card-art-leader.svg';
+      case 'KNIGHT':
+        return '/card-art-guardian.svg';
       case 'ASSASSIN':
-        return '/card-art-assassin.svg';
+        return '/card-art-assassin_kingdom.svg';
       case 'BANDIT':
-        return '/card-art-traitor.svg';
+        return '/card-art-bandit.svg';
       case 'USURPER':
-        return '/card-art-traitor.svg';
+        return '/card-art-usurper.svg';
       default:
         return '/card-art-guardian.svg';
     }
