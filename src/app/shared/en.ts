@@ -70,7 +70,10 @@ export const en_translations = {
     },
     kingdom: {
         homeTitle: 'Kingdom',
+        homeDescription: 'Create a room, share the code, and reveal your role when the game starts.',
         description: 'Create a room, share the code, and reveal your role when the game starts.',
+        homePrimaryCta: 'Open New Kingdom',
+        homeSecondaryCta: 'Join With Room Code',
         createButton: 'Create Room',
         joinButton: 'Join Room',
         roomCodeLabel: 'Room Code',
