@@ -15,7 +15,7 @@
     <button type="button" [disabled]="busy" class="muted" (click)="refreshClick.emit()">{{ t.refreshButton }}</button>
     <button
       type="button"
-      [disabled]="busy || !isHost || room.status === 'STARTED' || room.players.length < 4"
+      [disabled]="busy || !isHost || room.status === 'STARTED' || room.players.length < 5 || room.players.length > 7"
       (click)="startGameClick.emit()"
     >
       {{ t.startGameButton }}
@@ -23,7 +23,7 @@
     <button type="button" [disabled]="busy" class="muted" (click)="leaveRoomClick.emit()">{{ t.leaveRoomButton }}</button>
   </div>
 
-  @if (room.players.length < 4) {
+  @if (room.players.length < 5 || room.players.length > 7) {
     <p class="status">{{t.roomRequiredPlayers}}</p>
   }
 

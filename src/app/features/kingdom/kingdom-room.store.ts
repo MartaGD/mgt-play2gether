@@ -1,5 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { RoleCardDto, RoleSummaryDto, RoomDto, RoomPlayerDto } from './treachery.models';
+import { RoleCardDto, RoleSummaryDto, RoomDto, RoomPlayerDto } from './kingdom.models';
 import { getTranslation } from '../../shared/translations'; 
 
 interface ExpiringStorageEntry {
@@ -9,28 +9,28 @@ interface ExpiringStorageEntry {
 
 
 @Injectable({ providedIn: 'root' })
-export class TreacheryRoomStore {
+export class KingdomRoomStore {
   private static readonly storageTtlMs = 24 * 60 * 60 * 1000;
   private static readonly debugRoleCardTitleParam = 'roleCard.title';
 
   readonly t = {
-    title: getTranslation('treachery', 'homeTitle'),
-    debugRoleCardPreviewMessage: getTranslation('treachery', 'debugRoleCardPreviewMessage'),
-    roomCreatedMessage: getTranslation('treachery', 'roomCreatedMessage'),
-    typeRoomCodeBeforeJoinMessage: getTranslation('treachery', 'typeRoomCodeBeforeJoinMessage'),
-    joinedRoomMessage: getTranslation('treachery', 'joinedRoomMessage'),
-    joinRoomBeforeStartMessage: getTranslation('treachery', 'joinRoomBeforeStartMessage'),
-    dealingMessage: getTranslation('treachery', 'dealingMessage'),
-    gameStartedFallbackMessage: getTranslation('treachery', 'gameStartedFallbackMessage'),
-    roleSummaryPrefix: getTranslation('treachery', 'roleSummaryPrefix'),
-    missingRoomOrPlayerCodeMessage: getTranslation('treachery', 'missingRoomOrPlayerCodeMessage'),
-    roleCardLoadedMessage: getTranslation('treachery', 'roleCardLoadedMessage'),
-    leaveRoomBrowserMessage: getTranslation('treachery', 'leaveRoomBrowserMessage'),
-    localPlayerDataRemovedMessage: getTranslation('treachery', 'localPlayerDataRemovedMessage'),
-    typeRoomCodePrompt: getTranslation('treachery', 'typeRoomCodePrompt'),
-    unexpectedErrorMessage: getTranslation('treachery', 'unexpectedErrorMessage'),
-    requestFailedMessage: getTranslation('treachery', 'requestFailedMessage'),
-    errorPrefix: getTranslation('treachery', 'errorPrefix'),
+    title: getTranslation('kingdom', 'homeTitle'),
+    debugRoleCardPreviewMessage: getTranslation('kingdom', 'debugRoleCardPreviewMessage'),
+    roomCreatedMessage: getTranslation('kingdom', 'roomCreatedMessage'),
+    typeRoomCodeBeforeJoinMessage: getTranslation('kingdom', 'typeRoomCodeBeforeJoinMessage'),
+    joinedRoomMessage: getTranslation('kingdom', 'joinedRoomMessage'),
+    joinRoomBeforeStartMessage: getTranslation('kingdom', 'joinRoomBeforeStartMessage'),
+    dealingMessage: getTranslation('kingdom', 'dealingMessage'),
+    gameStartedFallbackMessage: getTranslation('kingdom', 'gameStartedFallbackMessage'),
+    roleSummaryPrefix: getTranslation('kingdom', 'roleSummaryPrefix'),
+    missingRoomOrPlayerCodeMessage: getTranslation('kingdom', 'missingRoomOrPlayerCodeMessage'),
+    roleCardLoadedMessage: getTranslation('kingdom', 'roleCardLoadedMessage'),
+    leaveRoomBrowserMessage: getTranslation('kingdom', 'leaveRoomBrowserMessage'),
+    localPlayerDataRemovedMessage: getTranslation('kingdom', 'localPlayerDataRemovedMessage'),
+    typeRoomCodePrompt: getTranslation('kingdom', 'typeRoomCodePrompt'),
+    unexpectedErrorMessage: getTranslation('kingdom', 'unexpectedErrorMessage'),
+    requestFailedMessage: getTranslation('kingdom', 'requestFailedMessage'),
+    errorPrefix: getTranslation('kingdom', 'errorPrefix'),
   };
 
   readonly appTitle = this.t.title;
@@ -67,15 +67,17 @@ export class TreacheryRoomStore {
   readonly cardImageUrl = computed(() => {
     const card = this.roleCard();
     if (!card) {
-      return '/card-art-guardian.svg';
+      return '/card-art-leader.svg';
     }
 
     switch (card.role) {
-      case 'LEADER':
+      case 'KING':
         return '/card-art-leader.svg';
       case 'ASSASSIN':
         return '/card-art-assassin.svg';
-      case 'TRAITOR':
+      case 'BANDIT':
+        return '/card-art-traitor.svg';
+      case 'USURPER':
         return '/card-art-traitor.svg';
       default:
         return '/card-art-guardian.svg';
@@ -113,7 +115,7 @@ export class TreacheryRoomStore {
 
   async createRoom(): Promise<void> {
     await this.withBusy(async () => {
-      const response = await fetch('/api/rooms', {
+      const response = await fetch('/api/kingdom/rooms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),
@@ -140,7 +142,7 @@ export class TreacheryRoomStore {
     }
 
     await this.withBusy(async () => {
-      const response = await fetch(`/api/rooms/${roomCode}/join`, {
+      const response = await fetch(`/api/kingdom/rooms/${roomCode}/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),
@@ -167,7 +169,7 @@ export class TreacheryRoomStore {
 
     if (silent) {
       try {
-        const response = await fetch(`/api/rooms/${roomCode}`);
+        const response = await fetch(`/api/kingdom/rooms/${roomCode}`);
         const data = await this.readResponse(response);
         this.room.set(data['room'] as RoomDto);
         this.activeRoomCode.set((data['room'] as RoomDto).code);
@@ -180,7 +182,7 @@ export class TreacheryRoomStore {
     }
 
     await this.withBusy(async () => {
-      const response = await fetch(`/api/rooms/${roomCode}`);
+      const response = await fetch(`/api/kingdom/rooms/${roomCode}`);
       const data = await this.readResponse(response);
       this.room.set(data['room'] as RoomDto);
       this.activeRoomCode.set((data['room'] as RoomDto).code);
@@ -202,7 +204,7 @@ export class TreacheryRoomStore {
       this.isDealing.set(true);
       this.message.set(this.t.dealingMessage);
 
-      const response = await fetch(`/api/rooms/${roomCode}/start`, {
+      const response = await fetch(`/api/kingdom/rooms/${roomCode}/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ playerCode: this.activePlayerCode() }),
@@ -212,7 +214,7 @@ export class TreacheryRoomStore {
       this.room.set(data['room'] as RoomDto);
       const roleSummary = data['roleSummary'] as RoleSummaryDto | undefined;
       const summaryText = roleSummary
-        ? ` ${this.t.roleSummaryPrefix}: L=${roleSummary.LEADER}, G=${roleSummary.GUARDIAN}, A=${roleSummary.ASSASSIN}, T=${roleSummary.TRAITOR}.`
+        ? ` ${this.t.roleSummaryPrefix}: K=${roleSummary.KING}, Kn=${roleSummary.KNIGHT}, B=${roleSummary.BANDIT}, A=${roleSummary.ASSASSIN}, U=${roleSummary.USURPER}.`
         : '';
       this.message.set(((data['message'] as string) || this.t.gameStartedFallbackMessage) + summaryText);
       this.syncStartedState();
@@ -231,7 +233,7 @@ export class TreacheryRoomStore {
     if (silent) {
       try {
         const response = await fetch(
-          `/api/rooms/${roomCode}/role?playerCode=${encodeURIComponent(playerCode)}`,
+          `/api/kingdom/rooms/${roomCode}/role?playerCode=${encodeURIComponent(playerCode)}`,
         );
         const data = await this.readResponse(response);
         this.roleCard.set(data['card'] as RoleCardDto);
@@ -245,7 +247,7 @@ export class TreacheryRoomStore {
 
     await this.withBusy(async () => {
       const response = await fetch(
-        `/api/rooms/${roomCode}/role?playerCode=${encodeURIComponent(playerCode)}`,
+        `/api/kingdom/rooms/${roomCode}/role?playerCode=${encodeURIComponent(playerCode)}`,
       );
       const data = await this.readResponse(response);
       this.roleCard.set(data['card'] as RoleCardDto);
@@ -410,7 +412,7 @@ export class TreacheryRoomStore {
     const storage = globalThis.localStorage;
     const entry: ExpiringStorageEntry = {
       value,
-      expiresAt: Date.now() + TreacheryRoomStore.storageTtlMs,
+      expiresAt: Date.now() + KingdomRoomStore.storageTtlMs,
     };
 
     storage.setItem(key, JSON.stringify(entry));
@@ -430,7 +432,7 @@ export class TreacheryRoomStore {
     }
 
     return new URLSearchParams(globalThis.location.search).get(
-      TreacheryRoomStore.debugRoleCardTitleParam,
+      KingdomRoomStore.debugRoleCardTitleParam,
     )?.trim() ?? '';
   }
 }
